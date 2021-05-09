@@ -6,13 +6,6 @@
         margin: 0 auto;
     }
 
-    h1 {
-        color: #ff3e00;
-        text-transform: uppercase;
-        font-size: 4em;
-        font-weight: 100;
-    }
-
     @media (min-width: 640px) {
         main {
             max-width: none;
@@ -21,13 +14,27 @@
 </style>
 
 <script lang="ts">
+    import { storeManifest } from "api/utils/manifest_db";
+    import { onMount } from "svelte";
+
     export let name: string;
+    let loadingState = true;
+
+    const setLoadingState = (loading: boolean) => {
+        loadingState = loading;
+    };
+
+    onMount(async () => {
+        await storeManifest(setLoadingState);
+    });
 </script>
 
 <main>
-    <h1>Hello {name}!</h1>
-    <p>
-        Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn
-        how to build Svelte apps.
-    </p>
+    <div>
+        {#if loadingState}
+            loading manifest...
+        {:else}
+            Done! Hello {name}
+        {/if}
+    </div>
 </main>
