@@ -1,8 +1,12 @@
 /node_modules/
 /public/build/
-
 package-lock.json
 
-env*
+.env*
 
 .DS_Store
+
+#local ssh keys to run the app on https
+localhost-key.pem
+localhost.pem
+

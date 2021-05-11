@@ -6,8 +6,8 @@ import { terser } from "rollup-plugin-terser";
 import sveltePreprocess from "svelte-preprocess";
 import typescript from "@rollup/plugin-typescript";
 import css from "rollup-plugin-css-only";
-import { config } from "dotenv";
 import replace from "@rollup/plugin-replace";
+import dotenv from "dotenv";
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -64,6 +64,7 @@ export default {
         resolve({
             browser: true,
             dedupe: ["svelte"],
+            preferBuiltins: false,
         }),
         commonjs(),
         typescript({
@@ -84,9 +85,10 @@ export default {
         production && terser(),
 
         replace({
-            process: JSON.stringify({
+            __app: JSON.stringify({
                 env: {
-                    ...config().parsed,
+                    isProd: production,
+                    ...dotenv.config().parsed,
                 },
             }),
             preventAssignment: true,

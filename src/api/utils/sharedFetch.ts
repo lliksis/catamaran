@@ -12,7 +12,7 @@ export const createFetch = () => {
         }
 
         const headers = {};
-        headers["X-API-Key"] = process.env.X_API_Key;
+        headers["X-API-Key"] = __app.env.X_API_KEY;
         if (config.body) {
             headers["Content-Type"] = "application/json";
         }
