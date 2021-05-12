@@ -1,10 +1,11 @@
 import { getContext } from "svelte";
 import type { ILogger } from "./types";
+import * as packageJson from "../../../package.json";
 
 export class Logger implements ILogger {
     constructor() {
         console.log(
-            "%c \u{1FA90} bungie-bounty-group \u{1FA90}",
+            `%c \u{1FA90} ${packageJson.name} - ${packageJson.version} \u{1FA90}`,
             "font-size: 30px"
         );
     }

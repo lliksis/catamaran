@@ -4,6 +4,7 @@
     import routes from "./routes";
     import ManifestContainer from "./app/mainfest/ManifestContainer.svelte";
     import AuthContainer from "./app/login/AuthContainer.svelte";
+
 </script>
 
 <LoggerContext>

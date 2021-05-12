@@ -3,7 +3,8 @@
     "compilerOptions": {
         "types": ["node", "svelte"],
         "baseUrl": "src",
-        "isolatedModules": false
+        "isolatedModules": false,
+        "resolveJsonModule": true
     },
     "include": ["src"]
 }
