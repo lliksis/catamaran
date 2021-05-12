@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { onMount, getContext } from "svelte";
+    import { onMount } from "svelte";
     import { location, querystring } from "svelte-spa-router";
 
     import { fetchAuthToken } from "api/utils";

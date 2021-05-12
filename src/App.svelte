@@ -1,9 +1,15 @@
 <script lang="ts">
     import Router from "svelte-spa-router";
-    import LoggerContext from "./ui/logger/LoggerContext.svelte";
+    import LoggerContext from "./app/logger/LoggerContextContainer.svelte";
     import routes from "./routes";
+    import ManifestContainer from "./app/mainfest/ManifestContainer.svelte";
+    import AuthContainer from "./app/login/AuthContainer.svelte";
 </script>
 
 <LoggerContext>
-    <Router {routes} />
+    <ManifestContainer>
+        <AuthContainer>
+            <Router {routes} />
+        </AuthContainer>
+    </ManifestContainer>
 </LoggerContext>

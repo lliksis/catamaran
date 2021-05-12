@@ -1,6 +1,6 @@
-import LandingPage from "./ui/routes/LandingPage.svelte";
-import Reauth from "./ui/routes/Reauth.svelte";
-import CharSelect from "./ui/routes/CharSelect.svelte";
+import LandingPage from "./app/routes/LandingPage.svelte";
+import Reauth from "./app/routes/Reauth.svelte";
+import CharSelect from "./app/routes/CharSelect.svelte";
 
 export default {
     "/": LandingPage,

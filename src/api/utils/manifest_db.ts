@@ -1,9 +1,11 @@
-import { createFetch } from "./sharedFetch";
 import {
     DestinyManifestComponentName,
     getDestinyManifest,
 } from "bungie-api-ts/destiny2";
 import * as localForage from "localforage";
+
+import { createFetch } from "./sharedFetch";
+import type { Logger } from "./Logger";
 
 const indexedConfig = {
     driver: localForage.INDEXEDDB,
@@ -27,11 +29,9 @@ const componentList: DestinyManifestComponentName[] = [
 ];
 
 /**
- * Checks the stored manifest versions and if necessary updates them
+ * Checks for the stored manifest versions and if necessary updates them
  */
-export const storeManifest = async (
-    setLoadingState?: (loading: boolean) => void
-) => {
+export const checkForManifest = async (logger?: Logger) => {
     const destinyManifest = await getDestinyManifest(createFetch());
     const manifestJson = destinyManifest.Response.jsonWorldContentPaths.en;
     // Update all tables if not running with the current version.
@@ -42,14 +42,13 @@ export const storeManifest = async (
 
     componentList.forEach(async (component) => {
         if ((await isTableDeleted(component)) || updateAll) {
+            logger?.debug(`fetching ${component}`);
             const endPoint = manifestJsonComponents[component];
             const response = await fetch(`https://www.bungie.net${endPoint}`);
             const data = await response.json();
             manifestStore.setItem(component, data);
         }
     });
-
-    setLoadingState(false);
 };
 
 /**
