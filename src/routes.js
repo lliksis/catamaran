@@ -1,9 +1,9 @@
-import LandingPage from "./app/routes/LandingPage.svelte";
-import Reauth from "./app/routes/Reauth.svelte";
-import CharSelect from "./app/routes/CharSelect.svelte";
+import Reauth from "./app/pages/Reauth.svelte";
+import CharSelect from "./app/pages/CharSelect.svelte";
+import Vendors from "./app/pages/Vendors.svelte";
 
 export default {
-    "/": LandingPage,
-    "/char-select": CharSelect,
+    "/": CharSelect,
     "/reauth": Reauth,
+    "/:membershipId/:characterId": Vendors,
 };

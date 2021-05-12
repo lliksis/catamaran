@@ -2,30 +2,18 @@ import {
     DestinyManifestComponentName,
     getDestinyManifest,
 } from "bungie-api-ts/destiny2";
-import * as localForage from "localforage";
 
 import { createFetch } from "./sharedFetch";
 import type { Logger } from "./Logger";
-
-const indexedConfig = {
-    driver: localForage.INDEXEDDB,
-    name: "manifest",
-    version: 1,
-};
-const checkStore = localForage.createInstance({
-    ...indexedConfig,
-    storeName: "version_check",
-});
-const manifestStore = localForage.createInstance({
-    ...indexedConfig,
-    storeName: "component_definitions",
-});
+import { checkStore, manifestStore } from "./staticStorage";
 
 const componentList: DestinyManifestComponentName[] = [
     "DestinyVendorDefinition",
     "DestinyVendorGroupDefinition",
     "DestinyDestinationDefinition",
     "DestinyObjectiveDefinition",
+    "DestinyClassDefinition",
+    "DestinyInventoryItemDefinition",
 ];
 
 /**
