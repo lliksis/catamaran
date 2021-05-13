@@ -93,7 +93,7 @@ export default {
                     isProd: production,
                     X_API_KEY: process.env.X_API_KEY,
                     CLIENT_ID: process.env.CLIENT_ID,
-                    CLIENT_SECRET: process.env.X_ACLIENT_SECRETPI_KEY,
+                    CLIENT_SECRET: process.env.CLIENT_SECRET,
                 },
             }),
             preventAssignment: true,
