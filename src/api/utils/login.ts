@@ -11,7 +11,7 @@ export const getAuthorizationURL = () => {
     localStorage.setItem("authState", authState);
 
     const queryParams = new URLSearchParams({
-        client_id: __app.env.CLIENT_ID,
+        client_id: process.env.CLIENT_ID,
         response_type: "code",
         state: authState,
     });
@@ -43,7 +43,9 @@ export const checkForAuthToken = async () => {
  * @param refreshToken The locally stored refreshToken
  */
 export const refreshAuthToken = async (refreshToken: string) => {
-    const authCode = btoa(`${__app.env.CLIENT_ID}:${__app.env.CLIENT_SECRET}`);
+    const authCode = btoa(
+        `${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`
+    );
 
     const response = await fetch(tokenUrl, {
         method: "POST",
@@ -63,7 +65,9 @@ export const refreshAuthToken = async (refreshToken: string) => {
  * @param code The code provied by the bnet authorization endpoint.
  */
 export const fetchAuthToken = async (code: string) => {
-    const authCode = btoa(`${__app.env.CLIENT_ID}:${__app.env.CLIENT_SECRET}`);
+    const authCode = btoa(
+        `${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`
+    );
 
     const response = await fetch(tokenUrl, {
         method: "POST",

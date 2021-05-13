@@ -87,7 +87,7 @@ export default {
         production && terser(),
 
         replace({
-            __app: JSON.stringify({
+            process: JSON.stringify({
                 env: {
                     isProd: production,
                     ...dotenv.config().parsed,

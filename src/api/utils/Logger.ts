@@ -17,7 +17,7 @@ export class Logger implements ILogger {
      * @param data Additional data to show
      */
     public debug = (message: string, ...data: any[]) => {
-        if (!__app.env.isProd) {
+        if (!process.env.isProd) {
             this.logMessage("debug", message, data);
         }
     };
