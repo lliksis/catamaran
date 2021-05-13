@@ -1,33 +1,19 @@
-<style>
-    main {
-        text-align: center;
-        padding: 1em;
-        max-width: 240px;
-        margin: 0 auto;
-    }
-
-    h1 {
-        color: #ff3e00;
-        text-transform: uppercase;
-        font-size: 4em;
-        font-weight: 100;
-    }
-
-    @media (min-width: 640px) {
-        main {
-            max-width: none;
-        }
-    }
-</style>
-
 <script lang="ts">
-    export let name: string;
+    import Router from "svelte-spa-router";
+    import LoggerContext from "./app/logger/LoggerContextContainer.svelte";
+    import routes from "./routes";
+    import ManifestContainer from "./app/mainfest/ManifestContainer.svelte";
+    import AuthContainer from "./app/login/AuthContainer.svelte";
+    import ErrorBoundary from "./app/errorBoundary/ErrorBoundary.svelte";
+
 </script>
 
-<main>
-    <h1>Hello {name}!</h1>
-    <p>
-        Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn
-        how to build Svelte apps.
-    </p>
-</main>
+<LoggerContext>
+    <ErrorBoundary>
+        <ManifestContainer>
+            <AuthContainer>
+                <Router {routes} />
+            </AuthContainer>
+        </ManifestContainer>
+    </ErrorBoundary>
+</LoggerContext>
