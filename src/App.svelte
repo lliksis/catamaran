@@ -4,7 +4,7 @@
     import routes from "./routes";
     import ManifestContainer from "./app/mainfest/ManifestContainer.svelte";
     import AuthContainer from "./app/login/AuthContainer.svelte";
-    import ErrorBoundary from "./app/errorBoundary/ErrorBoundary.svelte";
+    import ErrorBoundary from "./app/ErrorBoundary/ErrorBoundary.svelte";
 
 </script>
 
