@@ -21,7 +21,7 @@ export const fetchProfile = async () => {
         getAllMemberships: false,
     });
     const activeDestiny2Profile = response.Response.profiles.find(
-        (p) => p.isCrossSavePrimary === true
+        (p) => p.isOverridden === false
     );
     const profile: IBnetProfile = {
         displayName: response.Response.bnetMembership.displayName,

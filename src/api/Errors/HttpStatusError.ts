@@ -3,5 +3,6 @@ export class HttpStatusError extends Error {
     constructor(response: Response) {
         super(response.statusText);
         this.code = response.status;
+        this.name = "HttpError";
     }
 }

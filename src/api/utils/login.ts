@@ -43,14 +43,14 @@ export const checkForAuthToken = async () => {
  * @param refreshToken The locally stored refreshToken
  */
 export const refreshAuthToken = async (refreshToken: string) => {
+    const authCode = btoa(`${__app.env.CLIENT_ID}:${__app.env.CLIENT_SECRET}`);
+
     const response = await fetch(tokenUrl, {
         method: "POST",
-        body: JSON.stringify({
-            grant_type: "refresh_token",
-            refresh_token: refreshToken,
-        }),
+        body: `grant_type=refresh_token&refresh_token=${refreshToken}`,
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
+            Authorization: `Basic ${authCode}`,
         },
     });
     const responseToken = await response.json();
