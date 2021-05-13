@@ -4,6 +4,5 @@ import Vendors from "./app/pages/Vendors.svelte";
 
 export default {
     "/": CharSelect,
-    "/reauth": Reauth,
     "/:membershipId/:characterId": Vendors,
 };

@@ -1,4 +1,9 @@
-import type { HttpClientConfig, ServerResponse } from "bungie-api-ts/destiny2";
+import { BungieError, HttpStatusError } from "api/Errors";
+import {
+    HttpClientConfig,
+    PlatformErrorCodes,
+    ServerResponse,
+} from "bungie-api-ts/destiny2";
 
 /**
  * Creates a fetch method for the bungiet-api-ts api
@@ -24,7 +29,26 @@ export const createFetch = () => {
         });
 
         const response = await fetch(request);
+
+        // Throw an error if the response wasn't successfull.
+        if (response.status < 200 || response.status >= 400) {
+            throw new HttpStatusError(response);
+        }
+
         const data: ServerResponse<unknown> = await response.json();
+        // Throw an error if Bungies ServerResponse is not successfull.
+        // There's an alternate error response that can be returned during maintenance
+        const eMessage =
+            data && (data as any).error && (data as any).error_description;
+        if (eMessage) {
+            throw new BungieError({
+                Message: eMessage,
+                ErrorCode: PlatformErrorCodes.DestinyUnexpectedError,
+                ErrorStatus: eMessage,
+            });
+        } else if (data.ErrorCode !== PlatformErrorCodes.Success) {
+            throw new BungieError(data);
+        }
 
         return data;
     };

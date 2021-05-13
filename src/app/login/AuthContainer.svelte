@@ -4,26 +4,30 @@
 -->
 <script lang="ts">
     import { onMount } from "svelte";
-    import { push } from "svelte-spa-router";
-
     import { checkForAuthToken } from "api/utils";
     import LoginContainer from "./LoginContainer.svelte";
+    import Reauth from "../pages/Reauth.svelte";
 
     let hasToLogin = true;
+    let redirect = false;
     onMount(async () => {
         const params = new URLSearchParams(window.location.search);
         if (params.get("code")) {
-            push(`/reauth?${params}`);
-            hasToLogin = false;
+            redirect = true;
         } else if (await checkForAuthToken()) {
             hasToLogin = false;
         }
     });
+
 </script>
 
 {#if hasToLogin}
-    login page
-    <LoginContainer />
+    {#if redirect}
+        <Reauth />
+    {:else}
+        login page
+        <LoginContainer />
+    {/if}
 {:else}
     <slot />
 {/if}

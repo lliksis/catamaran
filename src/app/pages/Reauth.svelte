@@ -9,10 +9,11 @@
     logger.debug("processing bnet code");
 
     onMount(async () => {
-        const params = new URLSearchParams($querystring);
+        const params = new URLSearchParams(window.location.search);
         await fetchAuthToken(params.get("code"));
         window.location.href = window.location.origin;
     });
+
 </script>
 
 <div>

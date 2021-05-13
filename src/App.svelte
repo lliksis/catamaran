@@ -4,13 +4,16 @@
     import routes from "./routes";
     import ManifestContainer from "./app/mainfest/ManifestContainer.svelte";
     import AuthContainer from "./app/login/AuthContainer.svelte";
+    import ErrorBoundary from "./app/errorBoundary/ErrorBoundary.svelte";
 
 </script>
 
 <LoggerContext>
-    <ManifestContainer>
-        <AuthContainer>
-            <Router {routes} />
-        </AuthContainer>
-    </ManifestContainer>
+    <ErrorBoundary>
+        <ManifestContainer>
+            <AuthContainer>
+                <Router {routes} />
+            </AuthContainer>
+        </ManifestContainer>
+    </ErrorBoundary>
 </LoggerContext>

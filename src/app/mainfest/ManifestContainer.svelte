@@ -17,6 +17,7 @@
             loading = false;
         });
     });
+
 </script>
 
 {#if loading}
