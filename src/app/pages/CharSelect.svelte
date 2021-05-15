@@ -1,49 +1,47 @@
 <script lang="ts">
-    import { onMount } from "svelte";
+    import { getContext } from "svelte";
     import { push } from "svelte-spa-router";
-    import { fetchProfile } from "api/destiny2";
-    import type { IBnetProfile } from "api/utils/types";
+    import type { IDestinyCharacterComponentOverride } from "api/utils/types";
+    import type { DestinyProfileUserInfoCard } from "bungie-api-ts/destiny2";
 
-    let loading = true;
-    let profile: IBnetProfile;
+    const { selectedCharacterStore, getProfile, getCharacters } = getContext(
+        "characters"
+    );
 
-    const onClickCharacter = (characterId: string) => {
-        push(`/${profile.membershipId}/${characterId}`);
+    let profile: DestinyProfileUserInfoCard = getProfile();
+    let characters: IDestinyCharacterComponentOverride[] = getCharacters();
+
+    const onClickCharacter = (
+        character: IDestinyCharacterComponentOverride
+    ) => {
+        selectedCharacterStore.update(() => character);
+        push(
+            `/${profile.membershipId}/${profile.membershipType}/${character.characterId}`
+        );
     };
 
-    onMount(async () => {
-        profile = await fetchProfile();
-        loading = false;
-    });
 </script>
 
 <div>
-    {#if loading}
-        loading...
-    {:else}
-        <div style="border: 1px solid black">
-            <img src={profile.iconPath} alt="bnet profile img" />
-            {profile.displayName}
-            {profile.membershipId}
-        </div>
-        {#each profile.destiny2_chars as char}
-            <div on:click={() => onClickCharacter(char.characterId)}>
-                {char.characterId}
-                {char.class}
-                {char.lightLevel}
-                <div>
-                    <img
-                        src={char.emblem.emblemBackground}
-                        alt="emblem background"
-                    />
-                    <img src={char.emblem.emblemPath} alt="emblem" />
-                    <span
-                        style={`color: rgba(${char.emblem.emblemColor.red}, ${char.emblem.emblemColor.green}, ${char.emblem.emblemColor.blue}, ${char.emblem.emblemColor.alpha})`}
-                    >
-                        emblem color value
-                    </span>
-                </div>
+    <div style="border: 1px solid black">
+        <img src={profile.iconPath} alt="bnet profile img" />
+        {profile.displayName}
+        {profile.membershipId}
+    </div>
+    {#each characters as char}
+        <div on:click={() => onClickCharacter(char)}>
+            {char.characterId}
+            {char.class}
+            {char.light}
+            <div>
+                <img src={char.emblemBackgroundPath} alt="emblem background" />
+                <img src={char.emblemPath} alt="emblem" />
+                <span
+                    style={`color: rgba(${char.emblemColor.red}, ${char.emblemColor.green}, ${char.emblemColor.blue}, ${char.emblemColor.alpha})`}
+                >
+                    emblem color value
+                </span>
             </div>
-        {/each}
-    {/if}
+        </div>
+    {/each}
 </div>

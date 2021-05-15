@@ -4,15 +4,22 @@ import {
     PlatformErrorCodes,
     ServerResponse,
 } from "bungie-api-ts/destiny2";
+import { authStorage } from "./staticStorage";
+import type { IAuthToken } from "./types";
 
 /**
  * Creates a fetch method for the bungiet-api-ts api
+ * @param withOAuth Flag to indicate if an request should be send with the access token
  * @returns The fetch method
  */
-export const createFetch = () => {
+export const createFetch = (withOAuth?: boolean) => {
     return async (config: HttpClientConfig) => {
         let url = config.url;
         if (config.params) {
+            for (const key in config.params) {
+                typeof config.params[key] === "undefined" &&
+                    delete config.params[key];
+            }
             url += `?${new URLSearchParams(config.params)}`;
         }
 
@@ -22,6 +29,12 @@ export const createFetch = () => {
             headers["Content-Type"] = "application/json";
         }
 
+        if (withOAuth) {
+            const tokenValue = (await authStorage.getItem<IAuthToken>("token"))
+                .accessToken.token;
+            headers["Authorization"] = `Bearer ${tokenValue}`;
+        }
+
         const request = new Request(url, {
             method: config.method,
             body: config.body ? JSON.stringify(config.body) : undefined,
@@ -29,11 +42,6 @@ export const createFetch = () => {
         });
 
         const response = await fetch(request);
-
-        // Throw an error if the response wasn't successfull.
-        if (response.status < 200 || response.status >= 400) {
-            throw new HttpStatusError(response);
-        }
 
         const data: ServerResponse<unknown> = await response.json();
         // Throw an error if Bungies ServerResponse is not successfull.
@@ -48,6 +56,11 @@ export const createFetch = () => {
             });
         } else if (data.ErrorCode !== PlatformErrorCodes.Success) {
             throw new BungieError(data);
+        }
+
+        // Throw an error if the response wasn't successfull.
+        if (response.status < 200 || response.status >= 400) {
+            throw new HttpStatusError(response);
         }
 
         return data;

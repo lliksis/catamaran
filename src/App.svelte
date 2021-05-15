@@ -5,6 +5,7 @@
     import ManifestContainer from "./app/mainfest/ManifestContainer.svelte";
     import AuthContainer from "./app/login/AuthContainer.svelte";
     import ErrorBoundary from "./app/ErrorBoundary/ErrorBoundary.svelte";
+    import ProfileContext from "./app/ProfileContext/ProfileContext.svelte";
 
 </script>
 
@@ -12,7 +13,9 @@
     <ErrorBoundary>
         <ManifestContainer>
             <AuthContainer>
-                <Router {routes} />
+                <ProfileContext>
+                    <Router {routes} />
+                </ProfileContext>
             </AuthContainer>
         </ManifestContainer>
     </ErrorBoundary>

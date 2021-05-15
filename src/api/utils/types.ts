@@ -1,4 +1,10 @@
 import type { BungieMembershipType } from "bungie-api-ts/common";
+import type {
+    DestinyCharacterComponent,
+    DestinyInventoryItemDefinition,
+    DestinyProgression,
+    DestinyVendorComponent,
+} from "bungie-api-ts/destiny2";
 
 export interface IAuthToken {
     accessToken: IToken;
@@ -27,19 +33,29 @@ export interface IBnetProfile {
 }
 
 export interface ICharacter {
-    characterId: string;
+    [key: number]: IDestinyCharacterComponentOverride;
+}
+export interface IDestinyCharacterComponentOverride
+    extends DestinyCharacterComponent {
     class: string;
-    lightLevel: number;
-    emblem: IEmblem;
 }
 
-export interface IEmblem {
-    emblemPath: string;
-    emblemBackground: string;
-    emblemColor: {
-        red: number;
-        green: number;
-        blue: number;
-        alpha: number;
-    };
+export interface IVendor extends DestinyVendorComponent {
+    name: string;
+    description: string;
+    subtitle: string;
+    icon: string;
+    group: string;
+    progression: IVendorProgression;
+    bounties: IVendorBounty[];
+}
+export interface IVendorProgression extends DestinyProgression {
+    unitName: string;
+    name: string;
+    description: string;
+    icon: string;
+}
+export interface IVendorBounty extends DestinyInventoryItemDefinition {
+    completionValue: number;
+    objectiveProgressDescription: string;
 }

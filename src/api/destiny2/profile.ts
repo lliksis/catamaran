@@ -1,18 +1,27 @@
 import {
     BungieMembershipType,
+    DestinyCharacterComponent,
     DestinyComponentType,
+    DestinyProfileUserInfoCard,
     getLinkedProfiles,
     getProfile,
+    DictionaryComponentResponse,
 } from "bungie-api-ts/destiny2";
 import { getDestinyClassDefinition } from "api/utils/manifest_stores";
 import { authStorage, createFetch } from "api/utils";
-import type { IAuthToken, IBnetProfile, ICharacter } from "api/utils/types";
+import type {
+    IAuthToken,
+    IDestinyCharacterComponentOverride,
+} from "api/utils/types";
+import { writable } from "svelte/store";
+
+const bngBaseUrl = "https://www.bungie.net";
 
 /**
- * Fetches profile and character information
- * @returns The profile and characters as IBnetProfile
+ * Fetches the BNet profile information
+ * @returns The profile as IBnetProfile
  */
-export const fetchProfile = async () => {
+export const fetchProfile = async (): Promise<DestinyProfileUserInfoCard> => {
     const membershipId = (await authStorage.getItem<IAuthToken>("token"))
         .bungieMembershipId;
     const response = await getLinkedProfiles(createFetch(), {
@@ -20,39 +29,13 @@ export const fetchProfile = async () => {
         membershipId,
         getAllMemberships: false,
     });
-    const activeDestiny2Profile = response.Response.profiles.find(
-        (p) => p.isOverridden === false
-    );
-    const profile: IBnetProfile = {
-        displayName: response.Response.bnetMembership.displayName,
-        iconPath: `https://bungie.net${response.Response.bnetMembership.iconPath}`,
-        membershipId: activeDestiny2Profile.membershipId,
-        memberShipType: activeDestiny2Profile.membershipType,
-        destiny2_chars: [],
+
+    const profile = {
+        ...response.Response.profiles[0],
+        iconPath: bngBaseUrl + response.Response.bnetMembership.iconPath,
     };
 
-    const charactersResponse = await fetchCharacters(
-        profile.membershipId,
-        profile.memberShipType
-    );
-    for (const characterId in charactersResponse.characters.data) {
-        const characterData = charactersResponse.characters.data[characterId];
-        const characterClass = (await getDestinyClassDefinition())[
-            characterData.classHash
-        ];
-        const character: ICharacter = {
-            characterId,
-            lightLevel: characterData.light,
-            class: characterClass.displayProperties.name,
-            emblem: {
-                emblemBackground: `https://www.bungie.net${characterData.emblemBackgroundPath}`,
-                emblemColor: characterData.emblemColor,
-                emblemPath: `https://www.bungie.net${characterData.emblemPath}`,
-            },
-        };
-        profile.destiny2_chars.push(character);
-    }
-
+    // With getAllMemberships=false only one profile is returned
     return profile;
 };
 
@@ -62,11 +45,11 @@ export const fetchProfile = async () => {
  * @param membershipType The membershipType fetched from the linkedProfile endpoint.
  * @returns The response of the getProfile endpoint.
  */
-const fetchCharacters = async (
+export const fetchResolvedCharacters = async (
     destinyMembershipId: string,
     membershipType: BungieMembershipType
 ) => {
-    const response = await getProfile(createFetch(), {
+    const response = await getProfile(createFetch(true), {
         destinyMembershipId,
         membershipType,
         components: [
@@ -76,5 +59,36 @@ const fetchCharacters = async (
         ],
     });
 
-    return response.Response;
+    const characters = await resolveCharacters(response.Response.characters);
+
+    const inventoryItems = response.Response.characterInventories.data;
+    const progressions = response.Response.characterProgressions.data;
+
+    return { characters, inventoryItems, progressions };
 };
+
+const resolveCharacters = async (
+    characters: DictionaryComponentResponse<DestinyCharacterComponent>
+): Promise<IDestinyCharacterComponentOverride[]> => {
+    const resolvedCharacters = [];
+    for (const characterId in characters.data) {
+        const element = characters.data[characterId];
+        const className = (await getDestinyClassDefinition())[element.classHash]
+            .displayProperties.name;
+        resolvedCharacters.push({
+            ...element,
+            class: className,
+            emblemPath: bngBaseUrl + element.emblemPath,
+            emblemBackgroundPath: bngBaseUrl + element.emblemBackgroundPath,
+        });
+    }
+    return resolvedCharacters;
+};
+
+export const createSelectedCharacterStore = (
+    character?: IDestinyCharacterComponentOverride
+) => writable(character);
+
+export const selectedCharacter = writable<IDestinyCharacterComponentOverride>(
+    undefined
+);

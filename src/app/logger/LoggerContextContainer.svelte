@@ -18,11 +18,12 @@
     import { setContext } from "svelte";
     import { Logger } from "api/utils/Logger";
 
-    const Log = new Logger();
-    Log.debug("setting up logger context");
+    const logger = new Logger();
+    logger.debug("setting up logger context");
     setContext("logger", {
-        getLogger: () => Log,
+        getLogger: () => logger,
     });
+
 </script>
 
 <slot />

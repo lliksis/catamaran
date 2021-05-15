@@ -10,10 +10,13 @@ import { checkStore, manifestStore } from "./staticStorage";
 const componentList: DestinyManifestComponentName[] = [
     "DestinyVendorDefinition",
     "DestinyVendorGroupDefinition",
+    "DestinyActivityDefinition",
     "DestinyDestinationDefinition",
     "DestinyObjectiveDefinition",
     "DestinyClassDefinition",
     "DestinyInventoryItemDefinition",
+    "DestinyInventoryBucketDefinition",
+    "DestinyProgressionDefinition",
 ];
 
 /**
