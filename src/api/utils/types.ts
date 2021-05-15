@@ -1,61 +1,30 @@
-import type { BungieMembershipType } from "bungie-api-ts/common";
+import type { Writable } from "svelte/store";
 import type {
-    DestinyCharacterComponent,
-    DestinyInventoryItemDefinition,
-    DestinyProgression,
-    DestinyVendorComponent,
+    AllDestinyManifestComponents,
+    DestinyInventoryComponent,
+    DestinyProfileUserInfoCard,
 } from "bungie-api-ts/destiny2";
+import type { IDestinyCharacterComponentOverride } from "api/destiny2/profile";
 
-export interface IAuthToken {
-    accessToken: IToken;
-    refreshToken: IToken;
-    bungieMembershipId: string;
-}
-
-export interface IToken {
-    token: string;
-    expiresOn: number;
-}
-
-export interface ILogger {
-    debug: (message: string, ...data: any[]) => void;
-    warn: (message: string, ...data: any[]) => void;
-    error: (message: string, ...data: any[]) => void;
-    info: (message: string, ...data: any[]) => void;
+export interface ICharacterContext {
+    getProfile: () => DestinyProfileUserInfoCard;
+    getInventories: () => {
+        [key: number]: DestinyInventoryComponent;
+    };
+    getCharacters: () => IDestinyCharacterComponentOverride[];
+    selectedCharacterStore: Writable<IDestinyCharacterComponentOverride>;
 }
 
-export interface IBnetProfile {
-    displayName: string;
-    iconPath: string;
-    membershipId: string;
-    memberShipType: BungieMembershipType;
-    destiny2_chars?: ICharacter[];
+export interface IManifestDefinitions {
+    vendorDefinition: AllDestinyManifestComponents["DestinyVendorDefinition"];
+    vendorGroupDefintion: AllDestinyManifestComponents["DestinyVendorGroupDefinition"];
+    objectiveDefinition: AllDestinyManifestComponents["DestinyObjectiveDefinition"];
+    classDefinition: AllDestinyManifestComponents["DestinyClassDefinition"];
+    inventoriyItemDefinition: AllDestinyManifestComponents["DestinyInventoryItemDefinition"];
+    progressionDefinition: AllDestinyManifestComponents["DestinyProgressionDefinition"];
+}
+export interface IManifestContext {
+    manifestDefintions: Writable<IManifestDefinitions>;
 }
 
-export interface ICharacter {
-    [key: number]: IDestinyCharacterComponentOverride;
-}
-export interface IDestinyCharacterComponentOverride
-    extends DestinyCharacterComponent {
-    class: string;
-}
-
-export interface IVendor extends DestinyVendorComponent {
-    name: string;
-    description: string;
-    subtitle: string;
-    icon: string;
-    group: string;
-    progression: IVendorProgression;
-    bounties: IVendorBounty[];
-}
-export interface IVendorProgression extends DestinyProgression {
-    unitName: string;
-    name: string;
-    description: string;
-    icon: string;
-}
-export interface IVendorBounty extends DestinyInventoryItemDefinition {
-    completionValue: number;
-    objectiveProgressDescription: string;
-}
+export const bngBaseUrl = "https://www.bungie.net";

@@ -1,28 +1,23 @@
 import {
-    createFetch,
-    getDestinyInventoryItemDefinition,
-    getDestinyObjectiveDefinition,
-    getDestinyProgressionDefinition,
-    getDestinyVendorDefinition,
-    getDestinyVendorGroupDefinition,
-} from "api/utils";
-import type {
-    IVendor,
-    IVendorBounty,
-    IVendorProgression,
-} from "api/utils/types";
-import {
     BungieMembershipType,
     DestinyComponentType,
     DestinyItemType,
     DestinyVendorsResponse,
     getVendors,
 } from "bungie-api-ts/destiny2";
+import { createFetch } from "api/utils";
+import { bngBaseUrl, IManifestDefinitions } from "api/utils/types";
+import type {
+    IVendor,
+    IVendorBounty,
+    IVendorProgression,
+} from "./vendor.types";
 
 export const fetchResolvedVendors = async (
     destinyMembershipId: string,
     membershipType: BungieMembershipType,
-    characterId: string
+    characterId: string,
+    defintions: IManifestDefinitions
 ): Promise<IVendor[]> => {
     const response = await getVendors(createFetch(true), {
         characterId,
@@ -36,23 +31,29 @@ export const fetchResolvedVendors = async (
         ],
     });
 
-    const resolvedVendors: IVendor[] = await resolveVendors(response.Response);
+    const resolvedVendors: IVendor[] = await resolveVendors(
+        response.Response,
+        defintions
+    );
 
     return resolvedVendors;
 };
 
 const resolveVendors = async (
-    vendorResponse: DestinyVendorsResponse
+    vendorResponse: DestinyVendorsResponse,
+    defintions: IManifestDefinitions
 ): Promise<IVendor[]> => {
     const { vendors, vendorGroups, sales, itemComponents } = vendorResponse;
 
     const resolvedVendors: IVendor[] = [];
 
-    const vendorDefinition = await getDestinyVendorDefinition();
-    const progressionDefinition = await getDestinyProgressionDefinition();
-    const vendorGroupDefintion = await getDestinyVendorGroupDefinition();
-    const itemDefinition = await getDestinyInventoryItemDefinition();
-    const objectiveDefinition = await getDestinyObjectiveDefinition();
+    const {
+        inventoriyItemDefinition,
+        objectiveDefinition,
+        progressionDefinition,
+        vendorDefinition,
+        vendorGroupDefintion,
+    } = defintions;
 
     for (const vendorHash in vendors.data) {
         const vendor = vendors.data[vendorHash];
@@ -68,7 +69,7 @@ const resolveVendors = async (
                 ...vendor.progression,
                 name: progression.displayProperties.name,
                 description: progression.displayProperties.description,
-                icon: progression.displayProperties.icon,
+                icon: bngBaseUrl + progression.displayProperties.icon,
                 unitName: progression.displayProperties.displayUnitsName,
             };
         }
@@ -84,7 +85,7 @@ const resolveVendors = async (
         const items = sales.data[vendorHash].saleItems;
         for (const saleHash in items) {
             const saleItemHash = items[+saleHash].itemHash;
-            const item = itemDefinition[saleItemHash];
+            const item = inventoriyItemDefinition[saleItemHash];
             if (item.itemType === DestinyItemType.Bounty) {
                 const itemObjective =
                     itemComponents[vendorHash].objectives.data[saleHash]
@@ -93,6 +94,10 @@ const resolveVendors = async (
                     objectiveDefinition[itemObjective.objectiveHash];
                 resolvedItems.push({
                     ...item,
+                    displayProperties: {
+                        ...item.displayProperties,
+                        icon: bngBaseUrl + item.displayProperties.icon,
+                    },
                     completionValue: itemObjective.completionValue,
                     objectiveProgressDescription: objective.progressDescription,
                 });
@@ -102,6 +107,7 @@ const resolveVendors = async (
         resolvedVendors.push({
             ...vendor,
             ...vendorDisplayProperties,
+            icon: bngBaseUrl + vendorDisplayProperties.icon,
             bounties: resolvedItems,
             group: vendorGroup,
             progression: vendorProgression,

@@ -6,16 +6,13 @@ import {
     getLinkedProfiles,
     getProfile,
     DictionaryComponentResponse,
+    AllDestinyManifestComponents,
 } from "bungie-api-ts/destiny2";
-import { getDestinyClassDefinition } from "api/utils/manifest_stores";
 import { authStorage, createFetch } from "api/utils";
-import type {
-    IAuthToken,
-    IDestinyCharacterComponentOverride,
-} from "api/utils/types";
+import type { IAuthToken } from "api/utils/login";
 import { writable } from "svelte/store";
-
-const bngBaseUrl = "https://www.bungie.net";
+import type { IDestinyCharacterComponentOverride } from "./profile.types";
+import { bngBaseUrl } from "api/utils/types";
 
 /**
  * Fetches the BNet profile information
@@ -47,7 +44,8 @@ export const fetchProfile = async (): Promise<DestinyProfileUserInfoCard> => {
  */
 export const fetchResolvedCharacters = async (
     destinyMembershipId: string,
-    membershipType: BungieMembershipType
+    membershipType: BungieMembershipType,
+    classDefinition: AllDestinyManifestComponents["DestinyClassDefinition"]
 ) => {
     const response = await getProfile(createFetch(true), {
         destinyMembershipId,
@@ -59,22 +57,27 @@ export const fetchResolvedCharacters = async (
         ],
     });
 
-    const characters = await resolveCharacters(response.Response.characters);
+    const characters = await resolveCharacters(
+        response.Response.characters,
+        classDefinition
+    );
 
     const inventoryItems = response.Response.characterInventories.data;
+
     const progressions = response.Response.characterProgressions.data;
 
     return { characters, inventoryItems, progressions };
 };
 
 const resolveCharacters = async (
-    characters: DictionaryComponentResponse<DestinyCharacterComponent>
+    characters: DictionaryComponentResponse<DestinyCharacterComponent>,
+    classDefinition: AllDestinyManifestComponents["DestinyClassDefinition"]
 ): Promise<IDestinyCharacterComponentOverride[]> => {
     const resolvedCharacters = [];
     for (const characterId in characters.data) {
         const element = characters.data[characterId];
-        const className = (await getDestinyClassDefinition())[element.classHash]
-            .displayProperties.name;
+        const className =
+            classDefinition[element.classHash].displayProperties.name;
         resolvedCharacters.push({
             ...element,
             class: className,

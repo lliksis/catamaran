@@ -16,7 +16,7 @@
 -->
 <script lang="ts">
     import { setContext } from "svelte";
-    import { Logger } from "api/utils/Logger";
+    import { Logger } from "api/utils/logger";
 
     const logger = new Logger();
     logger.debug("setting up logger context");

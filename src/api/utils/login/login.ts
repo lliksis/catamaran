@@ -1,6 +1,6 @@
 import { v4 } from "uuid";
-import { authStorage } from "./staticStorage";
-import type { IAuthToken } from "./types";
+import { authStorage } from "../staticStorage";
+import type { IAuthToken } from "./login.types";
 
 /**
  * Gets the URL to login into bnet with all params added

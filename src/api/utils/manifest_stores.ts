@@ -1,14 +1,7 @@
 import type { AllDestinyManifestComponents } from "bungie-api-ts/destiny2";
+import { writable } from "svelte/store";
 import { manifestStore } from "./staticStorage";
-
-/**
- * Gets the DestinyDestinationDefintion.
- * @returns The stored DestinyDestionationDefinition.
- */
-export const getDestinyDestinationDefinition = () =>
-    manifestStore.getItem<
-        AllDestinyManifestComponents["DestinyDestinationDefinition"]
-    >("DestinyDestinationDefinition");
+import type { IManifestDefinitions } from "./types";
 
 /**
  * Gets the DestinyVendorDefinition.
@@ -56,15 +49,6 @@ export const getDestinyInventoryItemDefinition = () =>
     >("DestinyInventoryItemDefinition");
 
 /**
- * Gets the DestinyInventoryBucketDefinition.
- * @returns The stored DestinyInventoryBucketDefinition.
- */
-export const getDestinyInventoryBucketDefinition = () =>
-    manifestStore.getItem<
-        AllDestinyManifestComponents["DestinyInventoryBucketDefinition"]
-    >("DestinyInventoryBucketDefinition");
-
-/**
  * Gets the DestinyProgressionDefinition.
  * @returns The stored DestinyProgressionDefinition.
  */
@@ -73,11 +57,24 @@ export const getDestinyProgressionDefinition = () =>
         AllDestinyManifestComponents["DestinyProgressionDefinition"]
     >("DestinyProgressionDefinition");
 
-/**
- * Gets the DestinyActivityDefinition.
- * @returns The stored DestinyActivityDefinition.
- */
-export const getDestinyActivityDefinition = () =>
-    manifestStore.getItem<
-        AllDestinyManifestComponents["DestinyActivityDefinition"]
-    >("DestinyActivityDefinition");
+export const DefinitionsStore = writable<IManifestDefinitions>(undefined);
+
+export const storeDefintionsInStore = async () => {
+    const vendorDefinition = await getDestinyVendorDefinition();
+    const vendorGroupDefintion = await getDestinyVendorGroupDefinition();
+    const objectiveDefinition = await getDestinyObjectiveDefinition();
+    const classDefinition = await getDestinyClassDefinition();
+    const inventoriyItemDefinition = await getDestinyInventoryItemDefinition();
+    const progressionDefinition = await getDestinyProgressionDefinition();
+
+    DefinitionsStore.update((v) => {
+        return {
+            classDefinition: classDefinition,
+            inventoriyItemDefinition: inventoriyItemDefinition,
+            objectiveDefinition: objectiveDefinition,
+            progressionDefinition: progressionDefinition,
+            vendorDefinition: vendorDefinition,
+            vendorGroupDefintion: vendorGroupDefintion,
+        };
+    });
+};

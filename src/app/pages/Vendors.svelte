@@ -2,12 +2,15 @@
     import { getContext, onMount } from "svelte";
     import type { DestinyInventoryItemDefinition } from "bungie-api-ts/destiny2";
     import { DestinyItemType } from "bungie-api-ts/destiny2";
-    import { getDestinyInventoryItemDefinition } from "api/utils";
     import { fetchResolvedVendors } from "api/destiny2/vendor";
-    import type { IVendor } from "api/utils/types";
+    import type { IVendor } from "api/destiny2/vendor";
+    import { bngBaseUrl } from "api/utils/types";
+    import type { IManifestContext } from "api/utils/types";
 
     //:membershipId/:membershipType/:characterId
     export let params;
+
+    const { manifestDefintions } = getContext<IManifestContext>("manifest");
 
     const { getInventories, selectedCharacterStore } = getContext("characters");
     const inventories = getInventories();
@@ -19,18 +22,25 @@
 
     let items: DestinyInventoryItemDefinition[] = [];
     onMount(async () => {
-        const inventoryItemsDefinitions = await getDestinyInventoryItemDefinition();
         inventories[params.characterId].items.map(async (i) => {
-            const definition = inventoryItemsDefinitions[i.itemHash];
+            const definition =
+                $manifestDefintions.inventoriyItemDefinition[i.itemHash];
             if (definition.itemType === DestinyItemType.Bounty) {
-                items.push(definition);
+                items.push({
+                    ...definition,
+                    displayProperties: {
+                        ...definition.displayProperties,
+                        icon: bngBaseUrl + definition.displayProperties.icon,
+                    },
+                });
             }
         });
 
         vendors = await fetchResolvedVendors(
             params.membershipId,
             params.membershipType,
-            params.characterId
+            params.characterId,
+            $manifestDefintions
         );
 
         loadingEverything = false;
@@ -54,9 +64,7 @@
                 {#each items as quest}
                     <div style="border: 1px solid black;">
                         {#if quest.displayProperties.hasIcon}
-                            <img
-                                src={`https://www.bungie.net${quest.displayProperties.icon}`}
-                            />
+                            <img src={quest.displayProperties.icon} />
                         {/if}
                         {quest.displayProperties.name} -
                         {quest.displayProperties.description}
@@ -64,15 +72,13 @@
                 {/each}
                 {#each vendors as vendor}
                     <div style="border: 1px solid black;">
-                        <img src={`https://www.bungie.net${vendor.icon}`} />
+                        <img src={vendor.icon} />
                         {vendor.name} -
                         {vendor.description}
                         {#if vendor.progression}
                             <div>
                                 {vendor.progression.name}
-                                <img
-                                    src={`https://www.bungie.net${vendor.progression.icon}`}
-                                />
+                                <img src={vendor.progression.icon} />
                                 {vendor.progression.level}
                                 {vendor.progression.progressToNextLevel} / {vendor
                                     .progression.nextLevelAt}
@@ -81,9 +87,7 @@
                         <div>
                             {#each vendor.bounties as bounty}
                                 {#if bounty.displayProperties.hasIcon}
-                                    <img
-                                        src={`https://www.bungie.net${bounty.displayProperties.icon}`}
-                                    />
+                                    <img src={bounty.displayProperties.icon} />
                                 {/if}
                                 {bounty.displayProperties.name} -
                                 {bounty.displayProperties.description}

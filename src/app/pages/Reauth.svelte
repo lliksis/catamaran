@@ -1,9 +1,8 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import { location, querystring } from "svelte-spa-router";
-
     import { fetchAuthToken } from "api/utils";
-    import { getLogger } from "api/utils/Logger";
+    import { getLogger } from "api/utils/logger";
 
     const logger = getLogger();
     logger.debug("processing bnet code");

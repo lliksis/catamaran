@@ -1,11 +1,11 @@
-import { BungieError, HttpStatusError } from "api/Errors";
 import {
     HttpClientConfig,
     PlatformErrorCodes,
     ServerResponse,
 } from "bungie-api-ts/destiny2";
+import { BungieError, HttpStatusError } from "api/Errors";
 import { authStorage } from "./staticStorage";
-import type { IAuthToken } from "./types";
+import type { IAuthToken } from "./login";
 
 /**
  * Creates a fetch method for the bungiet-api-ts api

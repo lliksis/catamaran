@@ -1,8 +1,8 @@
 <script lang="ts">
     import { getContext } from "svelte";
     import { push } from "svelte-spa-router";
-    import type { IDestinyCharacterComponentOverride } from "api/utils/types";
     import type { DestinyProfileUserInfoCard } from "bungie-api-ts/destiny2";
+    import type { IDestinyCharacterComponentOverride } from "api/destiny2/profile";
 
     const { selectedCharacterStore, getProfile, getCharacters } = getContext(
         "characters"

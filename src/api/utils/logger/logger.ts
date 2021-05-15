@@ -1,6 +1,6 @@
 import { getContext } from "svelte";
-import type { ILogger } from "./types";
-import * as packageJson from "../../../package.json";
+import type { ILogger } from "./logger.types";
+import * as packageJson from "../../../../package.json";
 
 export class Logger implements ILogger {
     constructor() {
