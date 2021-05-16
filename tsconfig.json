@@ -1,7 +1,10 @@
 {
     "extends": "@tsconfig/svelte/tsconfig.json",
     "compilerOptions": {
-        "baseUrl": "src"
+        "types": ["node", "svelte"],
+        "baseUrl": "src",
+        "isolatedModules": false,
+        "resolveJsonModule": true
     },
     "include": ["src"]
 }

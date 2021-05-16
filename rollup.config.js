@@ -5,7 +5,11 @@ import livereload from "rollup-plugin-livereload";
 import { terser } from "rollup-plugin-terser";
 import sveltePreprocess from "svelte-preprocess";
 import typescript from "@rollup/plugin-typescript";
+import json from "@rollup/plugin-json";
 import css from "rollup-plugin-css-only";
+import replace from "@rollup/plugin-replace";
+import dotenv from "dotenv";
+dotenv.config();
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -62,12 +66,14 @@ export default {
         resolve({
             browser: true,
             dedupe: ["svelte"],
+            preferBuiltins: false,
         }),
         commonjs(),
         typescript({
             sourceMap: !production,
             inlineSources: !production,
         }),
+        json(),
 
         // In dev mode, call `npm run start` once
         // the bundle has been generated
@@ -80,6 +86,18 @@ export default {
         // If we're building for production (npm run build
         // instead of npm run dev), minify
         production && terser(),
+
+        replace({
+            process: JSON.stringify({
+                env: {
+                    isProd: production,
+                    X_API_KEY: process.env.X_API_KEY,
+                    CLIENT_ID: process.env.CLIENT_ID,
+                    CLIENT_SECRET: process.env.CLIENT_SECRET,
+                },
+            }),
+            preventAssignment: true,
+        }),
     ],
     watch: {
         clearScreen: false,
