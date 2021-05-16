@@ -20,6 +20,9 @@ export interface IVendorProgression extends DestinyProgression {
     icon: string;
 }
 export interface IVendorBounty extends DestinyInventoryItemDefinition {
+    objectiveProgress: IBountyObjective[];
+}
+export interface IBountyObjective {
     completionValue: number;
     objectiveProgressDescription: string;
 }

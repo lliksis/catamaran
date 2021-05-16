@@ -8,6 +8,7 @@ import {
 import { createFetch } from "api/utils";
 import { bngBaseUrl, IManifestDefinitions } from "api/utils/types";
 import type {
+    IBountyObjective,
     IVendor,
     IVendorBounty,
     IVendorProgression,
@@ -92,20 +93,26 @@ const resolveVendors = async (
                 const saleItemHash = items[+saleHash].itemHash;
                 const item = inventoriyItemDefinition[saleItemHash];
                 if (item.itemType === DestinyItemType.Bounty) {
-                    const itemObjective =
+                    const itemObjectives =
                         itemComponents[vendorHash].objectives.data[saleHash]
-                            .objectives[0];
-                    const objective =
-                        objectiveDefinition[itemObjective.objectiveHash];
+                            .objectives;
+                    const objectiveProgress: IBountyObjective[] = itemObjectives.map(
+                        (obj) => {
+                            return {
+                                completionValue: obj.completionValue,
+                                objectiveProgressDescription:
+                                    objectiveDefinition[obj.objectiveHash]
+                                        .progressDescription,
+                            };
+                        }
+                    );
                     resolvedItems.push({
                         ...item,
                         displayProperties: {
                             ...item.displayProperties,
                             icon: bngBaseUrl + item.displayProperties.icon,
                         },
-                        completionValue: itemObjective.completionValue,
-                        objectiveProgressDescription:
-                            objective.progressDescription,
+                        objectiveProgress: objectiveProgress,
                     });
                 }
             }

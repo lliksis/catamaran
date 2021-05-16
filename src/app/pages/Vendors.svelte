@@ -92,8 +92,10 @@
                                 {bounty.displayProperties.name} -
                                 {bounty.displayProperties.description}
                                 <div>
-                                    {bounty.completionValue} -
-                                    {bounty.objectiveProgressDescription}
+                                    {#each bounty.objectiveProgress as objective}
+                                        {objective.completionValue} -
+                                        {objective.objectiveProgressDescription}
+                                    {/each}
                                 </div>
                             {/each}
                         </div>
