@@ -72,14 +72,13 @@
     import { fade } from "svelte/transition";
 
     export let error;
-    let type = error.__proto__.name;
-    let name = type + ` ${error.code}`;
+    let type = error.name;
     let description = error.message;
     if (error.status) {
         description += `\n${error.status}`;
     }
 
-    export let time: number = 5;
+    export let time: number = 10;
     export let onRemove = null;
 
     const timeOut = setTimeout(() => {
@@ -98,7 +97,7 @@
             &times;
         </button>
         <div class="content">
-            {name}
+            {type}
             <p>{description}</p>
             {#if type === "BungieError"}
                 <a href="https://twitter.com/BungieHelp" target="_blank">
