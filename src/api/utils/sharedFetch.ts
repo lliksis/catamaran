@@ -8,9 +8,9 @@ import { authStorage } from "./staticStorage";
 import type { IAuthToken } from "./login";
 
 /**
- * Creates a fetch method for the bungiet-api-ts api
- * @param withOAuth Flag to indicate if an request should be send with the access token
- * @returns The fetch method
+ * Creates a fetch method for the bungiet-api-ts api.
+ * @param withOAuth Flag to indicate if an request should be send with the access token.
+ * @returns The fetch method.
  */
 export const createFetch = (withOAuth?: boolean) => {
     return async (config: HttpClientConfig) => {
@@ -45,7 +45,7 @@ export const createFetch = (withOAuth?: boolean) => {
 
         const data: ServerResponse<unknown> = await response.json();
         // Throw an error if Bungies ServerResponse is not successfull.
-        // There's an alternate error response that can be returned during maintenance
+        // There's an alternate error response that can be returned during maintenance.
         const eMessage =
             data && (data as any).error && (data as any).error_description;
         if (eMessage) {

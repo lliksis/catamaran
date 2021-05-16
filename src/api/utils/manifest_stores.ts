@@ -59,6 +59,9 @@ export const getDestinyProgressionDefinition = () =>
 
 export const DefinitionsStore = writable<IManifestDefinitions>(undefined);
 
+/**
+ * Loads the stored defintions into a store to pass it down to children components via context.
+ */
 export const storeDefintionsInStore = async () => {
     const vendorDefinition = await getDestinyVendorDefinition();
     const vendorGroupDefintion = await getDestinyVendorGroupDefinition();

@@ -14,6 +14,14 @@ import type {
     IVendorProgression,
 } from "./vendor.types";
 
+/**
+ * Fetches vendor information based on the account and current character.
+ * @param destinyMembershipId The accounts membershipId.
+ * @param membershipType The accoutns membershipType.
+ * @param characterId The current selected character.
+ * @param defintions All stored definitions.
+ * @returns The vendors as IVendor[]
+ */
 export const fetchResolvedVendors = async (
     destinyMembershipId: string,
     membershipType: BungieMembershipType,
@@ -40,6 +48,12 @@ export const fetchResolvedVendors = async (
     return resolvedVendors;
 };
 
+/**
+ * Converts the vendors form getVendors into IVendor[].
+ * @param vendorResponse The vendorResponse from getVendors.
+ * @param defintions All manifests definitions.
+ * @returns vendors passed as IVendor[]. Vendors that don't provide quests are filtered out.
+ */
 const resolveVendors = async (
     vendorResponse: DestinyVendorsResponse,
     defintions: IManifestDefinitions

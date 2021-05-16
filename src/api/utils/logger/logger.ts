@@ -60,10 +60,11 @@ export class Logger implements ILogger {
         message: string,
         data: any[]
     ) => {
+        const date = new Date(Date.now()).toLocaleTimeString();
         if (data.length > 0) {
-            console[type](message, data);
+            console[type](`[${date}]`, message, data);
         } else {
-            console[type](message);
+            console[type](`[${date}]`, message);
         }
     };
 }

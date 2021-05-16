@@ -3,8 +3,8 @@ import { authStorage } from "../staticStorage";
 import type { IAuthToken } from "./login.types";
 
 /**
- * Gets the URL to login into bnet with all params added
- * @returns The URL as string
+ * Gets the URL to login into bnet with all params added.
+ * @returns The URL as string.
  */
 export const getAuthorizationURL = () => {
     const authState = v4();
@@ -40,7 +40,7 @@ export const checkForAuthToken = async () => {
 
 /**
  * Refreshes the accessToken with the refreshToken passed.
- * @param refreshToken The locally stored refreshToken
+ * @param refreshToken The locally stored refreshToken.
  */
 export const refreshAuthToken = async (refreshToken: string) => {
     const authCode = btoa(
@@ -83,9 +83,9 @@ export const fetchAuthToken = async (code: string) => {
 };
 
 /**
- * Maps an access token response to the proper type
- * @param response The response to map (has to be from the bnet token endpoint)
- * @returns The access token as IAuthToken
+ * Maps an access token response to the proper type.
+ * @param response The response to map (has to be from the bnet token endpoint).
+ * @returns The access token as IAuthToken.
  */
 const mapResponseToToken = (response: any) => {
     const dateNow = Date.now() / 1000;

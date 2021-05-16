@@ -1,3 +1,6 @@
+/**
+ * An extended error class to describe exceptions from fetches.
+ */
 export class HttpStatusError extends Error {
     code: number;
     constructor(response: Response) {

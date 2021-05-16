@@ -20,7 +20,7 @@ const componentList: DestinyManifestComponentName[] = [
 ];
 
 /**
- * Checks for the stored manifest versions and if necessary updates them
+ * Checks for the stored manifest versions and if necessary updates them.
  */
 export const checkForManifest = async (logger?: ILogger) => {
     const destinyManifest = await getDestinyManifest(createFetch());
@@ -45,8 +45,8 @@ export const checkForManifest = async (logger?: ILogger) => {
 /**
  * Checks if the stored and manifests aggregate json endpoint are the same.
  * If false updates the db.
- * @param manifestJson The manifests endpoint
- * @returns true if stored and manifest are the same; otherwise false
+ * @param manifestJson The manifests endpoint.
+ * @returns true if stored and manifest are the same; otherwise false.
  */
 const isCurrentVersion = async (manifestJson: string) => {
     const storedJson = await checkStore.getItem("ver");
@@ -60,8 +60,8 @@ const isCurrentVersion = async (manifestJson: string) => {
 
 /**
  * Checks if a component table exists in the db.
- * @param component The component name to search for
- * @returns true if the table doesn't exist; otherwise false
+ * @param component The component name to search for.
+ * @returns true if the table doesn't exist; otherwise false.
  */
 const isTableDeleted = async (component: string) => {
     const item = await manifestStore.getItem(component);

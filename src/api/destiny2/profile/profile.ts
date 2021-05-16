@@ -15,8 +15,8 @@ import type { IDestinyCharacterComponentOverride } from "./profile.types";
 import { bngBaseUrl } from "api/utils/types";
 
 /**
- * Fetches the BNet profile information
- * @returns The profile as IBnetProfile
+ * Fetches the BNet profile information.
+ * @returns The profile as IBnetProfile.
  */
 export const fetchProfile = async (): Promise<DestinyProfileUserInfoCard> => {
     const membershipId = (await authStorage.getItem<IAuthToken>("token"))
@@ -28,11 +28,10 @@ export const fetchProfile = async (): Promise<DestinyProfileUserInfoCard> => {
     });
 
     const profile = {
-        ...response.Response.profiles[0],
+        ...response.Response.profiles[0], // With getAllMemberships=false only one profile is returned
         iconPath: bngBaseUrl + response.Response.bnetMembership.iconPath,
     };
 
-    // With getAllMemberships=false only one profile is returned
     return profile;
 };
 
@@ -69,6 +68,12 @@ export const fetchResolvedCharacters = async (
     return { characters, inventoryItems, progressions };
 };
 
+/**
+ * Converts the characters from getProfile into IDestinyCharacterComponentOverride[].
+ * @param characters The characterResponse from getProfile.
+ * @param classDefinition The manifests DestinyClassDefinition.
+ * @returns characters passed as IDestinyCharacterComponentOverride.
+ */
 const resolveCharacters = async (
     characters: DictionaryComponentResponse<DestinyCharacterComponent>,
     classDefinition: AllDestinyManifestComponents["DestinyClassDefinition"]
@@ -88,10 +93,9 @@ const resolveCharacters = async (
     return resolvedCharacters;
 };
 
-export const createSelectedCharacterStore = (
-    character?: IDestinyCharacterComponentOverride
-) => writable(character);
-
+/**
+ * The store to set/get the current selected character.
+ */
 export const selectedCharacter = writable<IDestinyCharacterComponentOverride>(
     undefined
 );

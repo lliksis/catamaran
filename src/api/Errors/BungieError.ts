@@ -1,5 +1,8 @@
 import type { PlatformErrorCodes, ServerResponse } from "bungie-api-ts/core";
 
+/**
+ * An extended error class to describe exceptions from the api.
+ */
 export class BungieError extends Error {
     code: PlatformErrorCodes;
     status: string;
