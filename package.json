@@ -1,7 +1,7 @@
 {
     "name": "destiny-bounty-group",
     "description": "A website to show available bounties grouped by objective",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "license": "MIT",
     "private": false,
     "keywords": [
@@ -15,13 +15,14 @@
         "url": "https://github.com/lliksis/destiny-bounty-group"
     },
     "bugs": "https://github.com/lliksis/destiny-bounty-group/issues",
+    "author": "lliksis",
     "contributors": [
         {
             "name": "lliksis",
             "url": "https://lliksis.dev"
         },
         {
-            "name": "Alex"
+            "name": "Alex25011"
         }
     ],
     "scripts": {

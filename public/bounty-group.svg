@@ -1,0 +1,21 @@
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="512.0px" height="512.0px" viewBox="0 0 512 512" version="1.1" id="SVGRoot" sodipodi:docname="bounty-group.svg" inkscape:version="1.0.2-2 (e86c870879, 2021-01-15)">
+	<g id="root" fill="black">
+		<g id="bounty-group/upper" transform="translate(268.70058,14.142136)">
+			<!-- <path id="arrow-head" stroke-width="1.11803" d="m 147.81113,162.92893 v 0 l -45.96194,-10.6066 35.35534,-35.35534 z" /> -->
+			<rect id="arrow-line" width="190" height="40" transform="rotate(45,4.9497475,-11.949747)" x="0" y="0" />
+			<rect id="base-line" width="360" height="40" transform="rotate(135)" x="0" y="0" />
+		</g>
+		<g id="bounty-group/lower" transform="translate(243.29942,497.85786)">
+			<!-- <path id="path40" stroke-width="1.11803" d="m -146.53553,-161.03301 v 0 l 45.96194,10.6066 -35.35534,35.35534 z" /> -->
+			<rect id="rect42" width="190" height="40" transform="rotate(-135,4.9497475,2.0502525)" x="0" y="0" />
+			<rect id="rect44" width="360" height="40" transform="rotate(-45)" x="0" y="0" />
+		</g>
+		<g id="bounty-group/check" fill="#ffffff" transform="translate(256,256)">
+			<circle fill="#000000" r="60" id="circle47" cx="0" cy="0" />
+			<rect id="rect49" width="35" height="10" transform="rotate(-135,-0.11522369,15.278175)" x="0" y="0" />
+			<rect id="rect51" width="65" height="10" transform="rotate(-45,24.17767,26.985281)" x="0" y="0" />
+		</g>
+		<path fill="black" stroke="#000000" stroke-width="1px" stroke-linecap="butt" stroke-linejoin="miter" stroke-opacity="1" d="m 437.79616,212.39365 c 45.43173,45.00993 45.43173,45.00993 45.43173,45.00993 l 14.00306,-13.99695 -45.28956,-45.15203 z" id="bounty-group/lower/addition" />
+		<path fill="black" stroke="#000000" stroke-width="1px" stroke-linecap="butt" stroke-linejoin="miter" stroke-opacity="1" d="m 14.794848,268.66601 c 45.43173,45.00993 45.43173,45.00993 45.43173,45.00993 L 74.229636,299.679 28.940077,254.52696 Z" id="bounty-group/upper/addition" />
+	</g>
+</svg>
