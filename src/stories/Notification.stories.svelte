@@ -1,27 +1,25 @@
 <script>
     import { Meta, Template, Story } from "@storybook/addon-svelte-csf";
-    import Notification from "../app/ErrorBoundary/Notification.svelte";
+    import ErrorNotification from "../app/ErrorBoundary/ErrorNotification.svelte";
 
 </script>
 
 <Meta
-    title="Example/Notification"
-    component={Notification}
+    title="Components/ErrorNotification"
+    component={ErrorNotification}
     argTypes={{
         name: { control: "text" },
-        description: { control: "text" },
-        type: {
-            control: { type: "select", options: ["bungie", "undefined"] },
-        },
+        message: { control: "text" },
+        status: { control: "number" },
     }}
 />
 
 <Template let:args>
-    <Notification
+    <ErrorNotification
         error={{
             name: args.name,
-            description: args.description,
-            type: args.type,
+            message: args.message,
+            status: args.status,
         }}
     />
 </Template>
@@ -30,15 +28,24 @@
     name="Error"
     args={{
         name: "Error name",
-        description: "Error description",
+        message: "Error description",
     }}
 />
 
 <Story
-    name="With link"
+    name="With status"
     args={{
         name: "Error name",
-        description: "Error description",
-        type: "bungie",
+        message: "Error description",
+        status: 400,
+    }}
+/>
+
+<Story
+    name="Bungie Error"
+    args={{
+        name: "BungieError",
+        message: "Error description",
+        status: 400,
     }}
 />
