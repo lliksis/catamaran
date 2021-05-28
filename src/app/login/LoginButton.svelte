@@ -6,28 +6,23 @@
 
     .login {
         background-color: rgba(255, 196, 0, 0.836);
-        width: 200px;
-        height: 40px;
-        border-radius: 5px;        
+        width: 237px;
+        height: 48px;
+        transition: box-shadow 0.7s;
     }
     .login:hover {
-        box-shadow: 0px 0px 0px 1px var(--hover-border-color);
+        box-shadow: 0 0 0 1.5px #fff, 0 0 0 3.5px #dfdfdf;
         cursor: pointer;
     }
 
     .login-link {
         display: block;
         text-align: center;
-        margin: auto;
-        margin-top: auto;
-        margin-bottom: auto;
-
-        font-weight: 600;
-        font-size: 15px;
+        line-height: 48px;
+        font-weight: 700;
+        font-size: 20px;
         color: white;
-        text-shadow: -0.5px 0 var(--text-border-color),
-            0 0.5px var(--text-border-color), 0.5px 0 var(--text-border-color),
-            0 -0.5px var(--text-border-color);
+        text-shadow: 1px 1px 1px var(--text-border-color);
     }
 
 </style>
