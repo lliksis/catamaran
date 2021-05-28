@@ -61,6 +61,8 @@
             class: "Hunter",
             emblemPath:
                 "https://www.bungie.net/common/destiny2_content/icons/4277426f6ffdb0cf85075c7251268374.jpg",
+            emblemBackgroundPath:
+                "https://www.bungie.net/common/destiny2_content/icons/c9045e341668eb434b68cd8d02e3ab21.jpg",
         },
         variant: "secondary",
     }}
