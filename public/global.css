@@ -3,6 +3,7 @@ body {
     position: relative;
     width: 100%;
     height: 100%;
+    cursor: url(./cursor.png), auto;
 }
 
 @font-face {
