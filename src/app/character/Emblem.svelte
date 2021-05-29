@@ -50,6 +50,7 @@
 
 <script lang="ts">
     import type { IDestinyCharacterComponentOverride } from "api/destiny2/profile";
+    import { clear } from "localforage";
 
     export let character: IDestinyCharacterComponentOverride;
     export let variant: "primary" | "secondary" = "primary";
@@ -71,19 +72,21 @@
 
     // Change the emblems background image on hover.
     // To have a "smooth" transition setting the small image is delayed.
-    $: if (!hovering && !fullSize) {
-        setTimeout(() => {
-            background = character.emblemPath;
-        }, 400);
-    } else if (hovering) {
-        background = character.emblemBackgroundPath;
-    }
-
+    let timeout;
     const onMouseEnter = () => {
+        if (timeout !== undefined) {
+            clearTimeout(timeout);
+        }
         hovering = true;
+        background = character.emblemBackgroundPath;
     };
     const onMouseLeave = () => {
         hovering = false;
+        timeout = setTimeout(() => {
+            if (!fullSize) {
+                background = character.emblemPath;
+            }
+        }, 400);
     };
 
 </script>

@@ -5,7 +5,7 @@
     }
 
     .login {
-        background-color: rgba(255, 196, 0, 0.836);
+        background-color: #ffd13b;
         width: 237px;
         height: 48px;
         transition: box-shadow 0.7s;
