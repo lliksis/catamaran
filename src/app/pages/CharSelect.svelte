@@ -30,7 +30,7 @@
         {profile.membershipId}
     </div>
     {#each characters as char}
-        <Emblem character={char} />
+        <Emblem character={char} onClick={onClickCharacter} />
         <!-- <div on:click={() => onClickCharacter(char)}>
             {char.characterId}
             {char.class}

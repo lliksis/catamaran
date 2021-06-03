@@ -52,6 +52,7 @@
     import type { IDestinyCharacterComponentOverride } from "api/destiny2/profile";
 
     export let character: IDestinyCharacterComponentOverride;
+    export let onClick: (character: IDestinyCharacterComponentOverride) => void;
     export let variant: "primary" | "secondary" = "primary";
 
     let hovering = false;
@@ -75,12 +76,13 @@
 
 </script>
 
-<a
+<div
     class="emblem-wrapper"
     style={`background-image: url(${background}); --emblem-height: ${height}px; --emblem-width: ${width}px`}
     id={character.characterId}
     on:mouseenter={onMouseEnter}
     on:mouseleave={onMouseLeave}
+    on:click={() => onClick(character)}
 >
     {#if fullSize}
         <div class="emblem-character-class">
@@ -91,4 +93,4 @@
         </div>
         <div class="emblem-character-race">Human</div>
     {/if}
-</a>
+</div>
