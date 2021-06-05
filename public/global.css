@@ -90,3 +90,12 @@ button:not(:disabled):active {
 button:focus {
     border-color: #666;
 }
+
+.button {
+    transition: box-shadow 0.7s, opacity 0.6s, width 0.5s;
+}
+.button:hover {
+    opacity: 0.8;
+    outline: 1;
+    box-shadow: 0 0 0 1.5px #fff, 0 0 0 3.5px #e2e2e2;
+}

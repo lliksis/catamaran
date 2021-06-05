@@ -6,6 +6,7 @@
         position: absolute;
         color: white;
         max-width: 400px;
+        z-index: 100;
     }
     .header {
         background-color: #000000;
@@ -24,11 +25,15 @@
         opacity: 0.7;
         padding: 7px;
     }
+    .description {
+        margin: 0 2px 7px 2px;
+    }
 
 </style>
 
 <script lang="ts">
     import type { ITooltip } from "./Tooltip.types";
+    import TooltipProgress from "./TooltipProgress.svelte";
 
     export let content: ITooltip;
     const { header, body } = content;
@@ -79,8 +84,17 @@
                 </div>
             {/if}
         </div>
-        {#if body.description}
-            <div class="content">{body.description}</div>
+        {#if body.description || body.progress}
+            <div class="content">
+                {#if body.description}
+                    <div class="description">
+                        {body.description}
+                    </div>
+                {/if}
+                {#each body.progress as progress}
+                    <TooltipProgress {progress} />
+                {/each}
+            </div>
         {/if}
     </div>
 {/if}

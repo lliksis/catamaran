@@ -5,6 +5,14 @@ export interface ITooltipHeader {
 
 export interface ITooltipBody {
     description: string;
+    progress?: ITooltipProgress[];
+}
+
+export interface ITooltipProgress {
+    progressValue?: number;
+    completionValue?: number;
+    completed: boolean;
+    description: string;
 }
 
 export interface ITooltip {

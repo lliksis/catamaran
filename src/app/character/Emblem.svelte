@@ -13,12 +13,6 @@
         background-size: auto 100%;
         cursor: pointer;
         text-shadow: 1px 1px 1px #0000007f;
-        transition: box-shadow 0.7s, opacity 0.6s, width 0.5s;
-    }
-    .emblem-wrapper:hover {
-        opacity: 0.8;
-        outline: 1;
-        box-shadow: 0 0 0 1.5px #fff, 0 0 0 3.5px #e2e2e2;
     }
     .emblem-character-class {
         grid-area: a;
@@ -77,7 +71,7 @@
 </script>
 
 <div
-    class="emblem-wrapper"
+    class="emblem-wrapper button"
     style={`background-image: url(${background}); --emblem-height: ${height}px; --emblem-width: ${width}px`}
     id={character.characterId}
     on:mouseenter={onMouseEnter}

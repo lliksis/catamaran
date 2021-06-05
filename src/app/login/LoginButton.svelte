@@ -8,11 +8,6 @@
         background-color: #ffd13b;
         width: 237px;
         height: 48px;
-        transition: box-shadow 0.7s;
-    }
-    .login:hover {
-        box-shadow: 0 0 0 1.5px #fff, 0 0 0 3.5px #dfdfdf;
-        cursor: pointer;
     }
 
     .login-link {
@@ -32,6 +27,6 @@
 
 </script>
 
-<div class="login">
+<div class="login button">
     <a class="login-link" {href}> Login via Bungie </a>
 </div>
