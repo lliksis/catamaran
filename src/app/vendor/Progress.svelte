@@ -16,6 +16,8 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import type { IVendorProgression } from "api/destiny2";
+    import Tooltip from "../tooltip/Tooltip.svelte";
+    import type { ITooltip } from "app/tooltip/Tooltip.types";
 
     export let progression: IVendorProgression;
 
@@ -29,10 +31,25 @@
         }`;
     });
 
+    const tooltipContent: ITooltip = {
+        header: {
+            title: progression.name,
+            subTitle: "Rank " + progression.level,
+        },
+        body: {
+            description: progression.description,
+        },
+    };
+
 </script>
 
-<div class="progression" style={`background-image: url(${progression.icon})`}>
-    <svg width="100px" height="100px">
-        <path d="M50,2 98,50 50,98 2,50 50,2" />
-    </svg>
-</div>
+<Tooltip content={tooltipContent}>
+    <div
+        class="progression"
+        style={`background-image: url(${progression.icon})`}
+    >
+        <svg width="100px" height="100px">
+            <path d="M50,2 98,50 50,98 2,50 50,2" />
+        </svg>
+    </div>
+</Tooltip>

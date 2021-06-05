@@ -20,6 +20,8 @@
             level: "56",
             progressToNextLevel: "1000",
             nextLevelAt: "2000",
+            description:
+                "Commander Zavala oversees the Vanguard's tactical operations and conducts regular strikes against the City's enemies.",
         },
     }}
 />
