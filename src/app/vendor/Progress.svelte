@@ -5,7 +5,7 @@
         background-size: auto 100%;
     }
     path {
-        stroke: rgb(0, 205, 219);
+        stroke: #dfdfdf;
         border: 0.4px solid black;
         stroke-width: 3;
         fill: none;
