@@ -26,7 +26,7 @@
         padding: 7px;
     }
     .description {
-        margin: 0 2px 7px 2px;
+        margin-bottom: 7px;
     }
 
 </style>
@@ -63,6 +63,8 @@
         y = event.pageY;
     };
 
+    const showBody = body.description || body.progress;
+
 </script>
 
 <div
@@ -84,16 +86,18 @@
                 </div>
             {/if}
         </div>
-        {#if body.description || body.progress}
+        {#if showBody}
             <div class="content">
                 {#if body.description}
                     <div class="description">
                         {body.description}
                     </div>
                 {/if}
-                {#each body.progress as progress}
-                    <TooltipProgress {progress} />
-                {/each}
+                {#if body.progress}
+                    {#each body.progress as progress}
+                        <TooltipProgress {progress} />
+                    {/each}
+                {/if}
             </div>
         {/if}
     </div>

@@ -2,6 +2,7 @@
     .progress {
         display: flex;
         position: relative;
+        padding: 3px;
     }
     .progress > .checkbox {
         position: relative;
