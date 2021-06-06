@@ -22,6 +22,7 @@
         },
         objectiveProgress: [
             {
+                progress: 10,
                 completionValue: 20,
                 objectiveProgressDescription: "[Grenade] Grenade",
             },

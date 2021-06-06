@@ -11,7 +11,6 @@ export interface ITooltipBody {
 export interface ITooltipProgress {
     progressValue?: number;
     completionValue?: number;
-    completed: boolean;
     description: string;
 }
 

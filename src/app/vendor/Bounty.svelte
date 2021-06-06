@@ -8,11 +8,11 @@
 </style>
 
 <script lang="ts">
-    import type { IVendorBounty } from "api/destiny2";
+    import type { IBounty } from "api/destiny2";
     import type { ITooltip, ITooltipProgress } from "app/tooltip/Tooltip.types";
     import Tooltip from "../tooltip/Tooltip.svelte";
 
-    export let bounty: IVendorBounty;
+    export let bounty: IBounty;
 
     const tooltipContent: ITooltip = {
         header: {
@@ -21,10 +21,9 @@
         body: {
             description: bounty.displayProperties.description,
             progress: bounty.objectiveProgress.map<ITooltipProgress>((p) => ({
-                progressValue: 0,
+                progressValue: p.progress,
                 completionValue: p.completionValue,
                 description: p.objectiveProgressDescription,
-                completed: false,
             })),
         },
     };
