@@ -10,7 +10,7 @@ import { bngBaseUrl, IManifestDefinitions } from "api/utils/types";
 import type {
     IBountyObjective,
     IVendor,
-    IVendorBounty,
+    IBounty,
     IVendorProgression,
 } from "./vendor.types";
 
@@ -101,7 +101,7 @@ const resolveVendors = async (
             const vendorGroup = vendorGroupDefintion[groupHash]?.categoryName;
 
             // items
-            const resolvedItems: IVendorBounty[] = [];
+            const resolvedItems: IBounty[] = [];
             const items = sales.data[vendorHash].saleItems;
             for (const saleHash in items) {
                 const saleItemHash = items[+saleHash].itemHash;
@@ -113,6 +113,7 @@ const resolveVendors = async (
                     const objectiveProgress: IBountyObjective[] = itemObjectives.map(
                         (obj) => {
                             return {
+                                progress: 0,
                                 completionValue: obj.completionValue,
                                 objectiveProgressDescription:
                                     objectiveDefinition[obj.objectiveHash]

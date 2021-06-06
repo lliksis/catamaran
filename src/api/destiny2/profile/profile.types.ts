@@ -1,7 +1,9 @@
 import type {
     BungieMembershipType,
     DestinyCharacterComponent,
+    DestinyInventoryItemDefinition,
 } from "bungie-api-ts/destiny2";
+import type { IBountyObjective } from "../vendor";
 
 export interface IBnetProfile {
     displayName: string;

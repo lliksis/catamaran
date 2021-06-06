@@ -20,22 +20,9 @@
     let loadingEverything = !$selectedCharacterStore ?? true;
     let loadingBounties = true;
 
-    let items: DestinyInventoryItemDefinition[] = [];
+    let items: DestinyInventoryItemDefinition[] =
+        inventories[params.characterId];
     onMount(async () => {
-        inventories[params.characterId].items.map(async (i) => {
-            const definition =
-                $manifestDefintions.inventoriyItemDefinition[i.itemHash];
-            if (definition.itemType === DestinyItemType.Bounty) {
-                items.push({
-                    ...definition,
-                    displayProperties: {
-                        ...definition.displayProperties,
-                        icon: bngBaseUrl + definition.displayProperties.icon,
-                    },
-                });
-            }
-        });
-
         vendors = await fetchResolvedVendors(
             params.membershipId,
             params.membershipType,

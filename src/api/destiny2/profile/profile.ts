@@ -7,12 +7,16 @@ import {
     getProfile,
     DictionaryComponentResponse,
     AllDestinyManifestComponents,
+    DestinyInventoryComponent,
+    DestinyItemType,
+    DestinyItemObjectivesComponent,
 } from "bungie-api-ts/destiny2";
 import { authStorage, createFetch } from "api/utils";
 import type { IAuthToken } from "api/utils/login";
 import { writable } from "svelte/store";
 import type { IDestinyCharacterComponentOverride } from "./profile.types";
 import { bngBaseUrl } from "api/utils/types";
+import type { IBounty, IBountyObjective } from "../vendor";
 
 /**
  * Fetches the BNet profile information.
@@ -44,7 +48,9 @@ export const fetchProfile = async (): Promise<DestinyProfileUserInfoCard> => {
 export const fetchResolvedCharacters = async (
     destinyMembershipId: string,
     membershipType: BungieMembershipType,
-    classDefinition: AllDestinyManifestComponents["DestinyClassDefinition"]
+    classDefinition: AllDestinyManifestComponents["DestinyClassDefinition"],
+    inventoryItemDefinition: AllDestinyManifestComponents["DestinyInventoryItemDefinition"],
+    objectiveDefinition: AllDestinyManifestComponents["DestinyObjectiveDefinition"]
 ) => {
     const response = await getProfile(createFetch(true), {
         destinyMembershipId,
@@ -53,6 +59,7 @@ export const fetchResolvedCharacters = async (
             DestinyComponentType.Characters,
             DestinyComponentType.CharacterInventories,
             DestinyComponentType.CharacterProgressions,
+            DestinyComponentType.ItemObjectives,
         ],
     });
 
@@ -60,12 +67,21 @@ export const fetchResolvedCharacters = async (
         response.Response.characters,
         classDefinition
     );
-
-    const inventoryItems = response.Response.characterInventories.data;
+    const inventoryItems = response.Response.characterInventories;
+    const itemObjectives = response.Response.itemComponents.objectives;
 
     const progressions = response.Response.characterProgressions.data;
 
-    return { characters, inventoryItems, progressions };
+    return {
+        characters,
+        inventoryItems: resolveInventory(
+            inventoryItems,
+            itemObjectives,
+            inventoryItemDefinition,
+            objectiveDefinition
+        ),
+        progressions,
+    };
 };
 
 /**
@@ -91,6 +107,54 @@ const resolveCharacters = async (
         });
     }
     return resolvedCharacters;
+};
+
+const resolveInventory = (
+    inventoryItems: DictionaryComponentResponse<DestinyInventoryComponent>,
+    itemObjectiveProgress: DictionaryComponentResponse<DestinyItemObjectivesComponent>,
+    inventoryItemDefinition: AllDestinyManifestComponents["DestinyInventoryItemDefinition"],
+    objectiveDefinition: AllDestinyManifestComponents["DestinyObjectiveDefinition"]
+) => {
+    const resolvedItems: DictionaryComponentResponse<IBounty[]> = {
+        privacy: inventoryItems.privacy,
+        data: {},
+    };
+
+    for (const characterId in inventoryItems.data) {
+        resolvedItems.data[characterId] = [];
+        const items = inventoryItems.data[characterId].items;
+        items.map((i) => {
+            const item = inventoryItemDefinition[i.itemHash];
+            if (item.itemType === DestinyItemType.Bounty) {
+                const instancedObjectives =
+                    itemObjectiveProgress.data[i.itemInstanceId].objectives;
+                const bountyObjectives: IBountyObjective[] = item.objectives.objectiveHashes.map(
+                    (objectiveHash) => {
+                        const objective = instancedObjectives.find(
+                            (o) => o.objectiveHash === objectiveHash
+                        );
+                        return {
+                            progress: objective.progress,
+                            completionValue: objective.completionValue,
+                            objectiveProgressDescription:
+                                objectiveDefinition[objectiveHash]
+                                    .progressDescription,
+                        };
+                    }
+                );
+                resolvedItems.data[characterId].push({
+                    ...item,
+                    displayProperties: {
+                        ...item.displayProperties,
+                        icon: bngBaseUrl + item.displayProperties.icon,
+                    },
+                    objectiveProgress: bountyObjectives,
+                });
+            }
+        });
+    }
+
+    return resolvedItems.data;
 };
 
 /**
