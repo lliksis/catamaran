@@ -5,30 +5,28 @@
     .tooltip {
         position: absolute;
         color: white;
-        max-width: 400px;
+        width: 400px;
         z-index: 100;
     }
     .header {
         background-color: #000000;
-        opacity: 0.9;
         font-size: 25px;
         padding: 7px;
     }
     .header > .subtitle {
         font-size: 15px;
         font-weight: 600;
-        color: #ffffffc2;
+        color: #ffffff;
         padding-left: 3px;
     }
     .content {
-        background-color: #000000;
-        opacity: 0.7;
+        background-color: #111111;
+        opacity: 0.9;
         padding: 7px;
     }
     .description {
         margin-bottom: 7px;
     }
-
 </style>
 
 <script lang="ts">
@@ -64,7 +62,6 @@
     };
 
     const showBody = body.description || body.progress;
-
 </script>
 
 <div

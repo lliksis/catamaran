@@ -1,10 +1,10 @@
 <style>
     .bounty {
+        display: inline-block;
         height: 69px;
         width: 69px;
         background-size: auto 100%;
     }
-
 </style>
 
 <script lang="ts">
@@ -27,7 +27,6 @@
             })),
         },
     };
-
 </script>
 
 <Tooltip content={tooltipContent}>

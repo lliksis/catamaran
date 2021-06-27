@@ -1,11 +1,11 @@
 <script lang="ts">
     import { getContext, onMount } from "svelte";
     import type { DestinyInventoryItemDefinition } from "bungie-api-ts/destiny2";
-    import { DestinyItemType } from "bungie-api-ts/destiny2";
     import { fetchResolvedVendors } from "api/destiny2/vendor";
     import type { IVendor } from "api/destiny2/vendor";
-    import { bngBaseUrl } from "api/utils/types";
     import type { IManifestContext } from "api/utils/types";
+
+    import Vendor from "../vendor/Vendor.svelte";
 
     //:membershipId/:membershipType/:characterId
     export let params;
@@ -33,7 +33,6 @@
         loadingEverything = false;
         loadingBounties = false;
     });
-
 </script>
 
 <div>
@@ -58,35 +57,7 @@
                     </div>
                 {/each}
                 {#each vendors as vendor}
-                    <div style="border: 1px solid black;">
-                        <img src={vendor.icon} />
-                        {vendor.name} -
-                        {vendor.description}
-                        {#if vendor.progression}
-                            <div>
-                                {vendor.progression.name}
-                                <img src={vendor.progression.icon} />
-                                {vendor.progression.level}
-                                {vendor.progression.progressToNextLevel} / {vendor
-                                    .progression.nextLevelAt}
-                            </div>
-                        {/if}
-                        <div>
-                            {#each vendor.bounties as bounty}
-                                {#if bounty.displayProperties.hasIcon}
-                                    <img src={bounty.displayProperties.icon} />
-                                {/if}
-                                {bounty.displayProperties.name} -
-                                {bounty.displayProperties.description}
-                                <div>
-                                    {#each bounty.objectiveProgress as objective}
-                                        {objective.completionValue} -
-                                        {objective.objectiveProgressDescription}
-                                    {/each}
-                                </div>
-                            {/each}
-                        </div>
-                    </div>
+                    <Vendor {vendor} />
                 {/each}
             {/if}
         {/if}
