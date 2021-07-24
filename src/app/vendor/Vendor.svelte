@@ -21,17 +21,27 @@
 </style>
 
 <script lang="ts">
+    import * as vendorConf from "../../vendorConf.json";
     import type { IVendor } from "api/destiny2";
     import Progress from "./Progress.svelte";
     import Bounty from "./Bounty.svelte";
 
     export let vendor: IVendor;
+
+    const optProgressIcon = vendorConf.vendorIconForProgress.includes(
+        vendor.name
+    )
+        ? vendor.icon
+        : undefined;
 </script>
 
 <div class="vendor">
     {#if vendor.progression}
         <div class="progress">
-            <Progress progression={vendor.progression} />
+            <Progress
+                progression={vendor.progression}
+                overrideIcon={optProgressIcon}
+            />
         </div>
     {:else}
         <div>

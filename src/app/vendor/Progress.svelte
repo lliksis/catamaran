@@ -10,7 +10,6 @@
         stroke-width: 3;
         fill: none;
     }
-
 </style>
 
 <script lang="ts">
@@ -20,6 +19,9 @@
     import type { ITooltip } from "app/tooltip/Tooltip.types";
 
     export let progression: IVendorProgression;
+    export let overrideIcon: string | undefined = undefined;
+
+    const icon = overrideIcon === undefined ? progression.icon : overrideIcon;
 
     onMount(() => {
         const bar = document.querySelector("path");
@@ -40,14 +42,10 @@
             description: progression.description,
         },
     };
-
 </script>
 
 <Tooltip content={tooltipContent}>
-    <div
-        class="progression"
-        style={`background-image: url(${progression.icon})`}
-    >
+    <div class="progression" style={`background-image: url(${icon})`}>
         <svg width="100px" height="100px">
             <path d="M50,2 98,50 50,98 2,50 50,2" />
         </svg>
