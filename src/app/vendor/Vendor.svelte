@@ -2,8 +2,9 @@
     .vendor {
         display: grid;
         column-gap: 20px;
-        grid-template-rows: auto auto;
-        grid-template-columns: 100px auto;
+        grid-template-columns: 100px 300px 50%;
+        column-gap: 40px;
+        margin: 20px 10px;
     }
 
     .vendor > .bounties {
@@ -11,8 +12,11 @@
     }
 
     .vendor > .description {
-        grid-column-start: 1;
-        grid-column-end: 3;
+        align-self: center;
+    }
+
+    h3 {
+        margin: 0;
     }
 </style>
 
@@ -31,22 +35,22 @@
         </div>
     {:else}
         <div>
-            <img src={vendor.icon} />
+            <img src={vendor.icon} alt="Vendor icon" />
         </div>
     {/if}
+
+    <div class="description">
+        <h3>
+            {vendor.name}
+        </h3>
+        <div>
+            {vendor.description}
+        </div>
+    </div>
 
     <div class="bounties">
         {#each vendor.bounties as bounty}
             <Bounty {bounty} />
         {/each}
-    </div>
-
-    <div class="description">
-        <div>
-            {vendor.name}
-        </div>
-        <div>
-            {vendor.description}
-        </div>
     </div>
 </div>

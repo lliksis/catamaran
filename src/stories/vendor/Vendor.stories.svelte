@@ -1,7 +1,6 @@
 <script>
     import { Meta, Template, Story } from "@storybook/addon-svelte-csf";
     import VendorComponent from "../../app/vendor/Vendor.svelte";
-
 </script>
 
 <Meta title="Components/Vendor" component={VendorComponent} />
@@ -58,6 +57,22 @@
                         {
                             progress: 5,
                             completionValue: 25,
+                            objectiveProgressDescription: "[Grenade] Grenade",
+                        },
+                    ],
+                },
+                {
+                    displayProperties: {
+                        hasIcon: true,
+                        icon:
+                            "https://www.bungie.net/common/destiny2_content/icons/91121c659c5cc0d8938dfe004426c3fd.jpg",
+                        name: "Horseshoes and Hand Grenades",
+                        description: "Defeat enemies with grenades.",
+                    },
+                    objectiveProgress: [
+                        {
+                            progress: 30,
+                            completionValue: 30,
                             objectiveProgressDescription: "[Grenade] Grenade",
                         },
                     ],
