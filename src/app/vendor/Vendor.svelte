@@ -7,6 +7,10 @@
         margin: 20px 10px;
     }
 
+    .vendor > .icon {
+        align-self: center;
+    }
+
     .vendor > .bounties {
         align-self: center;
     }
@@ -36,18 +40,16 @@
 </script>
 
 <div class="vendor">
-    {#if vendor.progression}
-        <div class="progress">
+    <div class="icon">
+        {#if vendor.progression}
             <Progress
                 progression={vendor.progression}
                 overrideIcon={optProgressIcon}
             />
-        </div>
-    {:else}
-        <div>
+        {:else}
             <img src={vendor.icon} alt="Vendor icon" />
-        </div>
-    {/if}
+        {/if}
+    </div>
 
     <div class="description">
         <h3>
