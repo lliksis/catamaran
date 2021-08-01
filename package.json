@@ -51,7 +51,7 @@
         "@storybook/addon-links": "6.3.2",
         "@storybook/addon-svelte-csf": "1.0.0",
         "@storybook/svelte": "6.2.9",
-        "@tsconfig/svelte": "1.0.10",
+        "@tsconfig/svelte": "2.0.1",
         "@types/node": "15.0.2",
         "@types/uuid": "8.3.0",
         "babel-loader": "8.2.2",
