@@ -27,6 +27,21 @@
     .description {
         margin-bottom: 7px;
     }
+    .actions {
+        background-color: #111111;
+        border-top: 1px solid black;
+        padding: 7px;
+        text-align: end;
+        height: 100%;
+    }
+    .action {
+        height: 100%;
+    }
+    .action::before {
+        content: var(--action-icon);
+        display: inline-block;
+        margin-right: 5px;
+    }
 </style>
 
 <script lang="ts">
@@ -34,7 +49,7 @@
     import TooltipProgress from "./TooltipProgress.svelte";
 
     export let content: ITooltip;
-    const { header, body } = content;
+    const { header, body, actions } = content;
 
     let isHovered = false;
     let x;
@@ -95,6 +110,18 @@
                         <TooltipProgress {progress} />
                     {/each}
                 {/if}
+            </div>
+        {/if}
+        {#if actions}
+            <div class="actions">
+                {#each actions as action}
+                    <div
+                        class="action"
+                        style={`--action-icon: "${action.icon}"`}
+                    >
+                        {action.description}
+                    </div>
+                {/each}
             </div>
         {/if}
     </div>

@@ -2,8 +2,6 @@
     .bounty {
         display: inline-block;
         position: relative;
-        box-sizing: border-box;
-        -moz-box-sizing: border-box;
         height: 69px;
         width: 69px;
         background-size: auto 100%;
@@ -44,6 +42,12 @@
                 description: p.objectiveProgressDescription,
             })),
         },
+        actions: [
+            {
+                description: "Hold to dismantle",
+                icon: "\\e912",
+            },
+        ],
     };
 
     const completed = bounty.objectiveProgress.reduce<boolean>(

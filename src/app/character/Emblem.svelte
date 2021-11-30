@@ -39,7 +39,6 @@
         font-weight: 600;
         line-height: 30px;
     }
-
 </style>
 
 <script lang="ts">
@@ -67,7 +66,6 @@
     const onMouseLeave = () => {
         hovering = false;
     };
-
 </script>
 
 <div

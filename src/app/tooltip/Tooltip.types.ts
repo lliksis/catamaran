@@ -14,7 +14,13 @@ export interface ITooltipProgress {
     description: string;
 }
 
+export interface ITooltipAction {
+    description: string;
+    icon: string;
+}
+
 export interface ITooltip {
     header: ITooltipHeader;
     body?: ITooltipBody;
+    actions?: ITooltipAction[];
 }
