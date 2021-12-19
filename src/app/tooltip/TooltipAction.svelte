@@ -37,7 +37,7 @@
     $: if (pressing) {
         progress.set(1);
     } else {
-        progress.set(0);
+        progress.set(0, { duration: 50 });
     }
 
     // firing callback when progress is 1 (100%)

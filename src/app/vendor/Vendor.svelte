@@ -4,7 +4,10 @@
         column-gap: 20px;
         grid-template-columns: 100px 300px 50%;
         column-gap: 40px;
-        margin: 20px 10px;
+        margin-left: -8px;
+        margin-right: -8px;
+        padding: 20px 10px 20px 10px;
+        background-color: var(--backgroundColor);
     }
 
     .vendor > .icon {
@@ -32,6 +35,9 @@
 
     export let vendor: IVendor;
 
+    const backgroundColor =
+        vendorConf.vendorBackgrounds[vendor.vendorHash] || "grey";
+
     const optProgressIcon = vendorConf.vendorIconForProgress.includes(
         vendor.name
     )
@@ -39,7 +45,7 @@
         : undefined;
 </script>
 
-<div class="vendor">
+<div class="vendor" style="--backgroundColor: {backgroundColor}">
     <div class="icon">
         {#if vendor.progression}
             <Progress
