@@ -28,11 +28,12 @@
         font-size: 17px;
         color: #eee;
     }
-    .emblem-light::before {
-        content: "\e921";
+    .light-icon {
         font-weight: 100;
+        margin-right: -5px;
     }
     .emblem-light {
+        margin-left: -10px;
         grid-area: b;
         color: var(--light-color);
         font-size: 30px;
@@ -81,6 +82,7 @@
             {character.class}
         </div>
         <div class="emblem-light">
+            <span class="icon-power_small_right light-icon" />
             {character.light}
         </div>
         <div class="emblem-character-race">Human</div>

@@ -27,29 +27,17 @@
     .description {
         margin-bottom: 7px;
     }
-    .actions {
-        background-color: #111111;
-        border-top: 1px solid black;
-        padding: 7px;
-        text-align: end;
-        height: 100%;
-    }
-    .action {
-        height: 100%;
-    }
-    .action::before {
-        content: var(--action-icon);
-        display: inline-block;
-        margin-right: 5px;
-    }
 </style>
 
 <script lang="ts">
     import type { ITooltip } from "./Tooltip.types";
+    import TooltipAction from "./TooltipAction.svelte";
     import TooltipProgress from "./TooltipProgress.svelte";
 
     export let content: ITooltip;
-    const { header, body, actions } = content;
+    const { header, body, action } = content;
+
+    export let pressing: boolean = false;
 
     let isHovered = false;
     let x;
@@ -112,17 +100,8 @@
                 {/if}
             </div>
         {/if}
-        {#if actions}
-            <div class="actions">
-                {#each actions as action}
-                    <div
-                        class="action"
-                        style={`--action-icon: "${action.icon}"`}
-                    >
-                        {action.description}
-                    </div>
-                {/each}
-            </div>
+        {#if action}
+            <TooltipAction {action} {pressing} />
         {/if}
     </div>
 {/if}

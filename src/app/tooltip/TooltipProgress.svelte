@@ -33,7 +33,6 @@
         z-index: -1;
         background-color: green;
     }
-
 </style>
 
 <script lang="ts">
@@ -43,7 +42,6 @@
 
     const progressValue = progress.progressValue / progress.completionValue;
     const checkboxColor = progressValue === 1 ? "green" : "#111";
-
 </script>
 
 <div class="progress">

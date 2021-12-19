@@ -42,13 +42,23 @@
                 description: p.objectiveProgressDescription,
             })),
         },
-        actions: [
-            {
-                description: "Hold to dismantle",
-                icon: "\\e912",
+        action: {
+            description: "Hold to do something cool!",
+            completionTime: 2000,
+            callback: () => {
+                console.log("Doing something cool!");
             },
-        ],
+        },
     };
+
+    let pressing = false;
+    const mouseDown = () => {
+        pressing = true;
+    };
+    const mouseUp = () => {
+        pressing = false;
+    };
+    const mouseLeave = mouseUp;
 
     const completed = bounty.objectiveProgress.reduce<boolean>(
         (previous, progress) => {
@@ -61,11 +71,14 @@
     );
 </script>
 
-<Tooltip content={tooltipContent}>
+<Tooltip content={tooltipContent} {pressing}>
     <div
         class="bounty button"
         style={`background-image: url(${bounty.displayProperties.icon})`}
         class:completed
+        on:mousedown={mouseDown}
+        on:mouseup={mouseUp}
+        on:mouseleave={mouseLeave}
     >
         {#if completed}
             <svg>
