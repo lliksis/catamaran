@@ -49,7 +49,7 @@
         "@storybook/addon-actions": "6.3.2",
         "@storybook/addon-essentials": "6.2.9",
         "@storybook/addon-links": "6.3.2",
-        "@storybook/addon-svelte-csf": "1.0.0",
+        "@storybook/addon-svelte-csf": "1.1.0",
         "@storybook/svelte": "6.2.9",
         "@tsconfig/svelte": "1.0.10",
         "@types/node": "15.0.2",
