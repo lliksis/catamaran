@@ -2,6 +2,7 @@ name: Build and Deploy Prerelease to Netlify
 on:
   release:
     types: [prereleased]
+
 jobs:
   build:
     runs-on: ubuntu-18.04
