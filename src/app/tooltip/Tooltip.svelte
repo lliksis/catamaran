@@ -40,8 +40,8 @@
     export let pressing: boolean = false;
 
     let isHovered = false;
-    let x;
-    let y;
+    let x: number = 0;
+    let y: number = 0;
 
     const onMouseOver = (
         event: MouseEvent & {
@@ -49,8 +49,7 @@
         }
     ) => {
         isHovered = true;
-        x = event.pageX;
-        y = event.pageY;
+        calculatePosition(event);
     };
     const onMouseLeave = () => {
         isHovered = false;
@@ -60,8 +59,23 @@
             currentTarget: EventTarget & HTMLSpanElement;
         }
     ) => {
-        x = event.pageX;
-        y = event.pageY;
+        calculatePosition(event);
+    };
+
+    const calculatePosition = (
+        event: MouseEvent & {
+            currentTarget: EventTarget & HTMLSpanElement;
+        }
+    ) => {
+        const { pageX, pageY } = event;
+        const { innerWidth, innerHeight } = window;
+
+        if (pageX + 430 > innerWidth) {
+            x = pageX - 450;
+        } else {
+            x = pageX;
+        }
+        y = pageY;
     };
 
     const showBody = body.description || body.progress;
