@@ -20,7 +20,6 @@
             `/${profile.membershipId}/${profile.membershipType}/${character.characterId}`
         );
     };
-
 </script>
 
 <div>
@@ -31,19 +30,5 @@
     </div>
     {#each characters as char}
         <Emblem character={char} onClick={onClickCharacter} />
-        <!-- <div on:click={() => onClickCharacter(char)}>
-            {char.characterId}
-            {char.class}
-            {char.light}
-            <div>
-                <img src={char.emblemBackgroundPath} alt="emblem background" />
-                <img src={char.emblemPath} alt="emblem" />
-                <span
-                    style={`color: rgba(${char.emblemColor.red}, ${char.emblemColor.green}, ${char.emblemColor.blue}, ${char.emblemColor.alpha})`}
-                >
-                    emblem color value
-                </span>
-            </div>
-        </div> -->
     {/each}
 </div>
