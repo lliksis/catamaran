@@ -1,6 +1,6 @@
 on:
   release:
-    type: [prereleased]
+    types: [prereleased]
 
 name: Publish beta release on Netlify
 
