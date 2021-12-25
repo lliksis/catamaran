@@ -7,7 +7,6 @@ import sveltePreprocess from "svelte-preprocess";
 import typescript from "@rollup/plugin-typescript";
 import json from "@rollup/plugin-json";
 import css from "rollup-plugin-css-only";
-import { svelteSVG } from "rollup-plugin-svelte-svg";
 import replace from "@rollup/plugin-replace";
 import dotenv from "dotenv";
 dotenv.config();
@@ -58,8 +57,6 @@ export default {
         // we'll extract any component CSS out into
         // a separate file - better for performance
         css({ output: "bundle.css" }),
-
-        svelteSVG(),
 
         // If you have external dependencies installed from
         // npm, you'll most likely need these plugins. In
