@@ -23,5 +23,5 @@ export interface ITooltipAction {
 export interface ITooltip {
     header: ITooltipHeader;
     body?: ITooltipBody;
-    action: ITooltipAction;
+    action?: ITooltipAction;
 }
