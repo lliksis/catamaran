@@ -1,18 +1,20 @@
+name: Build and Deploy Prerelease to Netlify
 on:
   release:
     types: [prereleased]
-
-name: Publish beta release on Netlify
-
 jobs:
-  publish:
-    runs-on: ubuntu-latest
-
+  build:
+    runs-on: ubuntu-18.04
     steps:
-    - uses: actions/checkout@master
+      - uses: actions/checkout@v2
 
-    - name: Publish
-      uses: netlify/actions/build@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_BETA_SITE_ID }}
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v1.2
+        with:
+          publish-dir: 'public'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "Deploy from GitHub Actions"
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_BETA_SITE_ID }}
+        timeout-minutes: 1
