@@ -7,7 +7,7 @@
     import { onMount } from "svelte";
 
     import { checkForManifest } from "api/utils";
-    import { getLogger } from "api/utils/Logger";
+    import { getLogger } from "api/utils/logger";
 
     const logger = getLogger();
 

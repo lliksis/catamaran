@@ -51,7 +51,9 @@
         } = await fetchResolvedCharacters(
             profile.membershipId,
             profile.membershipType,
-            $DefinitionsStore.classDefinition
+            $DefinitionsStore.classDefinition,
+            $DefinitionsStore.inventoriyItemDefinition,
+            $DefinitionsStore.objectiveDefinition
         );
 
         characters = charactersResponse;

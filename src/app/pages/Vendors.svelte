@@ -1,11 +1,24 @@
+<style>
+    .inventory {
+        display: inline-block;
+        margin: 10px;
+    }
+
+    .characters {
+        margin-left: 10px;
+    }
+</style>
+
 <script lang="ts">
     import { getContext, onMount } from "svelte";
-    import type { DestinyInventoryItemDefinition } from "bungie-api-ts/destiny2";
-    import { DestinyItemType } from "bungie-api-ts/destiny2";
+    import { push } from "svelte-spa-router";
     import { fetchResolvedVendors } from "api/destiny2/vendor";
-    import type { IVendor } from "api/destiny2/vendor";
-    import { bngBaseUrl } from "api/utils/types";
+    import type { IVendor, IBounty } from "api/destiny2/vendor";
     import type { IManifestContext } from "api/utils/types";
+
+    import Vendor from "../vendor/Vendor.svelte";
+    import Emblem from "../character/Emblem.svelte";
+    import Bounty from "../vendor/Bounty.svelte";
 
     //:membershipId/:membershipType/:characterId
     export let params;
@@ -20,22 +33,8 @@
     let loadingEverything = !$selectedCharacterStore ?? true;
     let loadingBounties = true;
 
-    let items: DestinyInventoryItemDefinition[] = [];
+    let items: IBounty[] = inventories[params.characterId];
     onMount(async () => {
-        inventories[params.characterId].items.map(async (i) => {
-            const definition =
-                $manifestDefintions.inventoriyItemDefinition[i.itemHash];
-            if (definition.itemType === DestinyItemType.Bounty) {
-                items.push({
-                    ...definition,
-                    displayProperties: {
-                        ...definition.displayProperties,
-                        icon: bngBaseUrl + definition.displayProperties.icon,
-                    },
-                });
-            }
-        });
-
         vendors = await fetchResolvedVendors(
             params.membershipId,
             params.membershipType,
@@ -46,62 +45,31 @@
         loadingEverything = false;
         loadingBounties = false;
     });
-
 </script>
 
 <div>
-    Vendors
-    <div>
-        {#if loadingEverything}
-            loading...
+    {#if loadingEverything}
+        loading...
+    {:else}
+        <div class="characters">
+            <Emblem
+                character={$selectedCharacterStore}
+                variant="primary"
+                onClick={() => push("/")}
+            />
+        </div>
+        {#if loadingBounties}
+            <div>loading...</div>
         {:else}
-            <img src={$selectedCharacterStore.emblemBackgroundPath} />
-            {$selectedCharacterStore.class}
-            {$selectedCharacterStore.light}
-            {#if loadingBounties}
-                <div>loading...</div>
-            {:else}
-                {#each items as quest}
-                    <div style="border: 1px solid black;">
-                        {#if quest.displayProperties.hasIcon}
-                            <img src={quest.displayProperties.icon} />
-                        {/if}
-                        {quest.displayProperties.name} -
-                        {quest.displayProperties.description}
-                    </div>
+            <div class="inventory">
+                {#each items as bounty}
+                    <Bounty {bounty} />
                 {/each}
-                {#each vendors as vendor}
-                    <div style="border: 1px solid black;">
-                        <img src={vendor.icon} />
-                        {vendor.name} -
-                        {vendor.description}
-                        {#if vendor.progression}
-                            <div>
-                                {vendor.progression.name}
-                                <img src={vendor.progression.icon} />
-                                {vendor.progression.level}
-                                {vendor.progression.progressToNextLevel} / {vendor
-                                    .progression.nextLevelAt}
-                            </div>
-                        {/if}
-                        <div>
-                            {#each vendor.bounties as bounty}
-                                {#if bounty.displayProperties.hasIcon}
-                                    <img src={bounty.displayProperties.icon} />
-                                {/if}
-                                {bounty.displayProperties.name} -
-                                {bounty.displayProperties.description}
-                                <div>
-                                    {#each bounty.objectiveProgress as objective}
-                                        {objective.completionValue} -
-                                        {objective.objectiveProgressDescription}
-                                    {/each}
-                                </div>
-                            {/each}
-                        </div>
-                    </div>
-                {/each}
-            {/if}
+            </div>
+            <hr />
+            {#each vendors as vendor}
+                <Vendor {vendor} />
+            {/each}
         {/if}
-    </div>
+    {/if}
 </div>

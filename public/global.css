@@ -3,6 +3,19 @@ body {
     position: relative;
     width: 100%;
     height: 100%;
+    cursor: url(./cursor.png), auto;
+}
+
+@font-face {
+    font-family: "icomoon";
+    src: url("fonts/icomoon.eot?rzj91r");
+    src: url("fonts/icomoon.eot?rzj91r#iefix") format("embedded-opentype"),
+        url("fonts/icomoon.ttf?rzj91r") format("truetype"),
+        url("fonts/icomoon.woff?rzj91r") format("woff"),
+        url("fonts/icomoon.svg?rzj91r#icomoon") format("svg");
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
 }
 
 ::-webkit-scrollbar {
@@ -22,8 +35,8 @@ body {
     margin: 0;
     padding: 8px;
     box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-        Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    font-family: "Destiny Icons", -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
 }
 
 a {
@@ -32,7 +45,7 @@ a {
 }
 
 a:hover {
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 a:visited {
@@ -77,4 +90,152 @@ button:not(:disabled):active {
 
 button:focus {
     border-color: #666;
+}
+
+.button {
+    transition: box-shadow 0.7s, opacity 0.6s, width 0.5s;
+}
+.button:hover {
+    opacity: 0.8;
+    outline: 1;
+    box-shadow: 0 0 0 1.5px #fff, 0 0 0 3.5px #e2e2e2;
+}
+
+/* icomoon styles */
+[class^="icon-"],
+[class*=" icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: "icomoon" !important;
+    speak: never;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-mouse .path1:before {
+    content: "\e901";
+    margin-right: -18.7px;
+    color: rgb(47, 138, 200);
+}
+.icon-mouse .path2:before {
+    content: "\e903";
+    margin-right: -18.8px;
+    color: rgb(172, 172, 172);
+}
+.icon-mouse .path3:before {
+    content: "\e900";
+    margin-right: -18.5px;
+    color: rgb(172, 172, 172);
+}
+.icon-mouse .path4:before {
+    content: "\e902";
+    color: rgb(172, 172, 172);
+}
+.icon-arc_drone:before {
+    content: "\e904";
+}
+.icon-auto_rifle:before {
+    content: "\e905";
+}
+.icon-beam_weapon:before {
+    content: "\e906";
+}
+.icon-bow:before {
+    content: "\e907";
+}
+.icon-cabal_rifle:before {
+    content: "\e908";
+}
+.icon-damage_arc:before {
+    content: "\e909";
+}
+.icon-damage_kinetic:before {
+    content: "\e90a";
+}
+.icon-damage_solar:before {
+    content: "\e90b";
+}
+.icon-damage_void:before {
+    content: "\e90c";
+}
+.icon-environment_hazard:before {
+    content: "\e90d";
+}
+.icon-fusion_rifle:before {
+    content: "\e90e";
+}
+.icon-grenade:before {
+    content: "\e90f";
+}
+.icon-grenade_launcher:before {
+    content: "\e910";
+}
+.icon-grenade_launcher-field_forged:before {
+    content: "\e911";
+}
+.icon-hand_cannon:before {
+    content: "\e912";
+}
+.icon-headshot:before {
+    content: "\e913";
+}
+.icon-hunter_smoke:before {
+    content: "\e914";
+}
+.icon-machinegun:before {
+    content: "\e915";
+}
+.icon-melee:before {
+    content: "\e916";
+}
+.icon-pulse_rifle:before {
+    content: "\e917";
+}
+.icon-rocket_launcher:before {
+    content: "\e918";
+}
+.icon-scout_rifle:before {
+    content: "\e919";
+}
+.icon-shotgun:before {
+    content: "\e91a";
+}
+.icon-shrapnel_launcher:before {
+    content: "\e91b";
+}
+.icon-sidearm:before {
+    content: "\e91c";
+}
+.icon-smg:before {
+    content: "\e91d";
+}
+.icon-sniper_rifle:before {
+    content: "\e91e";
+}
+.icon-spear_launcher:before {
+    content: "\e91f";
+}
+.icon-sword_heavy:before {
+    content: "\e920";
+}
+.icon-throwing_knife:before {
+    content: "\e921";
+}
+.icon-wire_rifle:before {
+    content: "\e922";
+}
+.icon-power:before {
+    content: "\e923";
+}
+.icon-power_small:before {
+    content: "\e924";
+}
+.icon-power_small_right:before {
+    content: "\e925";
 }

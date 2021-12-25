@@ -3,6 +3,7 @@
     import { push } from "svelte-spa-router";
     import type { DestinyProfileUserInfoCard } from "bungie-api-ts/destiny2";
     import type { IDestinyCharacterComponentOverride } from "api/destiny2/profile";
+    import Emblem from "../character/Emblem.svelte";
 
     const { selectedCharacterStore, getProfile, getCharacters } = getContext(
         "characters"
@@ -19,7 +20,6 @@
             `/${profile.membershipId}/${profile.membershipType}/${character.characterId}`
         );
     };
-
 </script>
 
 <div>
@@ -29,19 +29,6 @@
         {profile.membershipId}
     </div>
     {#each characters as char}
-        <div on:click={() => onClickCharacter(char)}>
-            {char.characterId}
-            {char.class}
-            {char.light}
-            <div>
-                <img src={char.emblemBackgroundPath} alt="emblem background" />
-                <img src={char.emblemPath} alt="emblem" />
-                <span
-                    style={`color: rgba(${char.emblemColor.red}, ${char.emblemColor.green}, ${char.emblemColor.blue}, ${char.emblemColor.alpha})`}
-                >
-                    emblem color value
-                </span>
-            </div>
-        </div>
+        <Emblem character={char} onClick={onClickCharacter} />
     {/each}
 </div>

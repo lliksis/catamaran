@@ -11,7 +11,7 @@ export interface IVendor extends DestinyVendorComponent {
     icon: string;
     group: string;
     progression: IVendorProgression;
-    bounties: IVendorBounty[];
+    bounties: IBounty[];
 }
 export interface IVendorProgression extends DestinyProgression {
     unitName: string;
@@ -19,10 +19,11 @@ export interface IVendorProgression extends DestinyProgression {
     description: string;
     icon: string;
 }
-export interface IVendorBounty extends DestinyInventoryItemDefinition {
+export interface IBounty extends DestinyInventoryItemDefinition {
     objectiveProgress: IBountyObjective[];
 }
 export interface IBountyObjective {
+    progress: number;
     completionValue: number;
     objectiveProgressDescription: string;
 }

@@ -17,15 +17,17 @@
     }
     .notification-close {
         float: right;
-        border: none;
-        outline: none;
-        background: none;
         cursor: pointer;
         color: #fff;
+        width: 22px;
+        height: 22px;
+        text-align: center;
+        line-height: 16px;
         font-size: 20px;
-        margin: 0 10px 0 0;
+        border-radius: 0 6px 0 0;
         padding: 0;
         box-sizing: border-box;
+        transition: background 0.5s;
     }
     .notification-close:hover {
         background: rgba(253, 125, 125, 0.2);
@@ -93,9 +95,7 @@
 
 <div class="position-top-right">
     <div class="notification" role="status" aria-live="polite" in:fade out:fade>
-        <button class="notification-close" on:click={onRemove}>
-            &times;
-        </button>
+        <div class="notification-close" on:click={onRemove}>&times;</div>
         <div class="content">
             {type}
             <p>{description}</p>
