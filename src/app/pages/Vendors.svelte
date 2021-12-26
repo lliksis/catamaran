@@ -23,7 +23,7 @@
     //:membershipId/:membershipType/:characterId
     export let params;
 
-    const { manifestDefintions } = getContext<IManifestContext>("manifest");
+    const manifestContext = getContext<IManifestContext>("manifest");
 
     const { getInventories, selectedCharacterStore } = getContext("characters");
     const inventories = getInventories();
@@ -39,7 +39,7 @@
             params.membershipId,
             params.membershipType,
             params.characterId,
-            $manifestDefintions
+            manifestContext.getManifest()
         );
 
         loadingEverything = false;

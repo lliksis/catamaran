@@ -7,18 +7,18 @@
 <script lang="ts">
     import { onMount, setContext } from "svelte";
     import { location } from "svelte-spa-router";
-    import {
-        checkForManifest,
-        DefinitionsStore,
-        storeDefintionsInStore,
-    } from "api/utils";
+    import { initializeManifest } from "api/utils";
     import { getLogger } from "api/utils/logger";
     import {
         fetchProfile,
         fetchResolvedCharacters,
         selectedCharacter,
     } from "api/destiny2";
-    import type { ICharacterContext, IManifestContext } from "api/utils/types";
+    import type {
+        ICharacterContext,
+        IManifestContext,
+        IManifestDefinitions,
+    } from "api/utils/types";
 
     // :membershipId/:characterId
     // export let params;
@@ -26,6 +26,7 @@
     // Hacky solution - use the location store:
     const params = $location.split("/");
 
+    let definitionStore: IManifestDefinitions | undefined = undefined;
     let profile;
     let inventories;
     let characters = [];
@@ -37,10 +38,7 @@
 
     onMount(async () => {
         // manifest and definitions
-        await checkForManifest(logger).then(async () => {
-            loadingState = "loading definitions";
-            await storeDefintionsInStore();
-        });
+        definitionStore = await initializeManifest(logger);
 
         // profile and characters
         loadingState = "loading profile and characters";
@@ -51,9 +49,9 @@
         } = await fetchResolvedCharacters(
             profile.membershipId,
             profile.membershipType,
-            $DefinitionsStore.classDefinition,
-            $DefinitionsStore.inventoriyItemDefinition,
-            $DefinitionsStore.objectiveDefinition
+            definitionStore.DestinyClassDefinition,
+            definitionStore.DestinyInventoryItemDefinition,
+            definitionStore.DestinyObjectiveDefinition
         );
 
         characters = charactersResponse;
@@ -78,9 +76,8 @@
     });
 
     setContext<IManifestContext>("manifest", {
-        manifestDefintions: DefinitionsStore,
+        getManifest: () => definitionStore,
     });
-
 </script>
 
 {#if loading}
