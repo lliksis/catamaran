@@ -1,0 +1,41 @@
+name: PR
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  # This workflow contains a single job called "build"
+  svelte-check:
+    name: 'Validate the source code' 
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout source code'
+        uses: actions/checkout@v2
+      - name: 'Setup Node.js'
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+      - name: 'Install dependencies'
+        run: npm install
+      - name: 'Validate the source code'
+        run: npm validate
+      
+  bump-version:
+    name: 'Bump the version number'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout source code'
+        uses: actions/checkout@v2
+      - name: 'Setup Node.js'
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+      - name: 'Automated version bump'
+        uses:  'phips28/gh-action-bump-version@master'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          default: patch
+          tag-prefix: 'v'
+          skip-tag: 'true'
+      
