@@ -20,7 +20,7 @@ jobs:
         run: npm install
       - name: 'Validate the source code'
         run: npm run validate
-      
+ 
   bump-version:
     name: 'Bump the version number'
     runs-on: ubuntu-latest
