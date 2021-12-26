@@ -1,6 +1,7 @@
 name: PR
 on:
   pull_request:
+    types: [ opened ]
     branches: [ main ]
 
 jobs:
@@ -18,8 +19,8 @@ jobs:
       - name: 'Install dependencies'
         run: npm install
       - name: 'Validate the source code'
-        run: npm validate
-      
+        run: npm run validate
+ 
   bump-version:
     name: 'Bump the version number'
     runs-on: ubuntu-latest
