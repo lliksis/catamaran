@@ -5,7 +5,7 @@ import {
 import { createFetch } from "./sharedFetch";
 import type { ILogger } from "./logger";
 import { checkStore, manifestStore } from "./staticStorage";
-import { bngBaseUrl } from "./types";
+import { bngBaseUrl, IDefinitions, IManifestDefinitions } from "./types";
 
 const componentList: DestinyManifestComponentName[] = [
     "DestinyVendorDefinition",
@@ -21,8 +21,9 @@ const componentList: DestinyManifestComponentName[] = [
 
 /**
  * Checks for the stored manifest versions and if necessary updates them.
+ * Returns the stored or fetched defintions.
  */
-export const checkForManifest = async (logger?: ILogger) => {
+export const initializeManifest = async (logger?: ILogger) => {
     const destinyManifest = await getDestinyManifest(createFetch());
     const manifestJson = destinyManifest.Response.jsonWorldContentPaths.en;
     // Update all tables if not running with the current version.
@@ -31,15 +32,23 @@ export const checkForManifest = async (logger?: ILogger) => {
     const manifestJsonComponents =
         destinyManifest.Response.jsonWorldComponentContentPaths.en;
 
-    componentList.forEach(async (component) => {
+    let definitions: IDefinitions = {};
+
+    for (const component of componentList) {
         if ((await isTableDeleted(component)) || updateAll) {
-            logger?.debug(`fetching ${component}`);
+            logger?.debug(`fetching ${component} from bungie api`);
             const endPoint = manifestJsonComponents[component];
             const response = await fetch(bngBaseUrl + endPoint);
             const data = await response.json();
             manifestStore.setItem(component, data);
+            definitions[component] = data;
+        } else {
+            logger?.debug(`getting ${component} from indexedDB`);
+            definitions[component] = await manifestStore.getItem(component);
         }
-    });
+    }
+
+    return definitions as IManifestDefinitions;
 };
 
 /**

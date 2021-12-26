@@ -16,15 +16,24 @@ export interface ICharacterContext {
 }
 
 export interface IManifestDefinitions {
-    vendorDefinition: AllDestinyManifestComponents["DestinyVendorDefinition"];
-    vendorGroupDefintion: AllDestinyManifestComponents["DestinyVendorGroupDefinition"];
-    objectiveDefinition: AllDestinyManifestComponents["DestinyObjectiveDefinition"];
-    classDefinition: AllDestinyManifestComponents["DestinyClassDefinition"];
-    inventoriyItemDefinition: AllDestinyManifestComponents["DestinyInventoryItemDefinition"];
-    progressionDefinition: AllDestinyManifestComponents["DestinyProgressionDefinition"];
+    DestinyVendorDefinition: AllDestinyManifestComponents["DestinyVendorDefinition"];
+    DestinyVendorGroupDefinition: AllDestinyManifestComponents["DestinyVendorGroupDefinition"];
+    DestinyObjectiveDefinition: AllDestinyManifestComponents["DestinyObjectiveDefinition"];
+    DestinyClassDefinition: AllDestinyManifestComponents["DestinyClassDefinition"];
+    DestinyInventoryItemDefinition: AllDestinyManifestComponents["DestinyInventoryItemDefinition"];
+    DestinyProgressionDefinition: AllDestinyManifestComponents["DestinyProgressionDefinition"];
 }
 export interface IManifestContext {
-    manifestDefintions: Writable<IManifestDefinitions>;
+    getManifest: () => IManifestDefinitions;
+}
+
+export interface IDefinitions {
+    DestinyVendorDefinition?: IManifestDefinitions["DestinyVendorDefinition"];
+    DestinyVendorGroupDefinition?: IManifestDefinitions["DestinyVendorGroupDefinition"];
+    DestinyObjectiveDefinition?: IManifestDefinitions["DestinyObjectiveDefinition"];
+    DestinyClassDefinition?: IManifestDefinitions["DestinyClassDefinition"];
+    DestinyInventoryItemDefinition?: IManifestDefinitions["DestinyInventoryItemDefinition"];
+    DestinyProgressionDefinition?: IManifestDefinitions["DestinyProgressionDefinition"];
 }
 
 export const bngBaseUrl = "https://www.bungie.net";

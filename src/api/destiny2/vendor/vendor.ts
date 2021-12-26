@@ -63,28 +63,29 @@ const resolveVendors = async (
     const resolvedVendors: IVendor[] = [];
 
     const {
-        inventoriyItemDefinition,
-        objectiveDefinition,
-        progressionDefinition,
-        vendorDefinition,
-        vendorGroupDefintion,
+        DestinyInventoryItemDefinition,
+        DestinyObjectiveDefinition,
+        DestinyProgressionDefinition,
+        DestinyVendorDefinition,
+        DestinyVendorGroupDefinition,
     } = defintions;
 
     for (const vendorHash in vendors.data) {
         const vendor = vendors.data[vendorHash];
         if (
-            vendorDefinition[vendor.vendorHash].displayCategories.some(
+            DestinyVendorDefinition[vendor.vendorHash].displayCategories.some(
                 (v) => v.identifier === "category_bounties"
             )
         ) {
             const vendorDisplayProperties =
-                vendorDefinition[vendor.vendorHash].displayProperties;
+                DestinyVendorDefinition[vendor.vendorHash].displayProperties;
 
             // progression
             let vendorProgression: IVendorProgression | null = null;
             if (vendor.progression) {
                 const progressionHash = vendor.progression.progressionHash;
-                const progression = progressionDefinition[progressionHash];
+                const progression =
+                    DestinyProgressionDefinition[progressionHash];
                 vendorProgression = {
                     ...vendor.progression,
                     name: progression.displayProperties.name,
@@ -98,14 +99,15 @@ const resolveVendors = async (
             const groupHash = vendorGroups.data.groups.find((g) =>
                 g.vendorHashes.find((hash) => hash.toString() === vendorHash)
             )?.vendorGroupHash;
-            const vendorGroup = vendorGroupDefintion[groupHash]?.categoryName;
+            const vendorGroup =
+                DestinyVendorGroupDefinition[groupHash]?.categoryName;
 
             // items
             const resolvedItems: IBounty[] = [];
             const items = sales.data[vendorHash].saleItems;
             for (const saleHash in items) {
                 const saleItemHash = items[+saleHash].itemHash;
-                const item = inventoriyItemDefinition[saleItemHash];
+                const item = DestinyInventoryItemDefinition[saleItemHash];
                 if (item.itemType === DestinyItemType.Bounty) {
                     const itemObjectives =
                         itemComponents[vendorHash].objectives.data[saleHash]
@@ -116,8 +118,9 @@ const resolveVendors = async (
                                 progress: 0,
                                 completionValue: obj.completionValue,
                                 objectiveProgressDescription:
-                                    objectiveDefinition[obj.objectiveHash]
-                                        .progressDescription,
+                                    DestinyObjectiveDefinition[
+                                        obj.objectiveHash
+                                    ].progressDescription,
                             };
                         }
                     );
