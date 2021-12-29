@@ -1,11 +1,16 @@
 <style>
-    .inventory {
-        display: inline-block;
-        margin: 10px;
-    }
-
     .characters {
-        margin-left: 10px;
+        margin: -8px;
+        margin-bottom: 0;
+        padding-left: 8px;
+        height: 100px;
+        display: flex;
+        align-items: center;
+        background: linear-gradient(
+            to right,
+            var(--backgroundColor),
+            transparent
+        );
     }
 </style>
 
@@ -14,27 +19,26 @@
     import { push } from "svelte-spa-router";
     import { fetchResolvedVendors } from "api/destiny2/vendor";
     import type { IVendor, IBounty } from "api/destiny2/vendor";
-    import type { IManifestContext } from "api/utils/types";
+    import type { ICharacterContext, IManifestContext } from "api/utils/types";
 
     import Vendor from "../vendor/Vendor.svelte";
     import Emblem from "../character/Emblem.svelte";
-    import Bounty from "../vendor/Bounty.svelte";
     import BountyStoreContext from "../BountyStoreContext/BountyStoreContext.svelte";
-    import BountyOverview from "../bountyOverview/BountyOverview.svelte";
+    import BountyOverview from "../BountyOverview/BountyOverview.svelte";
 
     //:membershipId/:membershipType/:characterId
     export let params;
 
     const manifestContext = getContext<IManifestContext>("manifest");
 
-    const { getInventories, selectedCharacterStore } = getContext("characters");
-    const inventories = getInventories();
+    const { selectedCharacterStore } = getContext<ICharacterContext>(
+        "characters"
+    );
 
     let vendors: IVendor[];
 
     let loadingBounties = true;
 
-    let items: IBounty[] = inventories[params.characterId];
     onMount(async () => {
         vendors = await fetchResolvedVendors(
             params.membershipId,
@@ -48,9 +52,16 @@
 </script>
 
 <BountyStoreContext {params}>
-    <BountyOverview />
+    <BountyOverview {params} />
     <div>
-        <div class="characters">
+        <div
+            class="characters"
+            style="--backgroundColor: 
+				rgba({$selectedCharacterStore.emblemColor.red}, 
+					{$selectedCharacterStore.emblemColor.green},
+					{$selectedCharacterStore.emblemColor.blue},
+					{$selectedCharacterStore.emblemColor.alpha})"
+        >
             <Emblem
                 character={$selectedCharacterStore}
                 variant="primary"
@@ -60,14 +71,8 @@
         {#if loadingBounties}
             <div>loading...</div>
         {:else}
-            <div class="inventory">
-                {#each items as bounty}
-                    <Bounty {bounty} />
-                {/each}
-            </div>
-            <hr />
             {#each vendors as vendor}
-                <Vendor {vendor} />
+                <Vendor {vendor} {params} />
             {/each}
         {/if}
     </div>

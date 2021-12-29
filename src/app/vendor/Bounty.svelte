@@ -34,7 +34,7 @@
 
     export let bounty: IBounty;
     export let actionText: string | undefined = undefined;
-    export let actionCallback: () => void;
+    export let actionCallback: () => void | undefined = undefined;
     export let disabled: boolean = false;
 
     $: tooltipContent = {
@@ -52,7 +52,7 @@
         },
     } as ITooltip;
 
-    $: if (!disabled) {
+    $: if (!disabled && actionCallback) {
         tooltipContent.action = {
             description: actionText,
             completionTime: 2000,

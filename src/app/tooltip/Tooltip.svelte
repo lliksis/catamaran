@@ -42,7 +42,7 @@
     };
     const onMouseMove = (
         event: MouseEvent & {
-            currentTarget: EventTarget & HTMLSpanElement;
+            currentTarget: EventTarget & HTMLDivElement;
         }
     ) => {
         calculatePosition(event);

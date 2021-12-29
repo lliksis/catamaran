@@ -44,6 +44,11 @@
     import type { IBountyStore } from "api/utils";
 
     export let vendor: IVendor;
+    export let params;
+
+    const { getInventories } = getContext("characters");
+    const inventories = getInventories();
+    const items: IBounty[] = inventories[params.characterId];
 
     const { addBounty, store } = getContext<IBountyStore>("bounty");
 
@@ -64,7 +69,10 @@
         : vendor.progression?.icon;
 
     $: isDisabled = (bounty: IBounty) => {
-        return $store.some((b) => b.hash === bounty.hash);
+        return (
+            $store.some((b) => b.hash === bounty.hash) ||
+            items.some((b) => b.hash === bounty.hash)
+        );
     };
 </script>
 
