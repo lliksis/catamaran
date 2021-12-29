@@ -17,6 +17,10 @@
         border: 4px solid #ffd13b;
     }
 
+    .disabled {
+        filter: brightness(0.6);
+    }
+
     svg {
         height: inherit;
         width: inherit;
@@ -29,12 +33,16 @@
     import Tooltip from "../tooltip/Tooltip.svelte";
 
     export let bounty: IBounty;
+    export let actionText: string | undefined = undefined;
+    export let actionCallback: () => void;
+    export let disabled: boolean = false;
 
-    const tooltipContent: ITooltip = {
+    $: tooltipContent = {
         header: {
             title: bounty.displayProperties.name,
         },
         body: {
+            error: disabled ? "Can only hold one at a time" : undefined,
             description: bounty.displayProperties.description,
             progress: bounty.objectiveProgress.map<ITooltipProgress>((p) => ({
                 progressValue: p.progress,
@@ -42,14 +50,17 @@
                 description: p.objectiveProgressDescription,
             })),
         },
-        action: {
-            description: "Hold to do something cool!",
+    } as ITooltip;
+
+    $: if (!disabled) {
+        tooltipContent.action = {
+            description: actionText,
             completionTime: 2000,
-            callback: () => {
-                console.log("Doing something cool!");
-            },
-        },
-    };
+            callback: actionCallback,
+        };
+    } else {
+        tooltipContent.action = undefined;
+    }
 
     let pressing = false;
     const mouseDown = () => {
@@ -76,9 +87,15 @@
         class="bounty button"
         style={`background-image: url(${bounty.displayProperties.icon})`}
         class:completed
+        class:disabled
+        {disabled}
+        aria-disabled={disabled}
+        tabindex={0}
         on:mousedown={mouseDown}
         on:mouseup={mouseUp}
         on:mouseleave={mouseLeave}
+        on:mouseout={mouseLeave}
+        on:blur={mouseLeave}
     >
         {#if completed}
             <svg>

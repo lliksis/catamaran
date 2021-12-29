@@ -4,6 +4,7 @@ export interface ITooltipHeader {
 }
 
 export interface ITooltipBody {
+    error?: string;
     description: string;
     progress?: ITooltipProgress[];
 }
@@ -15,7 +16,7 @@ export interface ITooltipProgress {
 }
 
 export interface ITooltipAction {
-    description: string;
+    description?: string;
     completionTime: number;
     callback?: () => void;
 }
@@ -24,4 +25,11 @@ export interface ITooltip {
     header: ITooltipHeader;
     body?: ITooltipBody;
     action?: ITooltipAction;
+}
+
+export interface ITooltipProps {
+    x: number;
+    y: number;
+    isHovered: boolean;
+    pressing: boolean;
 }

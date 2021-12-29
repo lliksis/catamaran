@@ -19,6 +19,8 @@
     import Vendor from "../vendor/Vendor.svelte";
     import Emblem from "../character/Emblem.svelte";
     import Bounty from "../vendor/Bounty.svelte";
+    import BountyStoreContext from "../BountyStoreContext/BountyStoreContext.svelte";
+    import BountyOverview from "../bountyOverview/BountyOverview.svelte";
 
     //:membershipId/:membershipType/:characterId
     export let params;
@@ -30,7 +32,6 @@
 
     let vendors: IVendor[];
 
-    let loadingEverything = !$selectedCharacterStore ?? true;
     let loadingBounties = true;
 
     let items: IBounty[] = inventories[params.characterId];
@@ -42,15 +43,13 @@
             manifestContext.getManifest()
         );
 
-        loadingEverything = false;
         loadingBounties = false;
     });
 </script>
 
-<div>
-    {#if loadingEverything}
-        loading...
-    {:else}
+<BountyStoreContext {params}>
+    <BountyOverview />
+    <div>
         <div class="characters">
             <Emblem
                 character={$selectedCharacterStore}
@@ -71,5 +70,5 @@
                 <Vendor {vendor} />
             {/each}
         {/if}
-    {/if}
-</div>
+    </div>
+</BountyStoreContext>

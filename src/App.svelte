@@ -5,15 +5,17 @@
     import AuthContainer from "./app/login/AuthContainer.svelte";
     import ErrorBoundary from "./app/ErrorBoundary/ErrorBoundary.svelte";
     import ManifestProfileContainer from "./app/ManifestProfileContainer/ManifestProfileContainer.svelte";
-
+    import TooltipContext from "./app/tooltip/TooltipContext.svelte";
 </script>
 
 <LoggerContext>
     <ErrorBoundary>
         <AuthContainer>
-            <ManifestProfileContainer>
-                <Router {routes} />
-            </ManifestProfileContainer>
+            <TooltipContext>
+                <ManifestProfileContainer>
+                    <Router {routes} />
+                </ManifestProfileContainer>
+            </TooltipContext>
         </AuthContainer>
     </ErrorBoundary>
 </LoggerContext>
