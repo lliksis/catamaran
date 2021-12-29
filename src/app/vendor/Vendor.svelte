@@ -37,12 +37,20 @@
 
 <script lang="ts">
     import * as vendorConf from "../../vendorConf.json";
-    import type { IVendor } from "api/destiny2";
-    import Progress from "./Progress.svelte";
+    import type { IBounty, IVendor } from "api/destiny2";
     import Bounty from "./Bounty.svelte";
     import Icon from "./Icon.svelte";
+    import { getContext } from "svelte";
+    import type { IBountyStore } from "api/utils";
 
     export let vendor: IVendor;
+    export let params;
+
+    const { getInventories } = getContext("characters");
+    const inventories = getInventories();
+    const items: IBounty[] = inventories[params.characterId];
+
+    const { addBounty, store } = getContext<IBountyStore>("bounty");
 
     const ignore = vendorConf.ignore.includes(vendor.vendorHash);
     const backgroundColor =
@@ -59,6 +67,13 @@
         : areIconsFlipped
         ? vendor.icon
         : vendor.progression?.icon;
+
+    $: isDisabled = (bounty: IBounty) => {
+        return (
+            $store.some((b) => b.hash === bounty.hash) ||
+            items.some((b) => b.hash === bounty.hash)
+        );
+    };
 </script>
 
 {#if !ignore}
@@ -84,7 +99,12 @@
 
         <div class="bounties">
             {#each vendor.bounties as bounty}
-                <Bounty {bounty} />
+                <Bounty
+                    {bounty}
+                    actionText={"Hold to add"}
+                    actionCallback={() => addBounty(bounty)}
+                    disabled={isDisabled(bounty)}
+                />
             {/each}
         </div>
     </div>

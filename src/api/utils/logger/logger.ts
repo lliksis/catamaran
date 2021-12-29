@@ -70,6 +70,6 @@ export class Logger implements ILogger {
 }
 
 export const getLogger = () => {
-    const { getLogger } = getContext("logger");
+    const { getLogger } = getContext<{ getLogger: () => Logger }>("logger");
     return getLogger();
 };
