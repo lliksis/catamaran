@@ -1,7 +1,7 @@
 {
     "name": "destiny-bounty-group",
     "description": "A website to show available bounties grouped by objective",
-    "version": "0.1.10",
+    "version": "0.1.11",
     "license": "MIT",
     "private": false,
     "keywords": [
