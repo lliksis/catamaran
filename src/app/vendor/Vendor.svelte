@@ -36,15 +36,20 @@
 </style>
 
 <script lang="ts">
+    import { getContext } from "svelte";
+    import type { BungieMembershipType } from "bungie-api-ts/destiny2";
+    import type { IBountyStore } from "api/utils";
     import * as vendorConf from "../../vendorConf.json";
     import type { IBounty, IVendor } from "api/destiny2";
     import Bounty from "./Bounty.svelte";
     import Icon from "./Icon.svelte";
-    import { getContext } from "svelte";
-    import type { IBountyStore } from "api/utils";
 
     export let vendor: IVendor;
-    export let params;
+    export let params: {
+        membershipId: string;
+        membershipType: BungieMembershipType;
+        characterId: string;
+    };
 
     const { getInventories } = getContext("characters");
     const inventories = getInventories();

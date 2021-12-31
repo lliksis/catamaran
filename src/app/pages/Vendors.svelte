@@ -17,8 +17,9 @@
 <script lang="ts">
     import { getContext, onMount } from "svelte";
     import { push } from "svelte-spa-router";
+    import type { BungieMembershipType } from "bungie-api-ts/destiny2";
     import { fetchResolvedVendors } from "api/destiny2/vendor";
-    import type { IVendor, IBounty } from "api/destiny2/vendor";
+    import type { IVendor } from "api/destiny2/vendor";
     import type { ICharacterContext, IManifestContext } from "api/utils/types";
 
     import Vendor from "../vendor/Vendor.svelte";
@@ -27,7 +28,11 @@
     import BountyOverview from "../BountyOverview/BountyOverview.svelte";
 
     //:membershipId/:membershipType/:characterId
-    export let params;
+    export let params: {
+        membershipId: string;
+        membershipType: BungieMembershipType;
+        characterId: string;
+    };
 
     const manifestContext = getContext<IManifestContext>("manifest");
 

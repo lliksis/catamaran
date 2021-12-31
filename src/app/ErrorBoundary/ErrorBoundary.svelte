@@ -11,7 +11,7 @@
     const logger = getLogger();
     onMount(() => {
         logger.debug("initializing error boundary");
-        window.onunhandledrejection = async (e) => {
+        window.onunhandledrejection = async (e: any) => {
             logger.debug(e);
             logger.error(
                 `Unhandled error caught by ErrorBoundary: ${e.reason.message}`,
@@ -20,7 +20,6 @@
             error = e.reason;
         };
     });
-
 </script>
 
 <slot />

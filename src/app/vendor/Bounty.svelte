@@ -72,7 +72,7 @@
     const mouseLeave = mouseUp;
 
     const completed = bounty.objectiveProgress.reduce<boolean>(
-        (previous, progress) => {
+        (_, progress) => {
             if (progress.completionValue === progress.progress) {
                 return true;
             }

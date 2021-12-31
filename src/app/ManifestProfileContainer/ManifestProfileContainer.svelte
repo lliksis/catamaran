@@ -7,11 +7,13 @@
 <script lang="ts">
     import { onMount, setContext } from "svelte";
     import { location } from "svelte-spa-router";
+    import type { DestinyProfileUserInfoCard } from "bungie-api-ts/destiny2";
     import { initializeManifest } from "api/utils";
     import { getLogger } from "api/utils/logger";
     import {
         fetchProfile,
         fetchResolvedCharacters,
+        IBounty,
         selectedCharacter,
     } from "api/destiny2";
     import type {
@@ -27,8 +29,10 @@
     const params = $location.split("/");
 
     let definitionStore: IManifestDefinitions | undefined = undefined;
-    let profile;
-    let inventories;
+    let profile: DestinyProfileUserInfoCard;
+    let inventories: {
+        [key: string]: IBounty[];
+    };
     let characters = [];
 
     let loading = true;
@@ -62,7 +66,7 @@
             character = characters.find(
                 (char) => char.characterId === params[3]
             );
-            selectedCharacter.update((v) => character);
+            selectedCharacter.update((_) => character);
         }
 
         loading = false;
