@@ -25,7 +25,7 @@
     import Vendor from "../vendor/Vendor.svelte";
     import Emblem from "../character/Emblem.svelte";
     import BountyStoreContext from "../BountyStoreContext/BountyStoreContext.svelte";
-    import BountyOverview from "../bountyOverview/BountyOverview.svelte";
+    import BountyOverview from "../BountyOverview/BountyOverview.svelte";
 
     //:membershipId/:membershipType/:characterId
     export let params: {
