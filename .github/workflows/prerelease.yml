@@ -20,9 +20,9 @@ jobs:
               run: NETLIFY_AUTH_TOKEN=${{ secrets.NETLIFY_AUTH_TOKEN }} netlify link --id=${{ secrets.NETLIFY_BETA_SITE_ID }}
             - name: "Setup env variables"
               run: |
-                  netlify env:set CLIENT_ID ${{ secrets.BETA_CLIENT_ID }} \
-                  netlify env:set CLIENT_SECRET ${{ secrets.BETA_CLIENT_SECRET }} \
-                  netlify env:set X_API_KEY ${{ secrets.BETA_X_API_KEY }}
+                  NETLIFY_AUTH_TOKEN=${{ secrets.NETLIFY_AUTH_TOKEN }} netlify env:set CLIENT_ID ${{ secrets.BETA_CLIENT_ID }} \
+                  NETLIFY_AUTH_TOKEN=${{ secrets.NETLIFY_AUTH_TOKEN }} netlify env:set CLIENT_SECRET ${{ secrets.BETA_CLIENT_SECRET }} \
+                  NETLIFY_AUTH_TOKEN=${{ secrets.NETLIFY_AUTH_TOKEN }} netlify env:set X_API_KEY ${{ secrets.BETA_X_API_KEY }}
     build:
         needs: setup
         runs-on: ubuntu-18.04
@@ -30,4 +30,4 @@ jobs:
             - name: "Build source code"
               run: npm run build
             - name: Deploy to Netlify
-              run: netlify deploy --dir='public' --message="Prerelease deploy v${{ github.ref }}" --prod
+              run: NETLIFY_AUTH_TOKEN=${{ secrets.NETLIFY_AUTH_TOKEN }} netlify deploy --dir='public' --message="Prerelease deploy v${{ github.ref }}" --prod
