@@ -66,14 +66,13 @@
             border-radius: 0 0 6px 6px;
         }
     }
-
 </style>
 
 <script lang="ts">
     import { onDestroy } from "svelte";
     import { fade } from "svelte/transition";
 
-    export let error;
+    export let error: any;
     let type = error.name;
     let description = error.message;
     if (error.status) {
@@ -90,7 +89,6 @@
     onDestroy(() => {
         clearTimeout(timeOut);
     });
-
 </script>
 
 <div class="position-top-right">

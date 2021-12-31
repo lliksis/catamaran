@@ -1,13 +1,18 @@
 <script lang="ts">
+    import type { BungieMembershipType } from "bungie-api-ts/destiny2";
+    import { onDestroy, setContext } from "svelte";
     import { createBountyStorage, getLogger } from "api/utils";
-    import { getContext, onDestroy, setContext } from "svelte";
 
     const logger = getLogger();
 
     //:membershipId/:membershipType/:characterId
-    export let params;
+    export let params: {
+        membershipId: string;
+        membershipType: BungieMembershipType;
+        characterId: string;
+    };
 
-    const store = createBountyStorage(params.characterId);
+    const store = createBountyStorage(parseInt(params.characterId));
     setContext("bounty", store);
 
     const unsubscribe = store.store.subscribe(() => {

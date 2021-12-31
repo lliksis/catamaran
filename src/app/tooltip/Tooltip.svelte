@@ -54,7 +54,7 @@
         }
     ) => {
         const { pageX, pageY } = event;
-        const { innerWidth, innerHeight } = window;
+        const { innerWidth } = window;
 
         let x = 0;
         if (pageX + 430 > innerWidth) {

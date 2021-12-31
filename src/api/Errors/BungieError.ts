@@ -19,3 +19,9 @@ export interface IBungieErrorProps<T> {
     ErrorCode: ServerResponse<T>["ErrorCode"];
     ErrorStatus: ServerResponse<T>["ErrorStatus"];
 }
+
+export interface BungieError {
+    code: PlatformErrorCodes;
+    status: string;
+    name: string;
+}

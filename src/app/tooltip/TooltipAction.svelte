@@ -23,7 +23,6 @@
     import { tweened } from "svelte/motion";
     import { linear } from "svelte/easing";
     import type { ITooltipAction } from "./Tooltip.types";
-    import { onDestroy } from "svelte";
 
     export let action: ITooltipAction;
     const { description, completionTime, callback } = action;

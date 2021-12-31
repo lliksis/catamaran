@@ -21,12 +21,17 @@
 </style>
 
 <script lang="ts">
+    import type { BungieMembershipType } from "bungie-api-ts/destiny2";
     import type { IBountyStore } from "api/utils";
     import Bounty from "../vendor/Bounty.svelte";
     import { getContext } from "svelte";
     import type { IBounty } from "api/destiny2";
 
-    export let params;
+    export let params: {
+        membershipId: string;
+        membershipType: BungieMembershipType;
+        characterId: string;
+    };
 
     const { getInventories } = getContext("characters");
     const inventories = getInventories();

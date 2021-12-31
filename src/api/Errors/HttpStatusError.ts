@@ -9,3 +9,8 @@ export class HttpStatusError extends Error {
         this.name = "HttpError";
     }
 }
+
+export interface HttpStatusError {
+    code: number;
+    name: string;
+}
