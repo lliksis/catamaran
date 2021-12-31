@@ -22,7 +22,7 @@ jobs:
               run: |
                   netlify env:set CLIENT_ID ${{ secrets.BETA_CLIENT_ID }} \
                   netlify env:set CLIENT_SECRET ${{ secrets.BETA_CLIENT_SECRET }} \
-                  netlify env:set X_API_KEY ${{ secret.BETA_X_API_KEY }}
+                  netlify env:set X_API_KEY ${{ secrets.BETA_X_API_KEY }}
     build:
         needs: setup
         runs-on: ubuntu-18.04
