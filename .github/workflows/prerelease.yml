@@ -1,6 +1,6 @@
 name: Build and Deploy Prerelease to Netlify
 on:
-    push:
+    release:
         types: [prereleased]
 
 jobs:
