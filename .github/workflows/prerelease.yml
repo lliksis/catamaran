@@ -4,8 +4,8 @@ on:
         types: [prereleased]
 
 jobs:
-    setup:
-        runs-on: ubuntu-18.04
+    prerelease:
+        runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
             - name: "Setup Node.js"
@@ -23,10 +23,6 @@ jobs:
                   NETLIFY_AUTH_TOKEN=${{ secrets.NETLIFY_AUTH_TOKEN }} netlify env:set CLIENT_ID ${{ secrets.BETA_CLIENT_ID }} \
                   NETLIFY_AUTH_TOKEN=${{ secrets.NETLIFY_AUTH_TOKEN }} netlify env:set CLIENT_SECRET ${{ secrets.BETA_CLIENT_SECRET }} \
                   NETLIFY_AUTH_TOKEN=${{ secrets.NETLIFY_AUTH_TOKEN }} netlify env:set X_API_KEY ${{ secrets.BETA_X_API_KEY }}
-    build:
-        needs: setup
-        runs-on: ubuntu-18.04
-        steps:
             - name: "Build source code"
               run: npm run build
             - name: Deploy to Netlify
