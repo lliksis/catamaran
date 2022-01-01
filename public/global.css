@@ -2,7 +2,7 @@ html,
 body {
     position: relative;
     width: 100%;
-    height: 100%;
+    height: auto;
     cursor: url(./cursor.png), auto;
 }
 

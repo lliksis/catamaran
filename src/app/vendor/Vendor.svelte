@@ -3,6 +3,7 @@
         display: grid;
         column-gap: 20px;
         grid-template-columns: 100px 300px 50%;
+        grid-template-areas: "icon description bounties";
         column-gap: 40px;
         margin-left: -8px;
         margin-right: -8px;
@@ -15,23 +16,62 @@
         );
     }
 
-    .vendor > .icon {
+    .icon {
+        grid-area: icon;
         align-self: center;
     }
 
-    .vendor > .bounties {
-        align-self: center;
+    .bounties {
         display: grid;
+        grid-area: bounties;
+        align-self: center;
         grid-template-columns: 75px 75px 75px 75px 75px 75px;
         row-gap: 5px;
     }
 
-    .vendor > .description {
+    .description {
+        grid-area: description;
         align-self: center;
     }
 
     h3 {
         margin: 0;
+    }
+
+    @media only screen and (max-width: 1590px) {
+        .vendor {
+            grid-template-columns: 100px 440px;
+            grid-template-rows: auto auto;
+            grid-template-areas:
+                "icon description"
+                "icon bounties";
+            row-gap: 20px;
+        }
+
+        .bounties {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+    }
+
+    @media only screen and (max-width: 1025px) {
+        .vendor {
+            grid-template-columns: 100px 300px;
+        }
+    }
+
+    @media only screen and (max-width: 500px) {
+        .vendor {
+            grid-template-areas:
+                "description"
+                "bounties";
+            grid-template-columns: auto;
+        }
+
+        .icon {
+            display: none;
+        }
     }
 </style>
 
