@@ -1,9 +1,21 @@
 <style>
+    /* used to easyly move the tooltip to the top on mobile */
+    .tooltip_container {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+    }
+
     .tooltip {
         position: absolute;
         color: white;
         width: 400px;
         z-index: 100;
+        top: var(--top);
+        left: var(--left);
     }
     .header {
         background-color: #000000;
@@ -27,6 +39,15 @@
     .error {
         background-color: #710000;
         padding: 2px 7px;
+    }
+
+    @media only screen and (max-width: 500px) {
+        .tooltip {
+            position: sticky;
+            width: 100%;
+            top: 0;
+            left: 0;
+        }
     }
 </style>
 
@@ -80,34 +101,36 @@
 
 <slot />
 {#if isHovered}
-    <div style={`top: ${y}px; left: ${x + 30}px`} class="tooltip">
-        <div class="header">
-            {header.title}
-            {#if header.subTitle}
-                <div class="subtitle">
-                    {header.subTitle}
-                </div>
-            {/if}
-        </div>
-        {#if body.error}
-            <div class="error">{body.error}</div>
-        {/if}
-        {#if showBody}
-            <div class="content">
-                {#if body.description}
-                    <div class="description">
-                        {body.description}
+    <div class="tooltip_container">
+        <div style={`--top: ${y}px; --left: ${x + 30}px`} class="tooltip">
+            <div class="header">
+                {header.title}
+                {#if header.subTitle}
+                    <div class="subtitle">
+                        {header.subTitle}
                     </div>
                 {/if}
-                {#if body.progress}
-                    {#each body.progress as progress}
-                        <TooltipProgress {progress} />
-                    {/each}
-                {/if}
             </div>
-        {/if}
-        {#if action}
-            <TooltipAction {action} {pressing} />
-        {/if}
+            {#if body.error}
+                <div class="error">{body.error}</div>
+            {/if}
+            {#if showBody}
+                <div class="content">
+                    {#if body.description}
+                        <div class="description">
+                            {body.description}
+                        </div>
+                    {/if}
+                    {#if body.progress}
+                        {#each body.progress as progress}
+                            <TooltipProgress {progress} />
+                        {/each}
+                    {/if}
+                </div>
+            {/if}
+            {#if action}
+                <TooltipAction {action} {pressing} />
+            {/if}
+        </div>
     </div>
 {/if}

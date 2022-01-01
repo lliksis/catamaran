@@ -5,6 +5,7 @@
         height: 100%;
         top: 0;
         left: 0;
+        pointer-events: none;
     }
     .overview {
         position: fixed;
@@ -17,6 +18,7 @@
         padding: 10px;
         padding-top: 15px;
         border-left: 1px solid rgba(0, 0, 0, 0.1);
+        pointer-events: all;
     }
 
     .bounties {
@@ -42,6 +44,7 @@
         z-index: 20;
         font-size: large;
         font-weight: bolder;
+        pointer-events: auto;
     }
 
     input[type="checkbox"] ~ label::before {
