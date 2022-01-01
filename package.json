@@ -34,7 +34,7 @@
         "build-storybook": "build-storybook"
     },
     "dependencies": {
-        "bungie-api-ts": "4.9.0",
+        "bungie-api-ts": "4.14.0",
         "localforage": "1.10.0",
         "sirv-cli": "1.0.14",
         "uuid": "8.3.2"
