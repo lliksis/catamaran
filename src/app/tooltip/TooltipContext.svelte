@@ -41,7 +41,7 @@
         padding: 2px 7px;
     }
 
-    @media only screen and (max-width: 500px) {
+    @media only screen and (max-width: 770px) {
         .tooltip {
             position: sticky;
             width: 100%;

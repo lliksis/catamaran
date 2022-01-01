@@ -74,7 +74,7 @@
         }
     }
 
-    @media only screen and (max-width: 500px) {
+    @media only screen and (max-width: 770px) {
         .overview {
             display: none;
             z-index: 10;
