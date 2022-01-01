@@ -5,8 +5,6 @@
         grid-template-columns: 100px 300px 50%;
         grid-template-areas: "icon description bounties";
         column-gap: 40px;
-        margin-left: -8px;
-        margin-right: -8px;
         padding: 20px 10px 20px 10px;
         min-height: 150px;
         background: linear-gradient(
