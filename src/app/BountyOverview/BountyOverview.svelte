@@ -28,15 +28,11 @@
         min-height: 69px;
     }
 
-    input[type="checkbox"] {
-        display: none;
-    }
-
-    input[type="checkbox"] ~ label {
+    #expandable {
         display: none;
         position: sticky;
         width: 20px;
-        top: 0;
+        top: 1%;
         left: 100%;
         padding: 2px;
         padding-left: 7px;
@@ -45,27 +41,13 @@
         font-size: large;
         font-weight: bolder;
         pointer-events: auto;
+        filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.5));
+        transform: scale(-1, 1);
     }
 
-    input[type="checkbox"] ~ label::before {
-        content: "<";
-    }
-
-    input[type="checkbox"] ~ label:hover {
-        background-color: rgba(0, 0, 0, 0.2);
-    }
-
-    input[type="checkbox"]:checked ~ .overview {
-        display: block;
-    }
-
-    input[type="checkbox"]:checked ~ label {
+    #expandable.expanded {
+        transform: scale(1);
         left: 0;
-        color: rgb(170, 170, 170);
-    }
-
-    input[type="checkbox"]:checked ~ label::before {
-        content: ">";
     }
 
     @media only screen and (max-width: 1235px) {
@@ -83,7 +65,11 @@
             width: 100%;
         }
 
-        input[type="checkbox"] ~ label {
+        .overview.expanded {
+            display: block;
+        }
+
+        #expandable {
             display: inline-block;
         }
     }
@@ -107,12 +93,43 @@
     const items: IBounty[] = inventories[params.characterId];
 
     const { store, removeBounty } = getContext<IBountyStore>("bounty");
+
+    //expanded css classes will onlz be added to the elements on a mobile breakpoint
+    let expanded = false;
+    const onExpandableClick = () => (expanded = !expanded);
 </script>
 
 <div class="overview_container">
-    <input id="expandable" type="checkbox" />
-    <label for="expandable" />
-    <div class="overview">
+    <span id="expandable" class:expanded on:click={onExpandableClick}>
+        <svg
+            width="20"
+            height="25"
+            viewBox="0 0 183 213"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <g>
+                <path
+                    d="M175.365 97.3475C179.266 99.675 179.265 105.325 175.365 107.652L13.8244 204.04C9.82499 206.426 4.75 203.544 4.75 198.887L4.75 6.11282C4.75 1.45561 9.82499 -1.42601 13.8244 0.960318L175.365 97.3475Z"
+                    fill="url(#paint0_linear_2_3)"
+                />
+            </g>
+            <defs>
+                <linearGradient
+                    id="paint0_linear_2_3"
+                    x1="5"
+                    y1="102"
+                    x2="184"
+                    y2="102"
+                    gradientUnits="userSpaceOnUse"
+                >
+                    <stop stop-color="#7DB0FD" />
+                    <stop offset="1" stop-color="#FD7D7D" />
+                </linearGradient>
+            </defs>
+        </svg>
+    </span>
+    <div class="overview" class:expanded>
         <h1>Inventory</h1>
         {#if items.length > 0}
             <div class="bounties">
