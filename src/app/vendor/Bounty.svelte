@@ -96,6 +96,8 @@
         on:mouseleave={mouseLeave}
         on:mouseout={mouseLeave}
         on:blur={mouseLeave}
+        on:touchstart={mouseDown}
+        on:touchend={mouseUp}
     >
         {#if completed}
             <svg>
