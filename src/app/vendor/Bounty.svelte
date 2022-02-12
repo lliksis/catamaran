@@ -5,6 +5,7 @@
         height: 69px;
         width: 69px;
         background-size: auto 100%;
+        filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.5));
     }
 
     .completed::before {
