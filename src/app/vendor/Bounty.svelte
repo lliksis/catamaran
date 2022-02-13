@@ -94,7 +94,7 @@
 
 <Tooltip content={tooltipContent} {pressing}>
     <div
-        class="bounty button"
+        class="bounty button unselectable"
         style={`background-image: url(${bounty.displayProperties.icon})`}
         class:completed
         class:disabled

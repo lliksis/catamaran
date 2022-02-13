@@ -100,6 +100,14 @@ button:focus {
     box-shadow: 0 0 0 1.5px #fff, 0 0 0 3.5px #e2e2e2;
 }
 
+.unselectable {
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 /* icomoon styles */
 [class^="icon-"],
 [class*=" icon-"] {
