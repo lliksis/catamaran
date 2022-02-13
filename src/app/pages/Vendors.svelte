@@ -1,7 +1,5 @@
 <style>
     .characters {
-        margin: -8px;
-        margin-bottom: 0;
         padding-left: 8px;
         height: 100px;
         display: flex;
@@ -36,9 +34,8 @@
 
     const manifestContext = getContext<IManifestContext>("manifest");
 
-    const { selectedCharacterStore } = getContext<ICharacterContext>(
-        "characters"
-    );
+    const { selectedCharacterStore } =
+        getContext<ICharacterContext>("characters");
 
     let vendors: IVendor[];
 

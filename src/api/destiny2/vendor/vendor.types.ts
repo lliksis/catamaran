@@ -19,7 +19,8 @@ export interface IVendorProgression extends DestinyProgression {
     description: string;
     icon: string;
 }
-export interface IBounty extends DestinyInventoryItemDefinition {
+export interface IBounty
+    extends Pick<DestinyInventoryItemDefinition, "displayProperties" | "hash"> {
     objectiveProgress: IBountyObjective[];
 }
 export interface IBountyObjective {

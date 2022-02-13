@@ -13,6 +13,7 @@
         background-size: auto 100%;
         cursor: pointer;
         text-shadow: 1px 1px 1px #0000007f;
+        filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.5));
     }
     .emblem-character-class {
         grid-area: a;

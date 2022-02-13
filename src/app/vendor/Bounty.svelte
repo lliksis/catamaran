@@ -5,6 +5,7 @@
         height: 69px;
         width: 69px;
         background-size: auto 100%;
+        filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.5));
     }
 
     .completed::before {
@@ -37,6 +38,24 @@
     export let actionCallback: () => void | undefined = undefined;
     export let disabled: boolean = false;
 
+    let pressing = false;
+    const mouseDown = () => {
+        pressing = true;
+    };
+    const mouseUp = () => {
+        pressing = false;
+    };
+    const mouseLeave = mouseUp;
+    const mouseOut = mouseUp;
+    const blur = mouseUp;
+
+    const tooltipActionCallback = actionCallback
+        ? () => {
+              actionCallback();
+              pressing = false;
+          }
+        : undefined;
+
     $: tooltipContent = {
         header: {
             title: bounty.displayProperties.name,
@@ -55,21 +74,12 @@
     $: if (!disabled && actionCallback) {
         tooltipContent.action = {
             description: actionText,
-            completionTime: 2000,
-            callback: actionCallback,
+            completionTime: 1500,
+            callback: tooltipActionCallback,
         };
     } else {
         tooltipContent.action = undefined;
     }
-
-    let pressing = false;
-    const mouseDown = () => {
-        pressing = true;
-    };
-    const mouseUp = () => {
-        pressing = false;
-    };
-    const mouseLeave = mouseUp;
 
     const completed = bounty.objectiveProgress.reduce<boolean>(
         (_, progress) => {
@@ -84,7 +94,7 @@
 
 <Tooltip content={tooltipContent} {pressing}>
     <div
-        class="bounty button"
+        class="bounty button unselectable"
         style={`background-image: url(${bounty.displayProperties.icon})`}
         class:completed
         class:disabled
@@ -94,8 +104,10 @@
         on:mousedown={mouseDown}
         on:mouseup={mouseUp}
         on:mouseleave={mouseLeave}
-        on:mouseout={mouseLeave}
-        on:blur={mouseLeave}
+        on:mouseout={mouseOut}
+        on:blur={blur}
+        on:touchstart={mouseDown}
+        on:touchend={mouseUp}
     >
         {#if completed}
             <svg>
