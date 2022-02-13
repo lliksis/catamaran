@@ -38,6 +38,24 @@
     export let actionCallback: () => void | undefined = undefined;
     export let disabled: boolean = false;
 
+    let pressing = false;
+    const mouseDown = () => {
+        pressing = true;
+    };
+    const mouseUp = () => {
+        pressing = false;
+    };
+    const mouseLeave = mouseUp;
+    const mouseOut = mouseUp;
+    const blur = mouseUp;
+
+    const tooltipActionCallback = actionCallback
+        ? () => {
+              actionCallback();
+              pressing = false;
+          }
+        : undefined;
+
     $: tooltipContent = {
         header: {
             title: bounty.displayProperties.name,
@@ -57,20 +75,11 @@
         tooltipContent.action = {
             description: actionText,
             completionTime: 2000,
-            callback: actionCallback,
+            callback: tooltipActionCallback,
         };
     } else {
         tooltipContent.action = undefined;
     }
-
-    let pressing = false;
-    const mouseDown = () => {
-        pressing = true;
-    };
-    const mouseUp = () => {
-        pressing = false;
-    };
-    const mouseLeave = mouseUp;
 
     const completed = bounty.objectiveProgress.reduce<boolean>(
         (_, progress) => {
@@ -95,8 +104,8 @@
         on:mousedown={mouseDown}
         on:mouseup={mouseUp}
         on:mouseleave={mouseLeave}
-        on:mouseout={mouseLeave}
-        on:blur={mouseLeave}
+        on:mouseout={mouseOut}
+        on:blur={blur}
         on:touchstart={mouseDown}
         on:touchend={mouseUp}
     >
