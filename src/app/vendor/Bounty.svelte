@@ -74,7 +74,7 @@
     $: if (!disabled && actionCallback) {
         tooltipContent.action = {
             description: actionText,
-            completionTime: 2000,
+            completionTime: 1500,
             callback: tooltipActionCallback,
         };
     } else {
