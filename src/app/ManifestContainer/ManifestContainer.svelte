@@ -6,7 +6,7 @@
 -->
 <script lang="ts">
     import { onMount, setContext } from "svelte";
-    import { initializeManifest } from "api/utils";
+    import { initializeManifest, loadingStore } from "api/utils";
     import { getLogger } from "api/utils/logger";
     import type {
         IManifestContext,
@@ -16,7 +16,7 @@
     let definitions: IManifestDefinitions | undefined = undefined;
 
     let loading = true;
-    let loadingState = "loading manifest";
+    loadingStore.update((l) => ({ ...l, text: "validating manifest" }));
 
     const logger = getLogger();
 
@@ -28,12 +28,10 @@
     });
 
     setContext<IManifestContext>("manifest", {
-        definitions,
+        getDefinitions: () => definitions,
     });
 </script>
 
-{#if loading}
-    {loadingState}
-{:else}
+{#if !loading}
     <slot />
 {/if}

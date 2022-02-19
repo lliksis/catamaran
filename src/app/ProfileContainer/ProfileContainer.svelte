@@ -5,11 +5,18 @@
         getLinkedProfiles,
     } from "bungie-api-ts/destiny2";
     import { useQuery } from "@sveltestack/svelte-query";
-    import { authStorage, createFetch, getLogger } from "api/utils";
+    import {
+        authStorage,
+        createFetch,
+        getLogger,
+        loadingStore,
+    } from "api/utils";
     import type { IAuthToken } from "api/utils";
     import { bngBaseUrl } from "api/utils/types";
 
     const logger = getLogger();
+
+    loadingStore.update((l) => ({ ...l, text: "loading profile" }));
 
     let membershipId = undefined;
     const profileResponse = useQuery(
@@ -51,8 +58,6 @@
     }
 </script>
 
-{#if $profileResponse.isLoading || $profileResponse.isIdle}
-    loading profile
-{:else}
+{#if !$profileResponse.isLoading && !$profileResponse.isIdle}
     <slot />
 {/if}

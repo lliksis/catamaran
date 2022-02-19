@@ -12,6 +12,7 @@
     import TooltipContext from "./app/tooltip/TooltipContext.svelte";
     import ProfileContainer from "./app/ProfileContainer/ProfileContainer.svelte";
     import CharacterContainer from "./app/CharacterContainer/CharacterContainer.svelte";
+    import LoadingContainer from "./app/LoadingContainer/LoadingContainer.svelte";
 
     const queryClient = new QueryClient();
 </script>
@@ -21,13 +22,15 @@
         <ErrorBoundary>
             <AuthContainer>
                 <TooltipContext>
-                    <ManifestContainer>
-                        <ProfileContainer>
-                            <CharacterContainer>
-                                <Router {routes} />
-                            </CharacterContainer>
-                        </ProfileContainer>
-                    </ManifestContainer>
+                    <LoadingContainer>
+                        <ManifestContainer>
+                            <ProfileContainer>
+                                <CharacterContainer>
+                                    <Router {routes} />
+                                </CharacterContainer>
+                            </ProfileContainer>
+                        </ManifestContainer>
+                    </LoadingContainer>
                 </TooltipContext>
             </AuthContainer>
         </ErrorBoundary>

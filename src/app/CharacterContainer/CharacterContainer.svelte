@@ -7,7 +7,7 @@
         DestinyProfileUserInfoCard,
         getProfile,
     } from "bungie-api-ts/destiny2";
-    import { createFetch, getLogger } from "api/utils";
+    import { createFetch, getLogger, loadingStore } from "api/utils";
     import {
         resolveCharacters,
         resolveInventory,
@@ -18,6 +18,8 @@
 
     const logger = getLogger();
 
+    loadingStore.update((l) => ({ ...l, text: "loading characters" }));
+
     // :membershipId/:characterId
     // export let params;
     // params are not defined because the container is outside of the Router.
@@ -25,7 +27,8 @@
     const params = $location.split("/");
 
     const profile: DestinyProfileUserInfoCard = getContext("profile");
-    const { definitions } = getContext<IManifestContext>("manifest");
+    const { getDefinitions } = getContext<IManifestContext>("manifest");
+    const definitions = getDefinitions();
 
     const characterResponse = useQuery(
         ["characters"],
@@ -80,8 +83,6 @@
     }
 </script>
 
-{#if $characterResponse.isIdle || $characterResponse.isLoading}
-    loading characters
-{:else}
+{#if !$characterResponse.isIdle && !$characterResponse.isLoading}
     <slot />
 {/if}

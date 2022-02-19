@@ -20,7 +20,7 @@ export interface IManifestDefinitions {
     DestinyProgressionDefinition: AllDestinyManifestComponents["DestinyProgressionDefinition"];
 }
 export interface IManifestContext {
-    definitions: IManifestDefinitions;
+    getDefinitions: () => IManifestDefinitions;
 }
 
 export interface IDefinitions {

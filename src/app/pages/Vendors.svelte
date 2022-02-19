@@ -19,6 +19,7 @@
     import { fetchResolvedVendors } from "api/destiny2/vendor";
     import type { IVendor } from "api/destiny2/vendor";
     import type { ICharacterContext, IManifestContext } from "api/utils/types";
+    import { loadingStore } from "api/utils";
 
     import Vendor from "../vendor/Vendor.svelte";
     import Emblem from "../character/Emblem.svelte";
@@ -32,7 +33,8 @@
         characterId: string;
     };
 
-    const { definitions } = getContext<IManifestContext>("manifest");
+    const { getDefinitions } = getContext<IManifestContext>("manifest");
+    const definitions = getDefinitions();
 
     const { selectedCharacterStore } =
         getContext<ICharacterContext>("characters");
@@ -42,6 +44,8 @@
     let loadingBounties = true;
 
     onMount(async () => {
+        loadingStore.update((l) => ({ text: undefined, closePage: true }));
+
         vendors = await fetchResolvedVendors(
             params.membershipId,
             params.membershipType,
