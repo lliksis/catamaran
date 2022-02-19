@@ -1,17 +1,12 @@
 import type { Writable } from "svelte/store";
-import type {
-    AllDestinyManifestComponents,
-    DestinyInventoryComponent,
-    DestinyProfileUserInfoCard,
-} from "bungie-api-ts/destiny2";
+import type { AllDestinyManifestComponents } from "bungie-api-ts/destiny2";
 import type { IDestinyCharacterComponentOverride } from "api/destiny2/profile";
 import type { IBounty } from "api/destiny2";
 
 export interface ICharacterContext {
-    getProfile: () => DestinyProfileUserInfoCard;
-    getInventories: () => {
+    inventories: Writable<{
         [key: string]: IBounty[];
-    };
+    }>;
     getCharacters: () => IDestinyCharacterComponentOverride[];
     selectedCharacterStore: Writable<IDestinyCharacterComponentOverride>;
 }
@@ -25,7 +20,7 @@ export interface IManifestDefinitions {
     DestinyProgressionDefinition: AllDestinyManifestComponents["DestinyProgressionDefinition"];
 }
 export interface IManifestContext {
-    getManifest: () => IManifestDefinitions;
+    definitions: IManifestDefinitions;
 }
 
 export interface IDefinitions {

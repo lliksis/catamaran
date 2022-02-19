@@ -32,7 +32,7 @@
         characterId: string;
     };
 
-    const manifestContext = getContext<IManifestContext>("manifest");
+    const { definitions } = getContext<IManifestContext>("manifest");
 
     const { selectedCharacterStore } =
         getContext<ICharacterContext>("characters");
@@ -46,7 +46,7 @@
             params.membershipId,
             params.membershipType,
             params.characterId,
-            manifestContext.getManifest()
+            definitions
         );
 
         loadingBounties = false;

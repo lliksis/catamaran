@@ -81,6 +81,7 @@
     import Bounty from "../vendor/Bounty.svelte";
     import { getContext } from "svelte";
     import type { IBounty } from "api/destiny2";
+    import type { ICharacterContext } from "api/utils/types";
 
     export let params: {
         membershipId: string;
@@ -88,9 +89,10 @@
         characterId: string;
     };
 
-    const { getInventories } = getContext("characters");
-    const inventories = getInventories();
-    const items: IBounty[] = inventories[params.characterId];
+    const { inventories } = getContext<ICharacterContext>("characters");
+    $: console.log($inventories);
+    let items: IBounty[] = [];
+    $: items = $inventories[params.characterId];
 
     const { store, removeBounty } = getContext<IBountyStore>("bounty");
 

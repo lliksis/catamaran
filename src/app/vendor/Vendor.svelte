@@ -81,6 +81,7 @@
     import type { IBounty, IVendor } from "api/destiny2";
     import Bounty from "./Bounty.svelte";
     import Icon from "./Icon.svelte";
+    import type { ICharacterContext } from "api/utils/types";
 
     export let vendor: IVendor;
     export let params: {
@@ -89,9 +90,8 @@
         characterId: string;
     };
 
-    const { getInventories } = getContext("characters");
-    const inventories = getInventories();
-    const items: IBounty[] = inventories[params.characterId];
+    const { inventories } = getContext<ICharacterContext>("characters");
+    const items: IBounty[] = $inventories[params.characterId];
 
     const { addBounty, store } = getContext<IBountyStore>("bounty");
 
