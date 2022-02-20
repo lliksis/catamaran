@@ -6,6 +6,7 @@ import { createFetch } from "./sharedFetch";
 import type { ILogger } from "./logger";
 import { checkStore, manifestStore } from "./staticStorage";
 import { bngBaseUrl, IDefinitions, IManifestDefinitions } from "./types";
+import { loadingStore } from ".";
 
 export const componentList: DestinyManifestComponentName[] = [
     "DestinyVendorDefinition",
@@ -33,6 +34,8 @@ export const initializeManifest = async (logger?: ILogger) => {
         destinyManifest.Response.jsonWorldComponentContentPaths.en;
 
     let definitions: IDefinitions = {};
+
+    loadingStore.update((l) => ({ ...l, text: "loading missing definitions" }));
 
     for (const component of componentList) {
         if ((await isTableDeletedAsync(component)) || updateAll) {

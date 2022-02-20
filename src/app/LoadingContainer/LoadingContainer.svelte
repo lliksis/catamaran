@@ -2,7 +2,7 @@
     .loading-container {
         position: relative;
         width: 100vw;
-        height: 100vh;
+        height: 100%;
         background: linear-gradient(
                 217deg,
                 rgba(255, 0, 0, 0.8),
@@ -21,7 +21,7 @@
     }
 
     .loading-text {
-        position: absolute;
+        position: fixed;
         bottom: 0;
         right: 0;
         padding: 10px;
@@ -37,14 +37,13 @@
 
     $: show =
         $loadingStore.closePage !== undefined ? !$loadingStore.closePage : true;
-    $: console.log(show, $loadingStore);
 </script>
 
 <div class:loading-container={show}>
     <div class="loading-text">
         {$loadingStore.text || ""}
         <svg
-            class:loading-spinner-hidden={!show}
+            class:loading-spinner-hidden={!$loadingStore.text}
             width="50px"
             height="50px"
             viewBox="0 0 100 100"

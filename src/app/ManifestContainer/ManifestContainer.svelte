@@ -25,6 +25,7 @@
         definitions = await initializeManifest(logger);
 
         loading = false;
+        loadingStore.update((l) => ({ ...l, text: undefined }));
     });
 
     setContext<IManifestContext>("manifest", {

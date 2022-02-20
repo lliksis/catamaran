@@ -18,8 +18,6 @@
 
     const logger = getLogger();
 
-    loadingStore.update((l) => ({ ...l, text: "loading characters" }));
-
     // :membershipId/:characterId
     // export let params;
     // params are not defined because the container is outside of the Router.
@@ -32,8 +30,9 @@
 
     const characterResponse = useQuery(
         ["characters"],
-        () =>
-            getProfile(createFetch(true), {
+        () => {
+            loadingStore.update((l) => ({ ...l, text: "loading characters" }));
+            return getProfile(createFetch(true), {
                 destinyMembershipId: profile.membershipId,
                 membershipType: profile.membershipType,
                 components: [
@@ -42,13 +41,15 @@
                     DestinyComponentType.CharacterProgressions,
                     DestinyComponentType.ItemObjectives,
                 ],
-            }),
+            });
+        },
         {
             refetchOnWindowFocus: false,
             staleTime: 600_000, //10 minutes
             refetchInterval: 60_000, //1 minute
             onSuccess: () => {
-                logger.info("characters fetched successfully");
+                loadingStore.update((l) => ({ ...l, text: undefined }));
+                logger.info("characters loaded successfully");
             },
         }
     );

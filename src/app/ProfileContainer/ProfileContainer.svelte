@@ -16,17 +16,17 @@
 
     const logger = getLogger();
 
-    loadingStore.update((l) => ({ ...l, text: "loading profile" }));
-
     let membershipId = undefined;
     const profileResponse = useQuery(
         ["profile", membershipId],
-        () =>
-            getLinkedProfiles(createFetch(), {
+        () => {
+            loadingStore.update((l) => ({ ...l, text: "loading profile" }));
+            return getLinkedProfiles(createFetch(), {
                 membershipType: BungieMembershipType.BungieNext,
                 membershipId,
                 getAllMemberships: false,
-            }),
+            });
+        },
         {
             enabled: false,
             staleTime: Infinity,
@@ -34,6 +34,7 @@
             refetchOnWindowFocus: false,
             refetchOnReconnect: false,
             onSuccess: () => {
+                loadingStore.update((l) => ({ ...l, text: undefined }));
                 logger.info("profile fetched successfully");
             },
         }
