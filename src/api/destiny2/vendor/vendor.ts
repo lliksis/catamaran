@@ -1,11 +1,7 @@
 import {
-    BungieMembershipType,
-    DestinyComponentType,
     DestinyItemType,
     DestinyVendorsResponse,
-    getVendors,
 } from "bungie-api-ts/destiny2";
-import { createFetch } from "api/utils";
 import { bngBaseUrl, IManifestDefinitions } from "api/utils/types";
 import type {
     IBountyObjective,

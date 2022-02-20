@@ -6,7 +6,7 @@ import { createFetch } from "./sharedFetch";
 import type { ILogger } from "./logger";
 import { checkStore, manifestStore } from "./staticStorage";
 import { bngBaseUrl, IDefinitions, IManifestDefinitions } from "./types";
-import { loadingStore } from ".";
+import { loadingStore } from "./loadingStore";
 
 export const componentList: DestinyManifestComponentName[] = [
     "DestinyVendorDefinition",
