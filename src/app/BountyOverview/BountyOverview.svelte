@@ -12,7 +12,8 @@
         box-sizing: border-box;
         top: 0;
         right: 0;
-        background-color: rgba(0, 0, 0, 0.2);
+        background-color: rgba(44, 42, 53, 0.86);
+        color: white;
         height: 100%;
         width: 645px;
         padding: 10px;

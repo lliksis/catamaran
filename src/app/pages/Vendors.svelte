@@ -1,5 +1,5 @@
 <style>
-    .characters {
+    .character {
         padding-left: 8px;
         height: 100px;
         display: flex;
@@ -10,6 +10,10 @@
             transparent
         );
     }
+
+    /* .overview { 
+
+	} */
 </style>
 
 <script lang="ts">
@@ -87,7 +91,7 @@
     <BountyOverview {params} />
     <div>
         <div
-            class="characters"
+            class="character"
             style="--backgroundColor: 
 				rgba({$selectedCharacterStore.emblemColor.red}, 
 					{$selectedCharacterStore.emblemColor.green},
