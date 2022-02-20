@@ -10,14 +10,10 @@
             transparent
         );
     }
-
-    /* .overview { 
-
-	} */
 </style>
 
 <script lang="ts">
-    import { getContext } from "svelte";
+    import { getContext, onMount } from "svelte";
     import { push } from "svelte-spa-router";
     import { useQuery } from "@sveltestack/svelte-query";
     import {
@@ -44,6 +40,10 @@
         membershipType: BungieMembershipType;
         characterId: string;
     };
+
+    onMount(() => {
+        loadingStore.update((l) => ({ ...l, closePage: true }));
+    });
 
     const { getDefinitions } = getContext<IManifestContext>("manifest");
     const definitions = getDefinitions();
