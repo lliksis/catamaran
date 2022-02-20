@@ -5,11 +5,11 @@
     import type { IDestinyCharacterComponentOverride } from "api/destiny2/profile";
     import Emblem from "../character/Emblem.svelte";
 
-    const { selectedCharacterStore, getProfile, getCharacters } = getContext(
-        "characters"
-    );
+    const { selectedCharacterStore, getCharacters } = getContext("characters");
 
-    let profile: DestinyProfileUserInfoCard = getProfile();
+    const profile: DestinyProfileUserInfoCard = getContext("profile");
+
+    // let profile: DestinyProfileUserInfoCard = getProfile();
     let characters: IDestinyCharacterComponentOverride[] = getCharacters();
 
     const onClickCharacter = (

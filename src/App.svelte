@@ -1,21 +1,38 @@
 <script lang="ts">
     import Router from "svelte-spa-router";
-    import LoggerContext from "./app/logger/LoggerContextContainer.svelte";
+    import {
+        QueryClient,
+        QueryClientProvider,
+    } from "@sveltestack/svelte-query";
     import routes from "./routes";
+    import LoggerContext from "./app/logger/LoggerContextContainer.svelte";
     import AuthContainer from "./app/login/AuthContainer.svelte";
     import ErrorBoundary from "./app/ErrorBoundary/ErrorBoundary.svelte";
-    import ManifestProfileContainer from "./app/ManifestProfileContainer/ManifestProfileContainer.svelte";
+    import ManifestContainer from "./app/ManifestContainer/ManifestContainer.svelte";
     import TooltipContext from "./app/tooltip/TooltipContext.svelte";
+    import ProfileContainer from "./app/ProfileContainer/ProfileContainer.svelte";
+    import CharacterContainer from "./app/CharacterContainer/CharacterContainer.svelte";
+    import LoadingContainer from "./app/LoadingContainer/LoadingContainer.svelte";
+
+    const queryClient = new QueryClient();
 </script>
 
-<LoggerContext>
-    <ErrorBoundary>
-        <AuthContainer>
-            <TooltipContext>
-                <ManifestProfileContainer>
-                    <Router {routes} />
-                </ManifestProfileContainer>
-            </TooltipContext>
-        </AuthContainer>
-    </ErrorBoundary>
-</LoggerContext>
+<QueryClientProvider client={queryClient}>
+    <LoggerContext>
+        <ErrorBoundary>
+            <AuthContainer>
+                <TooltipContext>
+                    <LoadingContainer>
+                        <ManifestContainer>
+                            <ProfileContainer>
+                                <CharacterContainer>
+                                    <Router {routes} />
+                                </CharacterContainer>
+                            </ProfileContainer>
+                        </ManifestContainer>
+                    </LoadingContainer>
+                </TooltipContext>
+            </AuthContainer>
+        </ErrorBoundary>
+    </LoggerContext>
+</QueryClientProvider>

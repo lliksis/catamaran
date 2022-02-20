@@ -16,6 +16,7 @@
 -->
 <script lang="ts">
     import { setContext } from "svelte";
+    import { setLogger } from "@sveltestack/svelte-query";
     import { Logger } from "api/utils/logger";
 
     const logger = new Logger();
@@ -24,6 +25,11 @@
         getLogger: () => logger,
     });
 
+    setLogger({
+        log: logger.info,
+        error: logger.error,
+        warn: logger.warn,
+    });
 </script>
 
 <slot />

@@ -13,17 +13,26 @@
 </style>
 
 <script lang="ts">
-    import { getContext, onMount } from "svelte";
+    import { getContext } from "svelte";
     import { push } from "svelte-spa-router";
-    import type { BungieMembershipType } from "bungie-api-ts/destiny2";
-    import { fetchResolvedVendors } from "api/destiny2/vendor";
+    import { useQuery } from "@sveltestack/svelte-query";
+    import {
+        BungieMembershipType,
+        DestinyComponentType,
+        getVendors,
+    } from "bungie-api-ts/destiny2";
+    import { resolveVendors } from "api/destiny2/vendor";
     import type { IVendor } from "api/destiny2/vendor";
     import type { ICharacterContext, IManifestContext } from "api/utils/types";
+    import { createFetch, getLogger, loadingStore } from "api/utils";
+    import { getMillisecondsUntilReset } from "api/utils/resetTime";
 
     import Vendor from "../vendor/Vendor.svelte";
     import Emblem from "../character/Emblem.svelte";
     import BountyStoreContext from "../BountyStoreContext/BountyStoreContext.svelte";
     import BountyOverview from "../BountyOverview/BountyOverview.svelte";
+
+    const logger = getLogger();
 
     //:membershipId/:membershipType/:characterId
     export let params: {
@@ -32,25 +41,46 @@
         characterId: string;
     };
 
-    const manifestContext = getContext<IManifestContext>("manifest");
+    const { getDefinitions } = getContext<IManifestContext>("manifest");
+    const definitions = getDefinitions();
 
     const { selectedCharacterStore } =
         getContext<ICharacterContext>("characters");
 
     let vendors: IVendor[];
 
-    let loadingBounties = true;
+    const vendorResponse = useQuery(
+        ["vendors", params.characterId],
+        () => {
+            loadingStore.update((l) => ({
+                closePage: true,
+                text: "loading vendors",
+            }));
+            return getVendors(createFetch(true), {
+                characterId: params.characterId,
+                destinyMembershipId: params.membershipId,
+                membershipType: params.membershipType,
+                components: [
+                    DestinyComponentType.Vendors,
+                    DestinyComponentType.VendorCategories,
+                    DestinyComponentType.VendorSales,
+                    DestinyComponentType.ItemObjectives,
+                ],
+            });
+        },
+        {
+            staleTime: getMillisecondsUntilReset(),
+            cacheTime: Infinity,
+            onSuccess: () => {
+                loadingStore.update((l) => ({ ...l, text: undefined }));
+                logger.info("vendors loaded successfully");
+            },
+        }
+    );
 
-    onMount(async () => {
-        vendors = await fetchResolvedVendors(
-            params.membershipId,
-            params.membershipType,
-            params.characterId,
-            manifestContext.getManifest()
-        );
-
-        loadingBounties = false;
-    });
+    $: if ($vendorResponse.data) {
+        vendors = resolveVendors($vendorResponse.data.Response, definitions);
+    }
 </script>
 
 <BountyStoreContext {params}>
@@ -70,9 +100,7 @@
                 onClick={() => push("/")}
             />
         </div>
-        {#if loadingBounties}
-            <div>loading...</div>
-        {:else}
+        {#if !$vendorResponse.isIdle && !$vendorResponse.isLoading}
             {#each vendors as vendor}
                 <Vendor {vendor} {params} />
             {/each}
