@@ -1,4 +1,8 @@
 <style>
+    .bounty-wrapper {
+        position: relative;
+    }
+
     .bounty {
         display: inline-block;
         position: relative;
@@ -32,36 +36,31 @@
     import type { IBounty } from "api/destiny2";
     import type { ITooltip, ITooltipProgress } from "app/tooltip/Tooltip.types";
     import Tooltip from "../tooltip/Tooltip.svelte";
+    import { clickAnywhereElse } from "api/utils/actions";
+    import ContextMenu from "../ContextMenu/ContextMenu.svelte";
 
     export let bounty: IBounty;
-    export let actionText: string | undefined = undefined;
     export let actionCallback: () => void | undefined = undefined;
     export let disabled: boolean = false;
 
-    let pressing = false;
-    const mouseDown = () => {
-        pressing = true;
-    };
-    const mouseUp = () => {
-        pressing = false;
-    };
-    const mouseLeave = mouseUp;
-    const mouseOut = mouseUp;
-    const blur = mouseUp;
+    let showContextMenu = false;
 
-    const tooltipActionCallback = actionCallback
-        ? () => {
-              actionCallback();
-              pressing = false;
-          }
-        : undefined;
+    const onTrack = actionCallback ? actionCallback : undefined;
+
+    $: menuItems = [
+        {
+            text: "Track Bounty",
+            action: onTrack,
+            disabled: disabled || !onTrack,
+        },
+    ];
 
     $: tooltipContent = {
         header: {
             title: bounty.displayProperties.name,
         },
         body: {
-            error: disabled ? "Can only hold one at a time" : undefined,
+            error: disabled ? "Can only track one at a time" : undefined,
             description: bounty.displayProperties.description,
             progress: bounty.objectiveProgress.map<ITooltipProgress>((p) => ({
                 progressValue: p.progress,
@@ -70,16 +69,6 @@
             })),
         },
     } as ITooltip;
-
-    $: if (!disabled && actionCallback) {
-        tooltipContent.action = {
-            description: actionText,
-            completionTime: 1500,
-            callback: tooltipActionCallback,
-        };
-    } else {
-        tooltipContent.action = undefined;
-    }
 
     const completed = bounty.objectiveProgress.reduce<boolean>(
         (_, progress) => {
@@ -92,39 +81,46 @@
     );
 </script>
 
-<Tooltip content={tooltipContent} {pressing}>
-    <div
-        class="bounty button unselectable"
-        style={`background-image: url(${bounty.displayProperties.icon})`}
-        class:completed
-        class:disabled
-        {disabled}
-        aria-disabled={disabled}
-        tabindex={0}
-        on:mousedown={mouseDown}
-        on:mouseup={mouseUp}
-        on:mouseleave={mouseLeave}
-        on:mouseout={mouseOut}
-        on:blur={blur}
-        on:touchstart={mouseDown}
-        on:touchend={mouseUp}
-    >
-        {#if completed}
-            <svg>
-                <g>
-                    <polygon points="69,69 34,69 69,34" style="fill: #ffd13b" />
-                </g>
-                <g>
-                    <polygon
-                        points="57,65 60,65 60,62 57,62"
-                        style="fill: white"
-                    />
-                    <polygon
-                        points="58,59 59,59 60,50 57,50"
-                        style="fill: white"
-                    />
-                </g>
-            </svg>
-        {/if}
-    </div>
-</Tooltip>
+<div
+    class="bounty-wrapper"
+    on:contextmenu|preventDefault={() => {
+        showContextMenu = true;
+        return false;
+    }}
+    use:clickAnywhereElse
+    on:outclick={() => (showContextMenu = false)}
+>
+    <ContextMenu show={showContextMenu} {menuItems} />
+    <Tooltip content={tooltipContent}>
+        <div
+            class="bounty button unselectable"
+            style={`background-image: url(${bounty.displayProperties.icon})`}
+            class:completed
+            class:disabled
+            {disabled}
+            aria-disabled={disabled}
+            tabindex={0}
+        >
+            {#if completed}
+                <svg>
+                    <g>
+                        <polygon
+                            points="69,69 34,69 69,34"
+                            style="fill: #ffd13b"
+                        />
+                    </g>
+                    <g>
+                        <polygon
+                            points="57,65 60,65 60,62 57,62"
+                            style="fill: white"
+                        />
+                        <polygon
+                            points="58,59 59,59 60,50 57,50"
+                            style="fill: white"
+                        />
+                    </g>
+                </svg>
+            {/if}
+        </div>
+    </Tooltip>
+</div>

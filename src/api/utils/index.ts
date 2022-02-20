@@ -6,3 +6,4 @@ export * from "./logger";
 export * from "./bountyStorage";
 export * from "./loadingStore";
 export * from "./resetTime";
+export * from "./actions";

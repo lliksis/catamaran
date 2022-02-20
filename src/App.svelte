@@ -9,7 +9,6 @@
     import AuthContainer from "./app/login/AuthContainer.svelte";
     import ErrorBoundary from "./app/ErrorBoundary/ErrorBoundary.svelte";
     import ManifestContainer from "./app/ManifestContainer/ManifestContainer.svelte";
-    import TooltipContext from "./app/tooltip/TooltipContext.svelte";
     import ProfileContainer from "./app/ProfileContainer/ProfileContainer.svelte";
     import CharacterContainer from "./app/CharacterContainer/CharacterContainer.svelte";
     import LoadingContainer from "./app/LoadingContainer/LoadingContainer.svelte";
@@ -21,17 +20,15 @@
     <LoggerContext>
         <ErrorBoundary>
             <AuthContainer>
-                <TooltipContext>
-                    <LoadingContainer>
-                        <ManifestContainer>
-                            <ProfileContainer>
-                                <CharacterContainer>
-                                    <Router {routes} />
-                                </CharacterContainer>
-                            </ProfileContainer>
-                        </ManifestContainer>
-                    </LoadingContainer>
-                </TooltipContext>
+                <LoadingContainer>
+                    <ManifestContainer>
+                        <ProfileContainer>
+                            <CharacterContainer>
+                                <Router {routes} />
+                            </CharacterContainer>
+                        </ProfileContainer>
+                    </ManifestContainer>
+                </LoadingContainer>
             </AuthContainer>
         </ErrorBoundary>
     </LoggerContext>

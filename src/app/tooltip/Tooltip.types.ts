@@ -15,16 +15,9 @@ export interface ITooltipProgress {
     description: string;
 }
 
-export interface ITooltipAction {
-    description?: string;
-    completionTime: number;
-    callback?: () => void;
-}
-
 export interface ITooltip {
     header: ITooltipHeader;
     body?: ITooltipBody;
-    action?: ITooltipAction;
 }
 
 export interface ITooltipProps {
