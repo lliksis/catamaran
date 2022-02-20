@@ -25,7 +25,7 @@
     .bounties {
         display: flex;
         flex-wrap: wrap;
-        gap: 5px;
+        gap: 7px;
         min-height: 69px;
     }
 
@@ -57,7 +57,7 @@
         }
     }
 
-    @media only screen and (max-width: 770px) {
+    @media only screen and (max-width: 935px) {
         .overview {
             display: none;
             z-index: 10;

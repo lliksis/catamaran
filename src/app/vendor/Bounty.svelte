@@ -19,7 +19,7 @@
     }
 
     .disabled {
-        filter: brightness(0.6);
+        filter: brightness(0.6) drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.5));
     }
 
     svg {

@@ -11,7 +11,6 @@
         height: var(--emblem-height);
         width: var(--emblem-width);
         background-size: auto 100%;
-        cursor: pointer;
         text-shadow: 1px 1px 1px #0000007f;
         filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.5));
     }
@@ -48,44 +47,27 @@
 
     export let character: IDestinyCharacterComponentOverride;
     export let onClick: (character: IDestinyCharacterComponentOverride) => void;
-    export let variant: "primary" | "secondary" = "primary";
 
-    let hovering = false;
-    $: fullSize = variant === "primary" || hovering;
-
-    $: aspectRatio = fullSize
-        ? { width: 79, height: 16 }
-        : { width: 1, height: 1 };
+    $: aspectRatio = { width: 79, height: 16 };
 
     const height = 64;
     $: width = (height / aspectRatio.height) * aspectRatio.width;
 
     let background = character.emblemBackgroundPath;
-
-    const onMouseEnter = () => {
-        hovering = true;
-    };
-    const onMouseLeave = () => {
-        hovering = false;
-    };
 </script>
 
 <div
     class="emblem-wrapper button"
     style={`background-image: url(${background}); --emblem-height: ${height}px; --emblem-width: ${width}px`}
     id={character.characterId}
-    on:mouseenter={onMouseEnter}
-    on:mouseleave={onMouseLeave}
     on:click={() => onClick(character)}
 >
-    {#if fullSize}
-        <div class="emblem-character-class">
-            {character.class}
-        </div>
-        <div class="emblem-light">
-            <span class="icon-power_small_right light-icon" />
-            {character.light}
-        </div>
-        <div class="emblem-character-race">Human</div>
-    {/if}
+    <div class="emblem-character-class">
+        {character.class}
+    </div>
+    <div class="emblem-light">
+        <span class="icon-power_small_right light-icon" />
+        {character.light}
+    </div>
+    <div class="emblem-character-race">Human</div>
 </div>

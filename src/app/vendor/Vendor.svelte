@@ -24,7 +24,7 @@
         grid-area: bounties;
         align-self: center;
         grid-template-columns: 75px 75px 75px 75px 75px 75px;
-        row-gap: 5px;
+        row-gap: 7px;
     }
 
     .description {

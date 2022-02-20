@@ -1,6 +1,6 @@
 <style>
     .character {
-        padding-left: 8px;
+        padding-left: 10px;
         height: 100px;
         display: flex;
         align-items: center;
@@ -100,7 +100,6 @@
         >
             <Emblem
                 character={$selectedCharacterStore}
-                variant="primary"
                 onClick={() => push("/")}
             />
         </div>
