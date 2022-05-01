@@ -18,7 +18,7 @@ jobs:
                   node-version: 16
 
             - name: "Bump version"
-              run: npm version $VERSION-$BUILD_NUMBER-rc
+              run: npm version $VERSION-$BUILD_NUMBER-rc --git-tag-version=false
 
             - name: "Install dependencies"
               run: npm install
