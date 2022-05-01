@@ -4,6 +4,9 @@ on:
         types: [opened, synchronize]
         branches: [main]
 
+env:
+    VERSION: 0.1.${{ github.run_number }}
+
 jobs:
     # This workflow contains a single job called "build"
     svelte-check:
@@ -20,6 +23,8 @@ jobs:
               run: npm install
             - name: "Validate the source code"
               run: npm run validate
+            - name: "Build code"
+              run: npm run build
 
     bump-version:
         needs: svelte-check
@@ -28,15 +33,8 @@ jobs:
         steps:
             - name: "Checkout source code"
               uses: actions/checkout@v2
-            - name: "Setup Node.js"
-              uses: actions/setup-node@v2
               with:
-                  node-version: 16
-            - name: "Automated version bump"
-              uses: "phips28/gh-action-bump-version@master"
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              with:
-                  default: patch
-                  tag-prefix: "v"
-                  skip-tag: "true"
+                  token: ${{ github.token }}
+            - run: git config --global user.name 'ver-bot'
+            - run: git config --global user.email 'git@github.com'
+            - run: npm version $VERSION -m "Increased version to %s"
