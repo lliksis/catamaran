@@ -36,28 +36,14 @@
     import type { IBounty } from "api/destiny2";
     import type { ITooltip, ITooltipProgress } from "app/tooltip/Tooltip.types";
     import Tooltip from "../tooltip/Tooltip.svelte";
-    import { clickAnywhereElse } from "../../api/utils/actions";
     import ContextMenu from "../ContextMenu/ContextMenu.svelte";
 
     export let bounty: IBounty;
-    export let actionCallback: () => void | undefined = undefined;
+    export let actions: {
+        text: string;
+        action: () => void;
+    }[] = undefined;
     export let disabled: boolean = false;
-
-    let showContextMenu = false;
-    let contextMenu_MousePosition = {
-        x: 0,
-        y: 0,
-    };
-
-    const onTrack = actionCallback ? actionCallback : undefined;
-
-    $: menuItems = [
-        {
-            text: "Track Bounty",
-            action: onTrack,
-            disabled: disabled || !onTrack,
-        },
-    ];
 
     $: tooltipContent = {
         header: {
@@ -85,54 +71,39 @@
     );
 </script>
 
-<ContextMenu
-    show={showContextMenu}
-    mousePosition={contextMenu_MousePosition}
-    {menuItems}
-/>
-<div
-    class="bounty-wrapper"
-    on:contextmenu|preventDefault={(event) => {
-        contextMenu_MousePosition = {
-            x: event.clientX,
-            y: event.clientY,
-        };
-        showContextMenu = true;
-        return false;
-    }}
->
-    <Tooltip preventShowing={showContextMenu} content={tooltipContent}>
-        <div
-            class="bounty button unselectable"
-            style={`background-image: url(${bounty.displayProperties.icon})`}
-            use:clickAnywhereElse
-            class:completed
-            class:disabled
-            {disabled}
-            aria-disabled={disabled}
-            tabindex={0}
-            on:outclick={() => (showContextMenu = false)}
-        >
-            {#if completed}
-                <svg>
-                    <g>
-                        <polygon
-                            points="69,69 34,69 69,34"
-                            style="fill: #ffd13b"
-                        />
-                    </g>
-                    <g>
-                        <polygon
-                            points="57,65 60,65 60,62 57,62"
-                            style="fill: white"
-                        />
-                        <polygon
-                            points="58,59 59,59 60,50 57,50"
-                            style="fill: white"
-                        />
-                    </g>
-                </svg>
-            {/if}
-        </div>
-    </Tooltip>
+<div class="bounty-wrapper">
+    <ContextMenu menuItems={actions} {disabled}>
+        <Tooltip content={tooltipContent}>
+            <div
+                class="bounty button unselectable"
+                style={`background-image: url(${bounty.displayProperties.icon})`}
+                class:completed
+                class:disabled
+                {disabled}
+                aria-disabled={disabled}
+                tabindex={0}
+            >
+                {#if completed}
+                    <svg>
+                        <g>
+                            <polygon
+                                points="69,69 34,69 69,34"
+                                style="fill: #ffd13b"
+                            />
+                        </g>
+                        <g>
+                            <polygon
+                                points="57,65 60,65 60,62 57,62"
+                                style="fill: white"
+                            />
+                            <polygon
+                                points="58,59 59,59 60,50 57,50"
+                                style="fill: white"
+                            />
+                        </g>
+                    </svg>
+                {/if}
+            </div>
+        </Tooltip>
+    </ContextMenu>
 </div>

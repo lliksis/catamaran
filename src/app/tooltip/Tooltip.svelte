@@ -38,9 +38,9 @@
 
     @media only screen and (max-width: 770px) {
         .tooltip {
-            width: 100vw;
+            width: 95vw;
             top: 75px;
-            left: var(--mobileLeft);
+            left: calc(var(--mobileLeft) + 2.5vw);
         }
     }
 </style>

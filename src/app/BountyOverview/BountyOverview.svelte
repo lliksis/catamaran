@@ -96,6 +96,13 @@
 
     const { store, removeBounty } = getContext<IBountyStore>("bounty");
 
+    const createActions = (bounty: IBounty) => [
+        {
+            text: "Untrack Bounty",
+            action: () => removeBounty(bounty),
+        },
+    ];
+
     //expanded css classes will onlz be added to the elements on a mobile breakpoint
     let expanded = false;
     const onExpandableClick = () => (expanded = !expanded);
@@ -147,10 +154,7 @@
         {#if $store.length > 0}
             <div class="bounties">
                 {#each $store as bounty}
-                    <Bounty
-                        {bounty}
-                        actionCallback={() => removeBounty(bounty)}
-                    />
+                    <Bounty {bounty} actions={createActions(bounty)} />
                 {/each}
             </div>
         {:else}

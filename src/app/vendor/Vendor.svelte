@@ -111,6 +111,13 @@
         ? vendor.icon
         : vendor.progression?.icon;
 
+    const createActions = (bounty: IBounty) => [
+        {
+            text: "Track Bounty",
+            action: () => addBounty(bounty),
+        },
+    ];
+
     $: isDisabled = (bounty: IBounty) => {
         return (
             $store.some((b) => b.hash === bounty.hash) ||
@@ -144,7 +151,7 @@
             {#each vendor.bounties as bounty}
                 <Bounty
                     {bounty}
-                    actionCallback={() => addBounty(bounty)}
+                    actions={createActions(bounty)}
                     disabled={isDisabled(bounty)}
                 />
             {/each}
