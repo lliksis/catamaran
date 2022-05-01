@@ -4,9 +4,6 @@ on:
         types: [opened, synchronize]
         branches: [main]
 
-env:
-    VERSION: 0.1.${{ github.run_number }}
-
 jobs:
     # This workflow contains a single job called "build"
     svelte-check:
@@ -25,14 +22,3 @@ jobs:
               run: npm run validate
             - name: "Build code"
               run: npm run build
-
-    bump-version:
-        needs: svelte-check
-        name: "Bump the version number"
-        runs-on: ubuntu-latest
-        steps:
-            - name: Build Number Generator
-              uses: einaregilsson/build-number@v3
-              with:
-                  token: ${{ github.token }}
-            - run: echo $BUILD_NUMBER
