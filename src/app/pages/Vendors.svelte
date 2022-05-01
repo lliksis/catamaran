@@ -48,15 +48,16 @@
     const { getDefinitions } = getContext<IManifestContext>("manifest");
     const definitions = getDefinitions();
 
-    const { selectedCharacterStore } =
-        getContext<ICharacterContext>("characters");
+    const { selectedCharacterStore } = getContext<ICharacterContext>(
+        "characters"
+    );
 
     let vendors: IVendor[];
 
     const vendorResponse = useQuery(
         ["vendors", params.characterId],
         () => {
-            loadingStore.update((l) => ({
+            loadingStore.update(() => ({
                 closePage: true,
                 text: "loading vendors",
             }));

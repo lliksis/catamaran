@@ -6,6 +6,7 @@
     .tooltip {
         position: absolute;
         color: white;
+        background-color: #000000;
         width: 400px;
         z-index: 100;
         top: var(--top);
@@ -13,7 +14,6 @@
         pointer-events: none;
     }
     .header {
-        background-color: #000000;
         font-size: 25px;
         padding: 7px;
     }
@@ -48,6 +48,8 @@
 <script lang="ts">
     import type { ITooltip } from "./Tooltip.types";
     import TooltipProgress from "./TooltipProgress.svelte";
+
+    export let preventShowing: boolean = false;
 
     let element: HTMLElement;
     $: bottom = element?.getBoundingClientRect().bottom + 5 || 0;
@@ -95,7 +97,6 @@
 
         let y = 0;
         const diffY = bottom - innerHeight;
-        console.log(bottom, innerHeight, diffY);
         if (diffY > 0) {
             y = -diffY;
         }
@@ -110,7 +111,7 @@
     on:mousemove={onMouseMove}
     class="tooltip-wrapper"
 >
-    {#if hovering}
+    {#if hovering && !preventShowing}
         <div
             bind:this={element}
             style={`--top: ${position.y}px; --left: ${

@@ -91,7 +91,6 @@
     };
 
     const { inventories } = getContext<ICharacterContext>("characters");
-    $: console.log($inventories);
     let items: IBounty[] = [];
     $: items = $inventories[params.characterId];
 
@@ -150,7 +149,6 @@
                 {#each $store as bounty}
                     <Bounty
                         {bounty}
-                        actionText={"Hold to remove"}
                         actionCallback={() => removeBounty(bounty)}
                     />
                 {/each}

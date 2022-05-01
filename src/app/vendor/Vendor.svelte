@@ -144,7 +144,6 @@
             {#each vendor.bounties as bounty}
                 <Bounty
                     {bounty}
-                    actionText={"Hold to add"}
                     actionCallback={() => addBounty(bounty)}
                     disabled={isDisabled(bounty)}
                 />

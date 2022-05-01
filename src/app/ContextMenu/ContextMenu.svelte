@@ -5,6 +5,8 @@
         box-shadow: 0 4px 5px 3px rgba(0, 0, 0, 0.2);
         background-color: rgb(194, 194, 199);
         z-index: 1;
+        transform: translateX(max(var(--mouse-x), calc(100vw - 100%)))
+            translateY(min(var(--mouse-y), calc(100vh - 100%)));
     }
     .menu.hidden {
         display: none;
@@ -30,6 +32,7 @@
 
 <script lang="ts">
     export let show = false;
+    export let mousePosition: { x: number; y: number };
     export let menuItems: {
         text: string;
         action?: () => void;
@@ -37,7 +40,11 @@
     }[];
 </script>
 
-<div class="menu" style="left: -200px" class:hidden={!show}>
+<div
+    class="menu"
+    style={`--mouse-x: ${mousePosition.x}; --mouse-y: ${mousePosition.y}`}
+    class:hidden={!show}
+>
     <ul class="menu-options">
         {#each menuItems as item}
             <li

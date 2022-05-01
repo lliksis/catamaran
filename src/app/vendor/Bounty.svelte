@@ -36,7 +36,7 @@
     import type { IBounty } from "api/destiny2";
     import type { ITooltip, ITooltipProgress } from "app/tooltip/Tooltip.types";
     import Tooltip from "../tooltip/Tooltip.svelte";
-    import { clickAnywhereElse } from "api/utils/actions";
+    import { clickAnywhereElse } from "../../api/utils/actions";
     import ContextMenu from "../ContextMenu/ContextMenu.svelte";
 
     export let bounty: IBounty;
@@ -44,6 +44,10 @@
     export let disabled: boolean = false;
 
     let showContextMenu = false;
+    let contextMenu_MousePosition = {
+        x: 0,
+        y: 0,
+    };
 
     const onTrack = actionCallback ? actionCallback : undefined;
 
@@ -81,25 +85,33 @@
     );
 </script>
 
+<ContextMenu
+    show={showContextMenu}
+    mousePosition={contextMenu_MousePosition}
+    {menuItems}
+/>
 <div
     class="bounty-wrapper"
-    on:contextmenu|preventDefault={() => {
+    on:contextmenu|preventDefault={(event) => {
+        contextMenu_MousePosition = {
+            x: event.clientX,
+            y: event.clientY,
+        };
         showContextMenu = true;
         return false;
     }}
-    use:clickAnywhereElse
-    on:outclick={() => (showContextMenu = false)}
 >
-    <ContextMenu show={showContextMenu} {menuItems} />
-    <Tooltip content={tooltipContent}>
+    <Tooltip preventShowing={showContextMenu} content={tooltipContent}>
         <div
             class="bounty button unselectable"
             style={`background-image: url(${bounty.displayProperties.icon})`}
+            use:clickAnywhereElse
             class:completed
             class:disabled
             {disabled}
             aria-disabled={disabled}
             tabindex={0}
+            on:outclick={() => (showContextMenu = false)}
         >
             {#if completed}
                 <svg>
