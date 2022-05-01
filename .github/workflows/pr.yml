@@ -31,10 +31,8 @@ jobs:
         name: "Bump the version number"
         runs-on: ubuntu-latest
         steps:
-            - name: "Checkout source code"
-              uses: actions/checkout@v2
+            - name: Build Number Generator
+              uses: einaregilsson/build-number@v3
               with:
                   token: ${{ github.token }}
-            - run: git config --global user.name 'ver-bot'
-            - run: git config --global user.email 'git@github.com'
-            - run: npm version $VERSION -m "Increased version to %s"
+            - run: echo $BUILD_NUMBER
