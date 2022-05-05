@@ -7,6 +7,7 @@
         column-gap: 40px;
         padding: 20px 10px 20px 10px;
         min-height: 150px;
+        color: #333;
         background: linear-gradient(
             to right,
             var(--backgroundColor),
@@ -59,7 +60,7 @@
         }
     }
 
-    @media only screen and (max-width: 770px) {
+    @media only screen and (max-width: 835px) {
         .vendor {
             grid-template-areas:
                 "description"

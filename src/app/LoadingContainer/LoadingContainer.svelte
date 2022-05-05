@@ -26,7 +26,6 @@
         right: 4vw;
         padding: 10px;
         color: white;
-        z-index: 1;
     }
 
     .loading-text-on-page {

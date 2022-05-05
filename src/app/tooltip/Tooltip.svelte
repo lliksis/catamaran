@@ -1,14 +1,10 @@
 <style>
-    .tooltip-wrapper {
-        display: contents;
-    }
-
     .tooltip {
         position: absolute;
         color: white;
         background-color: #000000;
         width: 400px;
-        z-index: 100;
+        z-index: 99999999;
         top: var(--top);
         left: var(--left);
         pointer-events: none;
@@ -105,46 +101,46 @@
     };
 </script>
 
+{#if hovering && !preventShowing}
+    <div
+        bind:this={element}
+        style={`--top: ${position.y}px; --left: ${
+            position.x
+        }px; --mobileLeft: ${-left}px`}
+        class="tooltip"
+    >
+        <div class="header">
+            {header.title}
+            {#if header.subTitle}
+                <div class="subtitle">
+                    {header.subTitle}
+                </div>
+            {/if}
+        </div>
+        {#if body.error}
+            <div class="error">{body.error}</div>
+        {/if}
+        {#if showBody}
+            <div class="content">
+                {#if body.description}
+                    <div class="description">
+                        {body.description}
+                    </div>
+                {/if}
+                {#if body.progress}
+                    {#each body.progress as progress}
+                        <TooltipProgress {progress} />
+                    {/each}
+                {/if}
+            </div>
+        {/if}
+    </div>
+{/if}
+
 <div
     on:mouseover={onMouseOver}
     on:mouseleave={onMouseLeave}
     on:mousemove={onMouseMove}
-    class="tooltip-wrapper"
 >
-    {#if hovering && !preventShowing}
-        <div
-            bind:this={element}
-            style={`--top: ${position.y}px; --left: ${
-                position.x
-            }px; --mobileLeft: ${-left}px`}
-            class="tooltip"
-        >
-            <div class="header">
-                {header.title}
-                {#if header.subTitle}
-                    <div class="subtitle">
-                        {header.subTitle}
-                    </div>
-                {/if}
-            </div>
-            {#if body.error}
-                <div class="error">{body.error}</div>
-            {/if}
-            {#if showBody}
-                <div class="content">
-                    {#if body.description}
-                        <div class="description">
-                            {body.description}
-                        </div>
-                    {/if}
-                    {#if body.progress}
-                        {#each body.progress as progress}
-                            <TooltipProgress {progress} />
-                        {/each}
-                    {/if}
-                </div>
-            {/if}
-        </div>
-    {/if}
     <slot />
 </div>
