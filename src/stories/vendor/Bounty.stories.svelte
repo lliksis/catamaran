@@ -32,9 +32,14 @@
                 },
             ],
         },
-        actionCallback: () => {
-            alert("something happend");
-        },
+        actions: [
+            {
+                text: "do something",
+                action: () => {
+                    alert("something happend");
+                },
+            },
+        ],
     }}
 />
 
@@ -57,5 +62,13 @@
                 },
             ],
         },
+        actions: [
+            {
+                text: "do something",
+                action: () => {
+                    alert("something happend");
+                },
+            },
+        ],
     }}
 />
