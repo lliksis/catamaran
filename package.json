@@ -38,6 +38,7 @@
         "bungie-api-ts": "4.14.0",
         "localforage": "1.10.0",
         "sirv-cli": "1.0.14",
+        "svelte-overlay": "^1.4.1",
         "uuid": "8.3.2"
     },
     "devDependencies": {

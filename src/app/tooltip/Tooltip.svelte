@@ -1,12 +1,9 @@
 <style>
     .tooltip {
-        position: absolute;
         color: white;
         background-color: #000000;
         width: 400px;
-        z-index: 99999999;
-        top: var(--top);
-        left: var(--left);
+        margin: 0 10px;
         pointer-events: none;
     }
     .header {
@@ -32,83 +29,38 @@
         padding: 2px 7px;
     }
 
-    @media only screen and (max-width: 770px) {
+    /* @media only screen and (max-width: 770px) {
         .tooltip {
             width: 95vw;
             top: 75px;
             left: calc(var(--mobileLeft) + 2.5vw);
         }
-    }
+    } */
 </style>
 
 <script lang="ts">
+    import Overlay from "svelte-overlay";
     import type { ITooltip } from "./Tooltip.types";
     import TooltipProgress from "./TooltipProgress.svelte";
-
-    export let preventShowing: boolean = false;
-
-    let element: HTMLElement;
-    $: bottom = element?.getBoundingClientRect().bottom + 5 || 0;
-    $: left = element?.getBoundingClientRect().left || 0;
 
     export let content: ITooltip;
     $: header = content.header;
     $: body = content.body;
     $: showBody = body && (body.description || body.progress);
-
-    let position = { x: 0, y: 0 };
-    let hovering = false;
-
-    const onMouseOver = (
-        event: MouseEvent & {
-            currentTarget: EventTarget & HTMLSpanElement;
-        }
-    ) => {
-        hovering = true;
-        calculatePosition(event);
-    };
-    const onMouseLeave = () => {
-        hovering = false;
-    };
-    const onMouseMove = (
-        event: MouseEvent & {
-            currentTarget: EventTarget & HTMLDivElement;
-        }
-    ) => {
-        calculatePosition(event);
-    };
-
-    const calculatePosition = (
-        event: MouseEvent & {
-            currentTarget: EventTarget & HTMLSpanElement;
-        }
-    ) => {
-        const { pageX } = event;
-        const { innerWidth, innerHeight } = window;
-
-        let x = 75;
-        if (pageX + 430 > innerWidth) {
-            x = -405;
-        }
-
-        let y = 0;
-        const diffY = bottom - innerHeight;
-        if (diffY > 0) {
-            y = -diffY;
-        }
-
-        position = { x, y };
-    };
 </script>
 
-{#if hovering && !preventShowing}
+<Overlay position="right-bottom" zIndex="999" style="z-index: auto">
     <div
-        bind:this={element}
-        style={`--top: ${position.y}px; --left: ${
-            position.x
-        }px; --mobileLeft: ${-left}px`}
-        class="tooltip"
+        slot="parent"
+        let:open
+        let:close
+        on:mouseenter={open}
+        on:mouseleave={close}
     >
+        <slot />
+    </div>
+
+    <div slot="content" class="tooltip">
         <div class="header">
             {header.title}
             {#if header.subTitle}
@@ -135,12 +87,4 @@
             </div>
         {/if}
     </div>
-{/if}
-
-<div
-    on:mouseover={onMouseOver}
-    on:mouseleave={onMouseLeave}
-    on:mousemove={onMouseMove}
->
-    <slot />
-</div>
+</Overlay>
