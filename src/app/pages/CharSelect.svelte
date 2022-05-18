@@ -59,6 +59,7 @@
 
 <script lang="ts">
     import { getContext } from "svelte";
+    import { fade } from "svelte/transition";
     import { push } from "svelte-spa-router";
     import type { DestinyProfileUserInfoCard } from "bungie-api-ts/destiny2";
     import type { IDestinyCharacterComponentOverride } from "api/destiny2/profile";
@@ -83,7 +84,7 @@
     };
 </script>
 
-<div class="character-selection">
+<div in:fade class="character-selection">
     <div class="preview">
         <img
             src="https://freesvg.org/img/paro_AL_standing.png"
@@ -97,8 +98,8 @@
                 {"#" + profile.bungieGlobalDisplayNameCode}
             </span>
         </div>
-        {#each characters as char}
-            <Emblem character={char} onClick={onClickCharacter} />
+        {#each characters as char, index}
+            <Emblem {index} character={char} onClick={onClickCharacter} />
         {/each}
     </div>
 </div>

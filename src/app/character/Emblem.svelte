@@ -43,8 +43,10 @@
 </style>
 
 <script lang="ts">
+    import { fade } from "svelte/transition";
     import type { IDestinyCharacterComponentOverride } from "api/destiny2/profile";
 
+    export let index = 0;
     export let character: IDestinyCharacterComponentOverride;
     export let onClick: (character: IDestinyCharacterComponentOverride) => void;
 
@@ -57,6 +59,7 @@
 </script>
 
 <div
+    in:fade={{ delay: index * 350, duration: 500 }}
     class="emblem-wrapper button"
     style={`background-image: url(${background}); --emblem-height: ${height}px; --emblem-width: ${width}px`}
     id={character.characterId}

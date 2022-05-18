@@ -76,6 +76,7 @@
 
 <script lang="ts">
     import { getContext } from "svelte";
+    import { fade } from "svelte/transition";
     import type { BungieMembershipType } from "bungie-api-ts/destiny2";
     import type { IBountyStore } from "api/utils";
     import * as vendorConf from "../../vendorConf.json";
@@ -84,6 +85,7 @@
     import Icon from "./Icon.svelte";
     import type { ICharacterContext } from "api/utils/types";
 
+    export let index = 0;
     export let vendor: IVendor;
     export let params: {
         membershipId: string;
@@ -128,7 +130,11 @@
 </script>
 
 {#if !ignore}
-    <div class="vendor" style="--backgroundColor: {backgroundColor}">
+    <div
+        in:fade={{ delay: index * 100, duration: 500 }}
+        class="vendor"
+        style="--backgroundColor: {backgroundColor}"
+    >
         <div class="icon">
             {#if hasIcon}
                 <Icon

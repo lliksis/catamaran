@@ -106,8 +106,8 @@
                 />
             </div>
             {#if !$vendorResponse.isIdle && !$vendorResponse.isLoading}
-                {#each vendors as vendor}
-                    <Vendor {vendor} {params} />
+                {#each vendors as vendor, index}
+                    <Vendor {index} {vendor} {params} />
                 {/each}
             {/if}
         </div>

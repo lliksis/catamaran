@@ -33,6 +33,7 @@
 </style>
 
 <script lang="ts">
+    import { fade } from "svelte/transition";
     import type { IBounty } from "api/destiny2";
     import type { ITooltip, ITooltipProgress } from "app/tooltip/Tooltip.types";
     import Tooltip from "../tooltip/Tooltip.svelte";
@@ -71,7 +72,7 @@
     );
 </script>
 
-<div class="bounty-wrapper">
+<div in:fade class="bounty-wrapper">
     <ContextMenu menuItems={actions} {disabled}>
         <Tooltip content={tooltipContent}>
             <div
