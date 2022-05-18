@@ -67,10 +67,12 @@ body {
     user-select: none;
 }
 
-.tooltip .content-wrapper {
-    border: 1px solid red;
-    top: 10px !important;
-    left: -73px !important;
+@media only screen and (max-width: 930px) {
+    .tooltip .content-wrapper {
+        border: 1px solid red;
+        top: 10px !important;
+        left: -73px !important;
+    }
 }
 
 /* icomoon styles */
