@@ -1,5 +1,6 @@
 {
-    "tabWidth": 4,
-    "semi": true,
-    "svelteSortOrder": "scripts-markup-styles"
+	"useTabs": true,
+	"singleQuote": true,
+	"trailingComma": "none",
+	"printWidth": 100
 }

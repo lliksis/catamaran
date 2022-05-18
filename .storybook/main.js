@@ -6,9 +6,10 @@ module.exports = {
   "addons": [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
-    "@storybook/addon-svelte-csf"
+    "@storybook/addon-interactions"
   ],
+  "framework": "@storybook/svelte",
   "svelteOptions": {
-    "preprocess": require("svelte-preprocess")()
+    "preprocess": require("../svelte.config.js").preprocess
   }
 }
