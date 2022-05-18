@@ -1,6 +1,6 @@
 <style>
-    .characters {
-        padding-left: 8px;
+    .character {
+        padding-left: 10px;
         height: 100px;
         display: flex;
         align-items: center;
@@ -13,7 +13,7 @@
 </style>
 
 <script lang="ts">
-    import { getContext } from "svelte";
+    import { getContext, onMount } from "svelte";
     import { push } from "svelte-spa-router";
     import { useQuery } from "@sveltestack/svelte-query";
     import {
@@ -31,6 +31,7 @@
     import Emblem from "../character/Emblem.svelte";
     import BountyStoreContext from "../BountyStoreContext/BountyStoreContext.svelte";
     import BountyOverview from "../BountyOverview/BountyOverview.svelte";
+    import SplitLayout from "../layout/SplitLayout.svelte";
 
     const logger = getLogger();
 
@@ -40,6 +41,10 @@
         membershipType: BungieMembershipType;
         characterId: string;
     };
+
+    onMount(() => {
+        loadingStore.update((l) => ({ ...l, closePage: true }));
+    });
 
     const { getDefinitions } = getContext<IManifestContext>("manifest");
     const definitions = getDefinitions();
@@ -52,7 +57,7 @@
     const vendorResponse = useQuery(
         ["vendors", params.characterId],
         () => {
-            loadingStore.update((l) => ({
+            loadingStore.update(() => ({
                 closePage: true,
                 text: "loading vendors",
             }));
@@ -84,26 +89,27 @@
 </script>
 
 <BountyStoreContext {params}>
-    <BountyOverview {params} />
-    <div>
-        <div
-            class="characters"
-            style="--backgroundColor: 
-				rgba({$selectedCharacterStore.emblemColor.red}, 
-					{$selectedCharacterStore.emblemColor.green},
-					{$selectedCharacterStore.emblemColor.blue},
-					{$selectedCharacterStore.emblemColor.alpha})"
-        >
-            <Emblem
-                character={$selectedCharacterStore}
-                variant="primary"
-                onClick={() => push("/")}
-            />
+    <SplitLayout>
+        <BountyOverview {params} slot="side-panel" />
+        <div slot="main-panel">
+            <div
+                class="character"
+                style="--backgroundColor: 
+					rgba({$selectedCharacterStore.emblemColor.red}, 
+						{$selectedCharacterStore.emblemColor.green},
+						{$selectedCharacterStore.emblemColor.blue},
+						{$selectedCharacterStore.emblemColor.alpha})"
+            >
+                <Emblem
+                    character={$selectedCharacterStore}
+                    onClick={() => push("/")}
+                />
+            </div>
+            {#if !$vendorResponse.isIdle && !$vendorResponse.isLoading}
+                {#each vendors as vendor, index}
+                    <Vendor {index} {vendor} {params} />
+                {/each}
+            {/if}
         </div>
-        {#if !$vendorResponse.isIdle && !$vendorResponse.isLoading}
-            {#each vendors as vendor}
-                <Vendor {vendor} {params} />
-            {/each}
-        {/if}
-    </div>
+    </SplitLayout>
 </BountyStoreContext>

@@ -74,8 +74,8 @@ export const resolveVendors = (
                     const itemObjectives =
                         itemComponents[vendorHash].objectives.data[saleHash]
                             .objectives;
-                    const objectiveProgress: IBountyObjective[] =
-                        itemObjectives.map((obj) => {
+                    const objectiveProgress: IBountyObjective[] = itemObjectives.map(
+                        (obj) => {
                             return {
                                 progress: 0,
                                 completionValue: obj.completionValue,
@@ -84,7 +84,8 @@ export const resolveVendors = (
                                         obj.objectiveHash
                                     ].progressDescription,
                             };
-                        });
+                        }
+                    );
                     resolvedItems.push({
                         ...item,
                         displayProperties: {
@@ -106,5 +107,6 @@ export const resolveVendors = (
             });
         }
     }
+    console.log(resolvedVendors);
     return resolvedVendors;
 };

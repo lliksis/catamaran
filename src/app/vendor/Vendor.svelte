@@ -7,6 +7,7 @@
         column-gap: 40px;
         padding: 20px 10px 20px 10px;
         min-height: 150px;
+        color: #333;
         background: linear-gradient(
             to right,
             var(--backgroundColor),
@@ -24,7 +25,7 @@
         grid-area: bounties;
         align-self: center;
         grid-template-columns: 75px 75px 75px 75px 75px 75px;
-        row-gap: 5px;
+        row-gap: 7px;
     }
 
     .description {
@@ -59,7 +60,7 @@
         }
     }
 
-    @media only screen and (max-width: 770px) {
+    @media only screen and (max-width: 835px) {
         .vendor {
             grid-template-areas:
                 "description"
@@ -75,6 +76,7 @@
 
 <script lang="ts">
     import { getContext } from "svelte";
+    import { fade } from "svelte/transition";
     import type { BungieMembershipType } from "bungie-api-ts/destiny2";
     import type { IBountyStore } from "api/utils";
     import * as vendorConf from "../../vendorConf.json";
@@ -83,6 +85,7 @@
     import Icon from "./Icon.svelte";
     import type { ICharacterContext } from "api/utils/types";
 
+    export let index = 0;
     export let vendor: IVendor;
     export let params: {
         membershipId: string;
@@ -111,6 +114,13 @@
         ? vendor.icon
         : vendor.progression?.icon;
 
+    const createActions = (bounty: IBounty) => [
+        {
+            text: "Track Bounty",
+            action: () => addBounty(bounty),
+        },
+    ];
+
     $: isDisabled = (bounty: IBounty) => {
         return (
             $store.some((b) => b.hash === bounty.hash) ||
@@ -120,7 +130,11 @@
 </script>
 
 {#if !ignore}
-    <div class="vendor" style="--backgroundColor: {backgroundColor}">
+    <div
+        in:fade={{ delay: index * 100, duration: 500 }}
+        class="vendor"
+        style="--backgroundColor: {backgroundColor}"
+    >
         <div class="icon">
             {#if hasIcon}
                 <Icon
@@ -144,8 +158,7 @@
             {#each vendor.bounties as bounty}
                 <Bounty
                     {bounty}
-                    actionText={"Hold to add"}
-                    actionCallback={() => addBounty(bounty)}
+                    actions={createActions(bounty)}
                     disabled={isDisabled(bounty)}
                 />
             {/each}

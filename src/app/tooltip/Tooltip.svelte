@@ -1,87 +1,95 @@
 <style>
-    .tooltip-wrapper {
-        display: contents;
+    .tooltip {
+        color: white;
+        background-color: #000000;
+        width: 400px;
+        margin: 0 10px;
+        pointer-events: none;
     }
+    .header {
+        font-size: 25px;
+        padding: 7px;
+    }
+    .header > .subtitle {
+        font-size: 15px;
+        font-weight: 600;
+        color: #ffffff;
+        padding-left: 3px;
+    }
+    .content {
+        background-color: #111111;
+        opacity: 0.9;
+        padding: 7px;
+    }
+    .description {
+        margin-bottom: 7px;
+    }
+    .error {
+        background-color: #710000;
+        padding: 2px 7px;
+    }
+
+    /* @media only screen and (max-width: 770px) {
+        .tooltip {
+            width: 95vw;
+            top: 75px;
+            left: calc(var(--mobileLeft) + 2.5vw);
+        }
+    } */
 </style>
 
 <script lang="ts">
-    import { getContext, onDestroy } from "svelte";
-    import type { Writable } from "svelte/store";
-
-    import type { ITooltip, ITooltipProps } from "./Tooltip.types";
+    import Overlay from "svelte-overlay";
+    import type { ITooltip } from "./Tooltip.types";
+    import TooltipProgress from "./TooltipProgress.svelte";
 
     export let content: ITooltip;
-    const tooltipContent = getContext<Writable<ITooltip>>("tooltip-content");
-
-    const tooltipProps = getContext<Writable<ITooltipProps>>("tooltip");
-    export let pressing: boolean = false;
-    $: tooltipProps.update((tooltip) => {
-        tooltip.pressing = pressing;
-        return tooltip;
-    });
-
-    const onMouseOver = (
-        event: MouseEvent & {
-            currentTarget: EventTarget & HTMLSpanElement;
-        }
-    ) => {
-        tooltipContent.set(content);
-        tooltipProps.update((tooltip) => {
-            tooltip.isHovered = true;
-            return tooltip;
-        });
-        calculatePosition(event);
-    };
-    const onMouseLeave = () => {
-        tooltipProps.update((tooltip) => {
-            tooltip.isHovered = false;
-            tooltip.x = 0;
-            tooltip.y = 0;
-            return tooltip;
-        });
-    };
-    const onMouseMove = (
-        event: MouseEvent & {
-            currentTarget: EventTarget & HTMLDivElement;
-        }
-    ) => {
-        calculatePosition(event);
-    };
-
-    const calculatePosition = (
-        event: MouseEvent & {
-            currentTarget: EventTarget & HTMLSpanElement;
-        }
-    ) => {
-        const { pageX, pageY } = event;
-        const { innerWidth } = window;
-
-        let x = 0;
-        if (pageX + 430 > innerWidth) {
-            x = pageX - 450;
-        } else {
-            x = pageX;
-        }
-        tooltipProps.update((tooltip) => {
-            tooltip.x = x;
-            tooltip.y = pageY;
-            return tooltip;
-        });
-    };
-
-    onDestroy(() => {
-        tooltipProps.update((tooltip) => {
-            tooltip.isHovered = false;
-            return tooltip;
-        });
-    });
+    $: header = content.header;
+    $: body = content.body;
+    $: showBody = body && (body.description || body.progress);
 </script>
 
-<div
-    on:mouseover={onMouseOver}
-    on:mouseleave={onMouseLeave}
-    on:mousemove={onMouseMove}
-    class="tooltip-wrapper"
+<Overlay
+    position="right-bottom"
+    class="tooltip"
+    zIndex="999"
+    style="z-index: auto"
 >
-    <slot />
-</div>
+    <div
+        slot="parent"
+        let:open
+        let:close
+        on:mouseenter={open}
+        on:mouseleave={close}
+    >
+        <slot />
+    </div>
+
+    <div slot="content" class="tooltip">
+        <div class="header">
+            {header.title}
+            {#if header.subTitle}
+                <div class="subtitle">
+                    {header.subTitle}
+                </div>
+            {/if}
+        </div>
+        {#if body.error}
+            <div class="error">{body.error}</div>
+        {/if}
+        {#if showBody}
+            <div class="content">
+                {#if body.description}
+                    <div class="description">
+                        {body.description}
+                    </div>
+                {/if}
+                {#if body.progress}
+                    {#each body.progress as progress}
+                        <TooltipProgress {progress} />
+                    {/each}
+                {/if}
+            </div>
+        {/if}
+    </div>
+</Overlay>
