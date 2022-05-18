@@ -49,7 +49,12 @@
     $: showBody = body && (body.description || body.progress);
 </script>
 
-<Overlay position="right-bottom" zIndex="999" style="z-index: auto">
+<Overlay
+    position="right-bottom"
+    class="tooltip"
+    zIndex="999"
+    style="z-index: auto"
+>
     <div
         slot="parent"
         let:open

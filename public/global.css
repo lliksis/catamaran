@@ -67,6 +67,12 @@ body {
     user-select: none;
 }
 
+.tooltip .content-wrapper {
+    border: 1px solid red;
+    top: 10px !important;
+    left: -73px !important;
+}
+
 /* icomoon styles */
 [class^="icon-"],
 [class*=" icon-"] {
