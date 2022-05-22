@@ -1,6 +1,7 @@
 <script lang="ts">
-	export let href: string;
+	import { getAuthorizationURL } from '$lib/api/utils';
 
+	const href = getAuthorizationURL();
 	const onClick = () => {
 		window.location.href = href;
 	};

@@ -1,7 +1,5 @@
 import { variables } from '$lib/variables';
 import { v4 } from 'uuid';
-import { authStorage } from '../staticStorage';
-import type { IAuthToken } from './login.types';
 
 /**
  * Gets the URL to login into bnet with all params added.
@@ -21,43 +19,6 @@ export const getAuthorizationURL = () => {
 };
 
 const tokenUrl = 'https://www.bungie.net/platform/app/oauth/token/';
-
-/**
- * Checks if an auth token is already locally stored.
- * If yes and the accesToken is already expired but not the refreshToken, this will fetch a new one.
- * @returns true if a token is locally set or was refreshed. false if none is set or the refreshToken is expired.
- */
-export const checkForAuthToken = async () => {
-	const localToken = await authStorage?.getItem<IAuthToken>('token');
-	const dateNow = Date.now() / 1000;
-
-	if (!localToken || dateNow > localToken.refreshToken.expiresOn) {
-		return false;
-	} else if (dateNow > localToken.accessToken.expiresOn) {
-		await refreshAuthToken(localToken.refreshToken.token);
-	}
-	return true;
-};
-
-/**
- * Refreshes the accessToken with the refreshToken passed.
- * @param refreshToken The locally stored refreshToken.
- */
-export const refreshAuthToken = async (refreshToken: string) => {
-	const authCode = btoa(`${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`);
-
-	const response = await fetch(tokenUrl, {
-		method: 'POST',
-		body: `grant_type=refresh_token&refresh_token=${refreshToken}`,
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded',
-			Authorization: `Basic ${authCode}`
-		}
-	});
-	const responseToken = await response.json();
-	const authToken = mapResponseToToken(responseToken);
-	authStorage?.setItem('token', authToken);
-};
 
 /**
  * Refreshes the accessToken with the refreshToken passed.
@@ -95,7 +56,6 @@ export const fetchAuthToken = async (code: string) => {
 	});
 	const responseToken = await response.json();
 	const authToken = mapResponseToToken(responseToken);
-	authStorage?.setItem('token', authToken);
 	return authToken;
 };
 

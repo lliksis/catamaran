@@ -1,7 +1,6 @@
 import type { HttpClientConfig, ServerResponse } from 'bungie-api-ts/destiny2';
 import { PlatformErrorCodes } from 'bungie-api-ts/destiny2';
 import { BungieError, HttpStatusError } from '../Errors';
-import { authStorage } from './staticStorage';
 import type { IAuthToken } from './login';
 
 /**
@@ -26,9 +25,7 @@ export const createFetch = (withOAuth?: boolean) => {
 		}
 
 		if (withOAuth) {
-			const tokenValue = (
-				(await authStorage?.getItem<IAuthToken>('token')) ?? { accessToken: { token: '' } }
-			).accessToken.token;
+			const tokenValue = { accessToken: { token: '' } }.accessToken.token;
 			headers['Authorization'] = `Bearer ${tokenValue}`;
 		}
 
