@@ -6,8 +6,9 @@ import { createFetch } from "./sharedFetch";
 import type { ILogger } from "./logger";
 import { checkStore, manifestStore } from "./staticStorage";
 import { bngBaseUrl, IDefinitions, IManifestDefinitions } from "./types";
+import { loadingStore } from "./loadingStore";
 
-const componentList: DestinyManifestComponentName[] = [
+export const componentList: DestinyManifestComponentName[] = [
     "DestinyVendorDefinition",
     "DestinyVendorGroupDefinition",
     "DestinyActivityDefinition",
@@ -34,8 +35,10 @@ export const initializeManifest = async (logger?: ILogger) => {
 
     let definitions: IDefinitions = {};
 
+    loadingStore.update((l) => ({ ...l, text: "loading missing definitions" }));
+
     for (const component of componentList) {
-        if ((await isTableDeleted(component)) || updateAll) {
+        if ((await isTableDeletedAsync(component)) || updateAll) {
             logger?.debug(`fetching ${component} from bungie api`);
             const endPoint = manifestJsonComponents[component];
             const response = await fetch(bngBaseUrl + endPoint);
@@ -57,7 +60,7 @@ export const initializeManifest = async (logger?: ILogger) => {
  * @param manifestJson The manifests endpoint.
  * @returns true if stored and manifest are the same; otherwise false.
  */
-const isCurrentVersion = async (manifestJson: string) => {
+export const isCurrentVersion = async (manifestJson: string) => {
     const storedJson = await checkStore.getItem("ver");
     if (storedJson !== manifestJson) {
         //update stored version
@@ -72,7 +75,7 @@ const isCurrentVersion = async (manifestJson: string) => {
  * @param component The component name to search for.
  * @returns true if the table doesn't exist; otherwise false.
  */
-const isTableDeleted = async (component: string) => {
+export const isTableDeletedAsync = async (component: string) => {
     const item = await manifestStore.getItem(component);
     return item === null;
 };

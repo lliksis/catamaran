@@ -1,0 +1,25 @@
+{
+    "name": "Bounty Tracker",
+    "short_name": "Bounty Tracker",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#fff",
+    "description": "Organize your bounties",
+    "icons": [
+        {
+            "src": "/bounty-tracker-72.png",
+            "sizes": "72x72",
+            "type": "image/png"
+        },
+        {
+            "src": "bounty-tracker-144.png",
+            "sizes": "144x144",
+            "type": "image/png"
+        },
+        {
+            "src": "bounty-tracker-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        }
+    ]
+}

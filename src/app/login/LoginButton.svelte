@@ -19,14 +19,16 @@
         color: white;
         text-shadow: 1px 1px 1px var(--text-border-color);
     }
-
 </style>
 
 <script>
     export let href;
 
+    const onClick = () => {
+        window.location.href = href;
+    };
 </script>
 
-<div class="login button">
-    <a class="login-link" {href}> Login via Bungie </a>
+<div class="login button" on:click={onClick}>
+    <span class="login-link">Login via Bungie</span>
 </div>

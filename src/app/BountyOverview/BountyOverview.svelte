@@ -1,12 +1,6 @@
 <style>
     .overview {
-        position: fixed;
         box-sizing: border-box;
-        top: 0;
-        right: 0;
-        background-color: rgba(0, 0, 0, 0.2);
-        height: 100%;
-        width: 35%;
         padding: 10px;
         padding-top: 15px;
         border-left: 1px solid rgba(0, 0, 0, 0.1);
@@ -15,7 +9,7 @@
     .bounties {
         display: flex;
         flex-wrap: wrap;
-        gap: 5px;
+        gap: 7px;
         min-height: 69px;
     }
 </style>
@@ -26,6 +20,7 @@
     import Bounty from "../vendor/Bounty.svelte";
     import { getContext } from "svelte";
     import type { IBounty } from "api/destiny2";
+    import type { ICharacterContext } from "api/utils/types";
 
     export let params: {
         membershipId: string;
@@ -33,37 +28,42 @@
         characterId: string;
     };
 
-    const { getInventories } = getContext("characters");
-    const inventories = getInventories();
-    const items: IBounty[] = inventories[params.characterId];
+    const { inventories } = getContext<ICharacterContext>("characters");
+    let items: IBounty[] = [];
+    $: items = $inventories[params.characterId];
 
     const { store, removeBounty } = getContext<IBountyStore>("bounty");
+
+    const createActions = (bounty: IBounty) => [
+        {
+            text: "Untrack Bounty",
+            action: () => removeBounty(bounty),
+        },
+    ];
 </script>
 
-<div class="overview">
-    <h1>Inventory</h1>
-    {#if items.length > 0}
-        <div class="bounties">
-            {#each items as bounty}
-                <Bounty {bounty} />
-            {/each}
-        </div>
-    {:else}
-        <p>There are no bounties in your Inventory</p>
-    {/if}
-    <hr />
-    <h1>Tracked Bounties</h1>
-    {#if $store.length > 0}
-        <div class="bounties">
-            {#each $store as bounty}
-                <Bounty
-                    {bounty}
-                    actionText={"Hold to remove"}
-                    actionCallback={() => removeBounty(bounty)}
-                />
-            {/each}
-        </div>
-    {:else}
-        <p>There are currently no bounties tracked</p>
-    {/if}
+<div class="overview_container">
+    <div class="overview">
+        <h1>Inventory</h1>
+        {#if items.length > 0}
+            <div class="bounties">
+                {#each items as bounty}
+                    <Bounty {bounty} />
+                {/each}
+            </div>
+        {:else}
+            <p>There are no bounties in your Inventory</p>
+        {/if}
+        <hr />
+        <h1>Tracked Bounties</h1>
+        {#if $store.length > 0}
+            <div class="bounties">
+                {#each $store as bounty}
+                    <Bounty {bounty} actions={createActions(bounty)} />
+                {/each}
+            </div>
+        {:else}
+            <p>There are currently no bounties tracked</p>
+        {/if}
+    </div>
 </div>

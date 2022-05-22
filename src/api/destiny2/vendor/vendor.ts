@@ -1,11 +1,7 @@
 import {
-    BungieMembershipType,
-    DestinyComponentType,
     DestinyItemType,
     DestinyVendorsResponse,
-    getVendors,
 } from "bungie-api-ts/destiny2";
-import { createFetch } from "api/utils";
 import { bngBaseUrl, IManifestDefinitions } from "api/utils/types";
 import type {
     IBountyObjective,
@@ -15,49 +11,15 @@ import type {
 } from "./vendor.types";
 
 /**
- * Fetches vendor information based on the account and current character.
- * @param destinyMembershipId The accounts membershipId.
- * @param membershipType The accoutns membershipType.
- * @param characterId The current selected character.
- * @param defintions All stored definitions.
- * @returns The vendors as IVendor[]
- */
-export const fetchResolvedVendors = async (
-    destinyMembershipId: string,
-    membershipType: BungieMembershipType,
-    characterId: string,
-    defintions: IManifestDefinitions
-): Promise<IVendor[]> => {
-    const response = await getVendors(createFetch(true), {
-        characterId,
-        destinyMembershipId,
-        membershipType,
-        components: [
-            DestinyComponentType.Vendors,
-            DestinyComponentType.VendorCategories,
-            DestinyComponentType.VendorSales,
-            DestinyComponentType.ItemObjectives,
-        ],
-    });
-
-    const resolvedVendors: IVendor[] = await resolveVendors(
-        response.Response,
-        defintions
-    );
-
-    return resolvedVendors;
-};
-
-/**
  * Converts the vendors form getVendors into IVendor[].
  * @param vendorResponse The vendorResponse from getVendors.
  * @param defintions All manifests definitions.
  * @returns vendors passed as IVendor[]. Vendors that don't provide quests are filtered out.
  */
-const resolveVendors = async (
+export const resolveVendors = (
     vendorResponse: DestinyVendorsResponse,
     defintions: IManifestDefinitions
-): Promise<IVendor[]> => {
+): IVendor[] => {
     const { vendors, vendorGroups, sales, itemComponents } = vendorResponse;
 
     const resolvedVendors: IVendor[] = [];
@@ -145,5 +107,6 @@ const resolveVendors = async (
             });
         }
     }
+    console.log(resolvedVendors);
     return resolvedVendors;
 };
