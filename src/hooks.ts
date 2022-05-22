@@ -1,6 +1,6 @@
 import type { Handle } from '@sveltejs/kit';
 import * as cookie from 'cookie';
-import { fetchAuthToken, getRefreshedAuthToken, IAuthToken } from '$lib/api/utils';
+import { fetchAuthToken, getRefreshedAuthToken, IAuthToken, stringify } from '$lib/api/utils';
 
 /** @type {import('@sveltejs/kit').Handle} */
 export const handle: Handle = async ({ event, resolve }) => {
@@ -48,13 +48,4 @@ export const handle: Handle = async ({ event, resolve }) => {
 	}
 
 	return response;
-};
-
-const stringify = (object: any) => {
-	for (const key in object) {
-		if (Object.prototype.hasOwnProperty.call(object, key)) {
-			object[key] = object[key]?.toString();
-		}
-	}
-	return JSON.stringify(object);
 };

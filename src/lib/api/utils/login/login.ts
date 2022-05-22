@@ -44,7 +44,7 @@ export const getRefreshedAuthToken = async (refreshToken: string) => {
  * @param code The code provied by the bnet authorization endpoint.
  */
 export const fetchAuthToken = async (code: string) => {
-	const authCode = btoa(`${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`);
+	const authCode = btoa(`${variables.CLIENT_ID}:${variables.CLIENT_SECRET}`);
 
 	const response = await fetch(tokenUrl, {
 		method: 'POST',
