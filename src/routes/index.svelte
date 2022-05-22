@@ -1,6 +1,11 @@
 <script lang="ts">
-	import AuthContainer from '../app/login/AuthContainer.svelte';
+	import { getAuthorizationURL } from '$lib/api/utils';
+	import LoginButton from '$lib/app/login/LoginButton.svelte';
+
+	const href = getAuthorizationURL();
 </script>
 
-<h1>Welcome to Catamaran</h1>
-<AuthContainer />
+<div>
+	<h1>Welcome to Catamaran</h1>
+	<LoginButton {href} />
+</div>
