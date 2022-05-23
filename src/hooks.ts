@@ -1,6 +1,6 @@
-import type { Handle } from '@sveltejs/kit';
+import type { Handle, RequestEvent } from '@sveltejs/kit';
 import * as cookie from 'cookie';
-import { fetchAuthToken, getRefreshedAuthToken, IAuthToken, stringify } from '$lib/api/utils';
+import { fetchAuthToken, getRefreshedAuthToken, IAuthToken } from '$lib/api/utils';
 
 /** @type {import('@sveltejs/kit').Handle} */
 export const handle: Handle = async ({ event, resolve }) => {
@@ -12,7 +12,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 		event.locals.authToken = authToken;
 		response.headers.set(
 			'set-cookie',
-			cookie.serialize('authToken', stringify(event.locals.authToken), {
+			cookie.serialize('authToken', JSON.stringify(event.locals.authToken), {
 				path: '/',
 				httpOnly: true,
 				sameSite: 'strict'
@@ -39,7 +39,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 		response.headers.set(
 			'set-cookie',
-			cookie.serialize('authToken', stringify(event.locals.authToken), {
+			cookie.serialize('authToken', JSON.stringify(event.locals.authToken), {
 				path: '/',
 				httpOnly: true,
 				sameSite: 'strict'
@@ -48,4 +48,11 @@ export const handle: Handle = async ({ event, resolve }) => {
 	}
 
 	return response;
+};
+
+/** @type {import('@sveltejs/kit').GetSession} */
+export const getSession = (event: RequestEvent) => {
+	const cookies = cookie.parse(event.request.headers.get('cookie') || '');
+	const authCookie = cookies['authToken'];
+	return { authToken: authCookie ? JSON.parse(authCookie) : undefined };
 };

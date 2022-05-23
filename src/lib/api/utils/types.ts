@@ -33,3 +33,15 @@ export interface IDefinitions {
 }
 
 export const bngBaseUrl = 'https://www.bungie.net';
+
+export const DefinitionList = [
+	'DestinyVendorDefinition',
+	'DestinyVendorGroupDefinition',
+	'DestinyActivityDefinition',
+	'DestinyDestinationDefinition',
+	'DestinyObjectiveDefinition',
+	'DestinyClassDefinition',
+	'DestinyInventoryItemDefinition',
+	'DestinyInventoryBucketDefinition',
+	'DestinyProgressionDefinition'
+];

@@ -1,7 +1,7 @@
 import type { HttpClientConfig, ServerResponse } from 'bungie-api-ts/destiny2';
 import { PlatformErrorCodes } from 'bungie-api-ts/destiny2';
+import { variables } from '$lib/variables';
 import { BungieError, HttpStatusError } from '../Errors';
-import type { IAuthToken } from './login';
 
 /**
  * Creates a fetch method for the bungiet-api-ts api.
@@ -19,7 +19,7 @@ export const createFetch = (withOAuth?: boolean) => {
 		}
 
 		const headers: HeadersInit = {};
-		headers['X-API-Key'] = process.env.X_API_KEY ?? '';
+		headers['X-API-Key'] = variables.X_API_KEY ?? '';
 		if (config.body) {
 			headers['Content-Type'] = 'application/json';
 		}

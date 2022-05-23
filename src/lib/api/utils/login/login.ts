@@ -7,7 +7,6 @@ import { v4 } from 'uuid';
  */
 export const getAuthorizationURL = () => {
 	const authState = v4();
-	// localStorage.setItem("authState", authState);
 
 	const queryParams = new URLSearchParams({
 		client_id: variables.CLIENT_ID,
@@ -25,7 +24,7 @@ const tokenUrl = 'https://www.bungie.net/platform/app/oauth/token/';
  * @param refreshToken The locally stored refreshToken.
  */
 export const getRefreshedAuthToken = async (refreshToken: string) => {
-	const authCode = btoa(`${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`);
+	const authCode = btoa(`${variables.CLIENT_ID}:${variables.CLIENT_SECRET}`);
 
 	const response = await fetch(tokenUrl, {
 		method: 'POST',
