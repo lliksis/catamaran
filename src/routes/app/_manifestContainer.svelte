@@ -4,15 +4,11 @@
 -->
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { getDestinyManifest } from 'bungie-api-ts/destiny2';
+	import manifestStore from '$lib/stores/manifest';
 	import { DefinitionList } from '$lib/api/utils/types';
 	import type { IManifestDefinitions } from '$lib/api/utils/types';
-	import {
-		createFetch,
-		getDeletedTablesAsync,
-		isCurrentVersion,
-		manifestStore
-	} from '$lib/api/utils';
-	import { getDestinyManifest } from 'bungie-api-ts/destiny2';
+	import { createFetch, getDeletedTablesAsync, isCurrentVersion } from '$lib/api/utils';
 
 	onMount(async () => {
 		const destinyManifest = await getDestinyManifest(createFetch());
@@ -22,18 +18,21 @@
 		const updateAll = !(await isCurrentVersion(manifestJson));
 		const deletedTables = await getDeletedTablesAsync();
 
-		const manifestResponse = await fetch('manifest', {
+		const manifestResponse = await fetch('app/manifest', {
 			method: 'POST',
 			body: JSON.stringify({ updateAll, deletedTables })
 		});
 		const definitions: IManifestDefinitions = await manifestResponse.json();
-		console.log(definitions);
 
 		for (const key in definitions) {
 			const element = definitions[key];
 			if (element) {
-				manifestStore?.setItem(DefinitionList[key], element);
+				manifestStore.addDefinition(DefinitionList[key], element);
 			}
 		}
 	});
+
+	$: console.log($manifestStore);
 </script>
+
+<slot />

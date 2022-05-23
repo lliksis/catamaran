@@ -12,12 +12,12 @@ export interface ICharacterContext {
 }
 
 export interface IManifestDefinitions {
-	DestinyVendorDefinition: AllDestinyManifestComponents['DestinyVendorDefinition'];
-	DestinyVendorGroupDefinition: AllDestinyManifestComponents['DestinyVendorGroupDefinition'];
-	DestinyObjectiveDefinition: AllDestinyManifestComponents['DestinyObjectiveDefinition'];
-	DestinyClassDefinition: AllDestinyManifestComponents['DestinyClassDefinition'];
-	DestinyInventoryItemDefinition: AllDestinyManifestComponents['DestinyInventoryItemDefinition'];
-	DestinyProgressionDefinition: AllDestinyManifestComponents['DestinyProgressionDefinition'];
+	DestinyVendorDefinition?: AllDestinyManifestComponents['DestinyVendorDefinition'];
+	DestinyVendorGroupDefinition?: AllDestinyManifestComponents['DestinyVendorGroupDefinition'];
+	DestinyObjectiveDefinition?: AllDestinyManifestComponents['DestinyObjectiveDefinition'];
+	DestinyClassDefinition?: AllDestinyManifestComponents['DestinyClassDefinition'];
+	DestinyInventoryItemDefinition?: AllDestinyManifestComponents['DestinyInventoryItemDefinition'];
+	DestinyProgressionDefinition?: AllDestinyManifestComponents['DestinyProgressionDefinition'];
 }
 export interface IManifestContext {
 	getDefinitions: () => IManifestDefinitions;
