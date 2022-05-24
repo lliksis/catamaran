@@ -1,7 +1,12 @@
 <script lang="ts">
+	import { QueryClient, QueryClientProvider } from '@sveltestack/svelte-query';
 	import ManifestContainer from './_manifestContainer.svelte';
+
+	const client = new QueryClient();
 </script>
 
-<ManifestContainer>
-	<slot />
-</ManifestContainer>
+<QueryClientProvider {client}>
+	<ManifestContainer>
+		<slot />
+	</ManifestContainer>
+</QueryClientProvider>
