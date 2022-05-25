@@ -8,14 +8,14 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	const code = event.url.searchParams.get('code');
 	if (event.url.pathname.startsWith('/redirect') && code) {
-		const authToken = await fetchAuthToken(code);
+		const authToken: IAuthToken = await fetchAuthToken(code);
 		response.headers.set(
 			'set-cookie',
 			cookie.serialize('authToken', JSON.stringify(authToken), {
 				path: '/',
 				httpOnly: true,
 				sameSite: 'strict',
-				maxAge: authToken.refreshToken.expiresOn * 1000
+				maxAge: authToken.refreshToken.expiresOn
 			})
 		);
 	}
@@ -42,7 +42,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 				path: '/',
 				httpOnly: true,
 				sameSite: 'strict',
-				maxAge: authToken.refreshToken.expiresOn * 1000
+				maxAge: authToken.refreshToken.expiresOn
 			})
 		);
 	}
