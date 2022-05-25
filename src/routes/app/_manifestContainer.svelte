@@ -7,7 +7,7 @@
 	import manifestStore from '$lib/stores/manifest';
 	import { DefinitionList } from '$lib/api/utils/types';
 	import type { IManifestDefinitions } from '$lib/api/utils/types';
-	import { createFetch, getDeletedTablesAsync, isCurrentVersion } from '$lib/api/utils';
+	import { createFetch } from '$lib/api/utils';
 	import { useQuery } from '@sveltestack/svelte-query';
 	import { browser } from '$app/env';
 
@@ -18,12 +18,12 @@
 			const manifestJson = destinyManifest.Response.jsonWorldContentPaths.en;
 			// Update all tables if not running with the current version.
 			// Otherwise check for missing tables and update only if necessary.
-			const updateAll = !(await isCurrentVersion(manifestJson));
-			const deletedTables = await getDeletedTablesAsync();
+			const updateAll = !(await manifestStore.isCurrentVersion(manifestJson));
+			const missingTables = await manifestStore.getMissingTablesAsync();
 
 			const response = await fetch('app/manifest', {
 				method: 'POST',
-				body: JSON.stringify({ updateAll, deletedTables })
+				body: JSON.stringify({ updateAll, missingTables })
 			});
 			return await response.json();
 		},
