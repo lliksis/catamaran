@@ -9,13 +9,13 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const code = event.url.searchParams.get('code');
 	if (event.url.pathname.startsWith('/redirect') && code) {
 		const authToken = await fetchAuthToken(code);
-		event.locals.authToken = authToken;
 		response.headers.set(
 			'set-cookie',
-			cookie.serialize('authToken', JSON.stringify(event.locals.authToken), {
+			cookie.serialize('authToken', JSON.stringify(authToken), {
 				path: '/',
 				httpOnly: true,
-				sameSite: 'strict'
+				sameSite: 'strict',
+				maxAge: authToken.refreshToken.expiresOn * 1000
 			})
 		);
 	}
@@ -35,14 +35,14 @@ export const handle: Handle = async ({ event, resolve }) => {
 		} else if (dateNow > authToken.accessToken.expiresOn) {
 			authToken = await getRefreshedAuthToken(authToken.refreshToken.token);
 		}
-		event.locals.authToken = authToken;
 
 		response.headers.set(
 			'set-cookie',
-			cookie.serialize('authToken', JSON.stringify(event.locals.authToken), {
+			cookie.serialize('authToken', JSON.stringify(authToken), {
 				path: '/',
 				httpOnly: true,
-				sameSite: 'strict'
+				sameSite: 'strict',
+				maxAge: authToken.refreshToken.expiresOn * 1000
 			})
 		);
 	}
