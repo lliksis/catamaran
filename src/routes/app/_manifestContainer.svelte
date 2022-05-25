@@ -25,7 +25,16 @@
 				method: 'POST',
 				body: JSON.stringify({ updateAll, missingTables })
 			});
-			return await response.json();
+			const data = await response.json();
+
+			for (const key in data) {
+				const element = data[key];
+				if (element) {
+					await manifestStore.addDefinitionAsync(DefinitionList[key], element);
+				} else {
+					await manifestStore.addFromDBAsync(DefinitionList[key]);
+				}
+			}
 		},
 		{
 			enabled: false,
@@ -33,19 +42,14 @@
 			staleTime: Infinity,
 			refetchOnWindowFocus: false,
 			refetchInterval: false,
-			refetchOnReconnect: false,
-			onSuccess: (data) => {
-				console.log('success', data);
-				for (const key in data) {
-					const element = data[key];
-					if (element) {
-						manifestStore.addDefinition(DefinitionList[key], element);
-					}
-				}
-			}
+			refetchOnReconnect: false
 		}
 	);
 	$: manifestResult.setEnabled(browser);
 </script>
 
-<slot />
+{#if $manifestResult.isFetched}
+	<slot />
+{:else}
+	loading
+{/if}

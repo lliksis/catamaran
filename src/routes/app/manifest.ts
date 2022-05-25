@@ -13,7 +13,7 @@ export const post: RequestHandler = async ({ request }) => {
 			if (updateAll || missingTables.includes(comp)) {
 				return fetch(bngBaseUrl + manifestJsonComponents[comp]).then((res) => res.json());
 			}
-			return null;
+			return new Promise((resolve) => resolve(null));
 		})
 	);
 

@@ -1,23 +1,25 @@
 import { writable } from 'svelte/store';
 import { checkStore, manifestStore } from '$lib/api/utils';
-import { DefinitionList, IManifestDefinitions } from '$lib/api/utils/types';
+import { DefinitionList } from '$lib/api/utils/types';
+import type { IManifestDefinitions } from '$lib/api/utils/types';
 
 const createStore = () => {
 	const store = writable<IManifestDefinitions>();
 
-	store.subscribe(async () => {
-		const definitions: IManifestDefinitions = {};
-		await manifestStore?.iterate((value, key) => {
-			definitions[key] = value;
-		});
-		return definitions;
-	});
-
-	const addDefinition = <T>(key: string, definition: T) => {
-		manifestStore?.setItem(key, definition);
+	const addDefinitionAsync = async <T>(key: string, definition: T) => {
+		await manifestStore?.setItem(key, definition);
 		store.update((definitions) => {
 			return { ...definitions, [key]: definition };
 		});
+	};
+
+	const addFromDBAsync = async (key: string) => {
+		const definition = await manifestStore?.getItem(key);
+		if (definition) {
+			store.update((definitions) => {
+				return { ...definitions, [key]: definition };
+			});
+		}
 	};
 
 	/**
@@ -63,7 +65,8 @@ const createStore = () => {
 	return {
 		subscribe: store.subscribe,
 		set: store.set,
-		addDefinition,
+		addDefinitionAsync,
+		addFromDBAsync,
 		getMissingTablesAsync,
 		isTableDeletedAsync,
 		isCurrentVersion
