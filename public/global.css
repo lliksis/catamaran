@@ -37,6 +37,9 @@ body {
         Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
 }
 
+.button {
+    position: relative;
+}
 .button::after {
     position: absolute;
     content: "";

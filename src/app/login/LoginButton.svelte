@@ -13,6 +13,8 @@
     }
 
     .login {
+        display: block;
+        text-decoration: none;
         background-color: #ffd13b;
         width: 237px;
         height: 48px;
