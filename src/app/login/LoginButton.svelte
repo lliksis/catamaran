@@ -1,3 +1,11 @@
+<script>
+    import { link } from "svelte-navigator";
+</script>
+
+<a class="login button" href="/app" use:link>
+    <span class="login-link">Login via Bungie</span>
+</a>
+
 <style>
     :root {
         --hover-border-color: #00000050;
@@ -20,15 +28,3 @@
         text-shadow: 1px 1px 1px var(--text-border-color);
     }
 </style>
-
-<script>
-    export let href;
-
-    const onClick = () => {
-        window.location.href = href;
-    };
-</script>
-
-<div class="login button" on:click={onClick}>
-    <span class="login-link">Login via Bungie</span>
-</div>

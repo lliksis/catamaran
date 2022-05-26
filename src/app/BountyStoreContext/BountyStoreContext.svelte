@@ -1,5 +1,4 @@
 <script lang="ts">
-    import type { BungieMembershipType } from "bungie-api-ts/destiny2";
     import { onDestroy, setContext } from "svelte";
     import { createBountyStorage, getLogger } from "api/utils";
 
@@ -8,7 +7,7 @@
     //:membershipId/:membershipType/:characterId
     export let params: {
         membershipId: string;
-        membershipType: BungieMembershipType;
+        membershipType: string;
         characterId: string;
     };
 

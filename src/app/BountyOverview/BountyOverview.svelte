@@ -1,30 +1,13 @@
-<style>
-    .overview {
-        box-sizing: border-box;
-        padding: 10px;
-        padding-top: 15px;
-        border-left: 1px solid rgba(0, 0, 0, 0.1);
-    }
-
-    .bounties {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 7px;
-        min-height: 69px;
-    }
-</style>
-
 <script lang="ts">
-    import type { BungieMembershipType } from "bungie-api-ts/destiny2";
-    import type { IBountyStore } from "api/utils";
-    import Bounty from "../vendor/Bounty.svelte";
     import { getContext } from "svelte";
+    import type { IBountyStore } from "api/utils";
     import type { IBounty } from "api/destiny2";
     import type { ICharacterContext } from "api/utils/types";
+    import Bounty from "../vendor/Bounty.svelte";
 
     export let params: {
         membershipId: string;
-        membershipType: BungieMembershipType;
+        membershipType: string;
         characterId: string;
     };
 
@@ -67,3 +50,19 @@
         {/if}
     </div>
 </div>
+
+<style>
+    .overview {
+        box-sizing: border-box;
+        padding: 10px;
+        padding-top: 15px;
+        border-left: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .bounties {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+        min-height: 69px;
+    }
+</style>
