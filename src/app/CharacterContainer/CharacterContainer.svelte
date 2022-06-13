@@ -1,6 +1,6 @@
 <script lang="ts">
     import { getContext, setContext } from "svelte";
-    import { location } from "svelte-spa-router";
+    import { useParams } from "svelte-navigator";
     import { useQuery } from "@sveltestack/svelte-query";
     import {
         DestinyComponentType,
@@ -22,7 +22,12 @@
     // export let params;
     // params are not defined because the container is outside of the Router.
     // Hacky solution - use the location store:
-    const params = $location.split("/");
+    const params =
+        useParams<{
+            membershipId: string;
+            membershipType: string;
+            characterId: string;
+        }>();
 
     const profile: DestinyProfileUserInfoCard = getContext("profile");
     const { getDefinitions } = getContext<IManifestContext>("manifest");
@@ -61,9 +66,9 @@
             bungieResponse.characters,
             definitions.DestinyClassDefinition
         );
-        if (params.length === 4 && params[3] !== "") {
+        if ($params.characterId) {
             const character = characters.find(
-                (char) => char.characterId === params[3]
+                (char) => char.characterId === $params.characterId
             );
             selectedCharacter.update((_) => character);
         }

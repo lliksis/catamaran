@@ -1,3 +1,36 @@
+<script lang="ts">
+    import { fade } from "svelte/transition";
+    import type { IDestinyCharacterComponentOverride } from "api/destiny2/profile";
+
+    export let index = 0;
+    export let character: IDestinyCharacterComponentOverride;
+    export let onClick: (character: IDestinyCharacterComponentOverride) => void;
+
+    $: aspectRatio = { width: 79, height: 16 };
+
+    const height = 64;
+    $: width = (height / aspectRatio.height) * aspectRatio.width;
+
+    let background = character.emblemBackgroundPath;
+</script>
+
+<div
+    in:fade={{ delay: index * 350, duration: 500 }}
+    class="emblem-wrapper button"
+    style={`background-image: url(${background}); --emblem-height: ${height}px; --emblem-width: ${width}px`}
+    id={character.characterId}
+    on:click={() => onClick(character)}
+>
+    <div class="emblem-character-class">
+        {character.class}
+    </div>
+    <div class="emblem-light">
+        <span class="icon-power_small_right light-icon" />
+        {character.light}
+    </div>
+    <div class="emblem-character-race">Human</div>
+</div>
+
 <style>
     :root {
         --light-color: #ffff00;
@@ -41,36 +74,3 @@
         line-height: 30px;
     }
 </style>
-
-<script lang="ts">
-    import { fade } from "svelte/transition";
-    import type { IDestinyCharacterComponentOverride } from "api/destiny2/profile";
-
-    export let index = 0;
-    export let character: IDestinyCharacterComponentOverride;
-    export let onClick: (character: IDestinyCharacterComponentOverride) => void;
-
-    $: aspectRatio = { width: 79, height: 16 };
-
-    const height = 64;
-    $: width = (height / aspectRatio.height) * aspectRatio.width;
-
-    let background = character.emblemBackgroundPath;
-</script>
-
-<div
-    in:fade={{ delay: index * 350, duration: 500 }}
-    class="emblem-wrapper button"
-    style={`background-image: url(${background}); --emblem-height: ${height}px; --emblem-width: ${width}px`}
-    id={character.characterId}
-    on:click={() => onClick(character)}
->
-    <div class="emblem-character-class">
-        {character.class}
-    </div>
-    <div class="emblem-light">
-        <span class="icon-power_small_right light-icon" />
-        {character.light}
-    </div>
-    <div class="emblem-character-race">Human</div>
-</div>

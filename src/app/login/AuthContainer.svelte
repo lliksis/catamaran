@@ -4,30 +4,21 @@
 -->
 <script lang="ts">
     import { onMount } from "svelte";
-    import { checkForAuthToken } from "api/utils";
-    import LoginContainer from "./LoginContainer.svelte";
-    import Reauth from "../pages/Reauth.svelte";
+    import { checkForAuthToken, getAuthorizationURL } from "api/utils";
+    import { navigate } from "svelte-navigator";
+
+    const authURL = getAuthorizationURL();
 
     let hasToLogin = true;
-    let redirect = false;
     onMount(async () => {
-        const params = new URLSearchParams(window.location.search);
-        if (params.get("code")) {
-            redirect = true;
-        } else if (await checkForAuthToken()) {
+        if (await checkForAuthToken()) {
             hasToLogin = false;
+        } else {
+            navigate(authURL);
         }
     });
-
 </script>
 
-{#if hasToLogin}
-    {#if redirect}
-        <Reauth />
-    {:else}
-        login page
-        <LoginContainer />
-    {/if}
-{:else}
+{#if !hasToLogin}
     <slot />
 {/if}

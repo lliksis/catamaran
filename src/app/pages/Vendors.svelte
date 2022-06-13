@@ -1,20 +1,6 @@
-<style>
-    .character {
-        padding-left: 10px;
-        height: 100px;
-        display: flex;
-        align-items: center;
-        background: linear-gradient(
-            to right,
-            var(--backgroundColor),
-            transparent
-        );
-    }
-</style>
-
 <script lang="ts">
     import { getContext, onMount } from "svelte";
-    import { push } from "svelte-spa-router";
+    import { navigate } from "svelte-navigator";
     import { useQuery } from "@sveltestack/svelte-query";
     import {
         BungieMembershipType,
@@ -35,12 +21,10 @@
 
     const logger = getLogger();
 
-    //:membershipId/:membershipType/:characterId
-    export let params: {
-        membershipId: string;
-        membershipType: BungieMembershipType;
-        characterId: string;
-    };
+    export let membershipId: string;
+    export let membershipType: string;
+    export let characterId: string;
+    const params = { membershipId, membershipType, characterId };
 
     onMount(() => {
         loadingStore.update((l) => ({ ...l, closePage: true }));
@@ -55,16 +39,17 @@
     let vendors: IVendor[];
 
     const vendorResponse = useQuery(
-        ["vendors", params.characterId],
+        ["vendors", characterId],
         () => {
             loadingStore.update(() => ({
                 closePage: true,
                 text: "loading vendors",
             }));
             return getVendors(createFetch(true), {
-                characterId: params.characterId,
-                destinyMembershipId: params.membershipId,
-                membershipType: params.membershipType,
+                characterId: characterId,
+                destinyMembershipId: membershipId,
+                membershipType:
+                    membershipType as unknown as BungieMembershipType,
                 components: [
                     DestinyComponentType.Vendors,
                     DestinyComponentType.VendorCategories,
@@ -102,7 +87,7 @@
             >
                 <Emblem
                     character={$selectedCharacterStore}
-                    onClick={() => push("/")}
+                    onClick={() => navigate("/app")}
                 />
             </div>
             {#if !$vendorResponse.isIdle && !$vendorResponse.isLoading}
@@ -113,3 +98,17 @@
         </div>
     </SplitLayout>
 </BountyStoreContext>
+
+<style>
+    .character {
+        padding-left: 10px;
+        height: 100px;
+        display: flex;
+        align-items: center;
+        background: linear-gradient(
+            to right,
+            var(--backgroundColor),
+            transparent
+        );
+    }
+</style>

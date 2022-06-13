@@ -1,3 +1,51 @@
+<script lang="ts">
+    import { getContext } from "svelte";
+    import { fade } from "svelte/transition";
+    import { navigate } from "svelte-navigator";
+    import type { DestinyProfileUserInfoCard } from "bungie-api-ts/destiny2";
+    import type { IDestinyCharacterComponentOverride } from "api/destiny2/profile";
+    import Emblem from "../character/Emblem.svelte";
+    import { loadingStore } from "api/utils";
+
+    loadingStore.update((l) => ({ ...l, closePage: false }));
+
+    const { selectedCharacterStore, getCharacters } = getContext("characters");
+
+    const profile: DestinyProfileUserInfoCard = getContext("profile");
+
+    let characters: IDestinyCharacterComponentOverride[] = getCharacters();
+
+    const onClickCharacter = (
+        character: IDestinyCharacterComponentOverride
+    ) => {
+        console.log("select", character);
+        selectedCharacterStore.update(() => character);
+        navigate(
+            `app/${profile.membershipId}/${profile.membershipType}/${character.characterId}`
+        );
+    };
+</script>
+
+<div in:fade class="character-selection">
+    <div class="preview">
+        <img
+            src="https://freesvg.org/img/paro_AL_standing.png"
+            alt="character preview"
+        />
+    </div>
+    <div class="characters">
+        <div class="name">
+            {profile.bungieGlobalDisplayName}
+            <span class="code">
+                {"#" + profile.bungieGlobalDisplayNameCode}
+            </span>
+        </div>
+        {#each characters as char, index}
+            <Emblem {index} character={char} onClick={onClickCharacter} />
+        {/each}
+    </div>
+</div>
+
 <style>
     .character-selection {
         display: grid;
@@ -56,50 +104,3 @@
         }
     }
 </style>
-
-<script lang="ts">
-    import { getContext } from "svelte";
-    import { fade } from "svelte/transition";
-    import { push } from "svelte-spa-router";
-    import type { DestinyProfileUserInfoCard } from "bungie-api-ts/destiny2";
-    import type { IDestinyCharacterComponentOverride } from "api/destiny2/profile";
-    import Emblem from "../character/Emblem.svelte";
-    import { loadingStore } from "api/utils";
-
-    loadingStore.update((l) => ({ ...l, closePage: false }));
-
-    const { selectedCharacterStore, getCharacters } = getContext("characters");
-
-    const profile: DestinyProfileUserInfoCard = getContext("profile");
-
-    let characters: IDestinyCharacterComponentOverride[] = getCharacters();
-
-    const onClickCharacter = (
-        character: IDestinyCharacterComponentOverride
-    ) => {
-        selectedCharacterStore.update(() => character);
-        push(
-            `/${profile.membershipId}/${profile.membershipType}/${character.characterId}`
-        );
-    };
-</script>
-
-<div in:fade class="character-selection">
-    <div class="preview">
-        <img
-            src="https://freesvg.org/img/paro_AL_standing.png"
-            alt="character preview"
-        />
-    </div>
-    <div class="characters">
-        <div class="name">
-            {profile.bungieGlobalDisplayName}
-            <span class="code">
-                {"#" + profile.bungieGlobalDisplayNameCode}
-            </span>
-        </div>
-        {#each characters as char, index}
-            <Emblem {index} character={char} onClick={onClickCharacter} />
-        {/each}
-    </div>
-</div>
