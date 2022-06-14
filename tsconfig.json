@@ -4,7 +4,12 @@
         "types": ["node", "svelte"],
         "baseUrl": ".",
         "isolatedModules": false,
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
+        "paths": {
+            "api/*": ["src/api/*"],
+            "app/*": ["src/app/*"],
+            "destiny-icons/*": ["./destiny-icons/*"]
+        }
     },
     "include": ["src"]
 }

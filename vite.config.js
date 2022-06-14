@@ -9,6 +9,7 @@ export default defineConfig({
         alias: {
             app: path.resolve(__dirname, "src/app"),
             api: path.resolve(__dirname, "src/api"),
+            "destiny-icons": path.resolve(__dirname, "./destiny-icons"),
         },
     },
 });
