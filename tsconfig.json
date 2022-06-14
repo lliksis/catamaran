@@ -2,9 +2,14 @@
     "extends": "@tsconfig/svelte/tsconfig.json",
     "compilerOptions": {
         "types": ["node", "svelte"],
-        "baseUrl": "src",
+        "baseUrl": ".",
         "isolatedModules": false,
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
+        "paths": {
+            "api/*": ["src/api/*"],
+            "app/*": ["src/app/*"],
+            "destiny-icons/*": ["./destiny-icons/*"]
+        }
     },
     "include": ["src"]
 }

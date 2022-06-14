@@ -11,7 +11,7 @@ export const getAuthorizationURL = () => {
     localStorage.setItem("authState", authState);
 
     const queryParams = new URLSearchParams({
-        client_id: process.env.CLIENT_ID,
+        client_id: import.meta.env.VITE_CLIENT_ID,
         response_type: "code",
         state: authState,
     });
@@ -44,7 +44,9 @@ export const checkForAuthToken = async () => {
  */
 export const refreshAuthToken = async (refreshToken: string) => {
     const authCode = btoa(
-        `${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`
+        `${import.meta.env.VITE_CLIENT_ID}:${
+            import.meta.env.VITE_CLIENT_SECRET
+        }`
     );
 
     const response = await fetch(tokenUrl, {
@@ -66,7 +68,9 @@ export const refreshAuthToken = async (refreshToken: string) => {
  */
 export const fetchAuthToken = async (code: string) => {
     const authCode = btoa(
-        `${process.env.CLIENT_ID}:${process.env.CLIENT_SECRET}`
+        `${import.meta.env.VITE_CLIENT_ID}:${
+            import.meta.env.VITE_CLIENT_SECRET
+        }`
     );
 
     const response = await fetch(tokenUrl, {

@@ -24,7 +24,7 @@ export const createFetch = (withOAuth?: boolean) => {
         }
 
         const headers = {};
-        headers["X-API-Key"] = process.env.X_API_KEY;
+        headers["X-API-Key"] = import.meta.env.VITE_X_API_KEY;
         if (config.body) {
             headers["Content-Type"] = "application/json";
         }
