@@ -41,4 +41,4 @@ jobs:
                   NETLIFY_AUTH_TOKEN=${{ secrets.NETLIFY_AUTH_TOKEN }} netlify env:set X_API_KEY ${{ secrets.BETA_X_API_KEY }}
 
             - name: Deploy to Netlify
-              run: NETLIFY_AUTH_TOKEN=${{ secrets.NETLIFY_AUTH_TOKEN }} netlify deploy --dir='public' --message="Prerelease deploy v${{ github.ref }}" --build --prod
+              run: NETLIFY_AUTH_TOKEN=${{ secrets.NETLIFY_AUTH_TOKEN }} netlify deploy --dir='dist' --message="Prerelease deploy v${{ github.ref }}" --build --prod
