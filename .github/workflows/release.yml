@@ -34,11 +34,14 @@ jobs:
             - name: "Link to netlify site"
               run: NETLIFY_AUTH_TOKEN=${{ secrets.NETLIFY_AUTH_TOKEN }} netlify link --id=${{ secrets.NETLIFY_SITE_ID }}
 
-            - name: "Setup env variables"
-              run: |
-                  NETLIFY_AUTH_TOKEN=${{ secrets.NETLIFY_AUTH_TOKEN }} netlify env:set VITE_CLIENT_ID ${{ secrets.CLIENT_ID }} \
-                  NETLIFY_AUTH_TOKEN=${{ secrets.NETLIFY_AUTH_TOKEN }} netlify env:set VITE_CLIENT_SECRET ${{ secrets.CLIENT_SECRET }} \
-                  NETLIFY_AUTH_TOKEN=${{ secrets.NETLIFY_AUTH_TOKEN }} netlify env:set VITE_X_API_KEY ${{ secrets.X_API_KEY }}
+            - name: "Setup env variables - VITE_CLIENT_ID"
+              run: NETLIFY_AUTH_TOKEN=${{ secrets.NETLIFY_AUTH_TOKEN }} netlify env:set VITE_CLIENT_ID ${{ secrets.BETA_CLIENT_ID }}
+
+            - name: "Setup env variables - VITE_CLIENT_SECRET"
+              run: NETLIFY_AUTH_TOKEN=${{ secrets.NETLIFY_AUTH_TOKEN }} netlify env:set VITE_CLIENT_SECRET ${{ secrets.BETA_CLIENT_SECRET }}
+
+            - name: "Setup env variables - VITE_X_API_KEY"
+              run: NETLIFY_AUTH_TOKEN=${{ secrets.NETLIFY_AUTH_TOKEN }} netlify env:set VITE_X_API_KEY ${{ secrets.BETA_X_API_KEY }}
 
             - name: Deploy to Netlify
               run: NETLIFY_AUTH_TOKEN=${{ secrets.NETLIFY_AUTH_TOKEN }} netlify deploy --dir='dist' --message="Release deploy v${{ github.ref }}" --build --prod
