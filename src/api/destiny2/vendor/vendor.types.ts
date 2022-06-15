@@ -22,9 +22,13 @@ export interface IVendorProgression extends DestinyProgression {
 export interface IBounty
     extends Pick<DestinyInventoryItemDefinition, "displayProperties" | "hash"> {
     objectiveProgress: IBountyObjective[];
+    tags?: string[];
 }
 export interface IBountyObjective {
     progress: number;
     completionValue: number;
     objectiveProgressDescription: string;
+}
+export interface IBountyWithPriority extends IBounty {
+    priority: number;
 }

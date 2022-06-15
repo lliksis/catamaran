@@ -18,6 +18,7 @@
     import BountyStoreContext from "../BountyStoreContext/BountyStoreContext.svelte";
     import BountyOverview from "../BountyOverview/BountyOverview.svelte";
     import SplitLayout from "../layout/SplitLayout.svelte";
+    import RelatedView from "app/RelatedView/RelatedView.svelte";
 
     const logger = getLogger();
 
@@ -96,6 +97,7 @@
                 {/each}
             {/if}
         </div>
+        <RelatedView slot="related-panel" />
     </SplitLayout>
 </BountyStoreContext>
 

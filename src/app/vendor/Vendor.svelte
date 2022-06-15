@@ -2,11 +2,13 @@
     import { getContext } from "svelte";
     import { fade } from "svelte/transition";
     import type { IBountyStore } from "api/utils";
-    import type { IBounty, IVendor } from "api/destiny2";
+    import related from "api/utils/relatedStore";
+    import type { IBounty, IBountyWithPriority, IVendor } from "api/destiny2";
     import type { ICharacterContext } from "api/utils/types";
     import Bounty from "./Bounty.svelte";
     import Icon from "./Icon.svelte";
     import * as vendorConf from "../../vendorConf.json";
+    import bountyCache, { bountyHashesByTag } from "api/destiny2/bounties";
 
     export let index = 0;
     export let vendor: IVendor;
@@ -41,6 +43,30 @@
         {
             text: "Track Bounty",
             action: () => addBounty(bounty),
+        },
+        {
+            text: "Show related",
+            action: () => {
+                const bounties: IBountyWithPriority[] = [];
+                for (const tag of bounty.tags) {
+                    const hashesByTag = bountyHashesByTag.getBounties(tag);
+                    if (hashesByTag) {
+                        for (const hash of hashesByTag) {
+                            if (hash !== bounty.hash) {
+                                const bounty = {
+                                    priority: 1,
+                                    ...bountyCache.findBountyByHash(hash),
+                                };
+                                if (bounties.some((b) => b.hash === hash)) {
+                                    bounty.priority++;
+                                }
+                                bounties.push(bounty);
+                            }
+                        }
+                    }
+                }
+                related.addRelated(bounties);
+            },
         },
     ];
 

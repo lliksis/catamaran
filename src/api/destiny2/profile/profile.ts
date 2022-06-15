@@ -10,6 +10,7 @@ import { writable } from "svelte/store";
 import type { IDestinyCharacterComponentOverride } from "./profile.types";
 import { bngBaseUrl } from "api/utils/types";
 import type { IBounty, IBountyObjective } from "../vendor";
+import bounties from "../bounties";
 
 /**
  * Converts the characters from getProfile into IDestinyCharacterComponentOverride[].
@@ -50,34 +51,45 @@ export const resolveInventory = (
     for (const characterId in inventoryItems.data) {
         resolvedItems.data[characterId] = [];
         const items = inventoryItems.data[characterId].items;
-        items.map((i) => {
-            const item = inventoryItemDefinition[i.itemHash];
-            if (item.itemType === DestinyItemType.Bounty) {
-                const instancedObjectives =
-                    itemObjectiveProgress.data[i.itemInstanceId].objectives;
-                const bountyObjectives: IBountyObjective[] =
-                    item.objectives.objectiveHashes.map((objectiveHash) => {
-                        const objective = instancedObjectives.find(
-                            (o) => o.objectiveHash === objectiveHash
+        for (const item of items) {
+            let bounty = bounties.findBountyByHash(item.itemHash);
+            if (!bounty) {
+                const itemDefinition = inventoryItemDefinition[item.itemHash];
+                if (itemDefinition.itemType === DestinyItemType.Bounty) {
+                    const instancedObjectives =
+                        itemObjectiveProgress.data[item.itemInstanceId]
+                            .objectives;
+                    const bountyObjectives: IBountyObjective[] =
+                        itemDefinition.objectives.objectiveHashes.map(
+                            (objectiveHash) => {
+                                const objective = instancedObjectives.find(
+                                    (o) => o.objectiveHash === objectiveHash
+                                );
+                                return {
+                                    progress: objective.progress,
+                                    completionValue: objective.completionValue,
+                                    objectiveProgressDescription:
+                                        objectiveDefinition[objectiveHash]
+                                            .progressDescription,
+                                };
+                            }
                         );
-                        return {
-                            progress: objective.progress,
-                            completionValue: objective.completionValue,
-                            objectiveProgressDescription:
-                                objectiveDefinition[objectiveHash]
-                                    .progressDescription,
-                        };
-                    });
-                resolvedItems.data[characterId].push({
-                    ...item,
-                    displayProperties: {
-                        ...item.displayProperties,
-                        icon: bngBaseUrl + item.displayProperties.icon,
-                    },
-                    objectiveProgress: bountyObjectives,
-                });
+                    bounty = {
+                        ...itemDefinition,
+                        displayProperties: {
+                            ...itemDefinition.displayProperties,
+                            icon:
+                                bngBaseUrl +
+                                itemDefinition.displayProperties.icon,
+                        },
+                        objectiveProgress: bountyObjectives,
+                    };
+                    resolvedItems.data[characterId].push(bounty);
+                }
+            } else {
+                resolvedItems.data[characterId].push(bounty);
             }
-        });
+        }
     }
 
     return resolvedItems.data;

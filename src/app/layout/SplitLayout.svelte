@@ -1,3 +1,15 @@
+<div class="layout">
+    <div id="main">
+        <slot name="main-panel" />
+    </div>
+    <div id="side">
+        <slot name="side-panel" />
+    </div>
+</div>
+<div id="related">
+    <slot name="related-panel" />
+</div>
+
 <style>
     .layout {
         display: grid;
@@ -18,6 +30,14 @@
         grid-area: side;
         width: 40vw;
         background-color: rgba(44, 42, 53, 0.86);
+    }
+
+    #related {
+        position: fixed;
+        bottom: 0;
+        left: calc(50% - 250px);
+        width: 500px;
+        background-color: rgba(44, 42, 53);
     }
 
     @media only screen and (max-width: 1025px) {
@@ -46,12 +66,3 @@
         }
     }
 </style>
-
-<div class="layout">
-    <div id="main">
-        <slot name="main-panel" />
-    </div>
-    <div id="side">
-        <slot name="side-panel" />
-    </div>
-</div>

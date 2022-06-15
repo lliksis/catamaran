@@ -1,37 +1,3 @@
-<style>
-    .bounty-wrapper {
-        position: relative;
-    }
-
-    .bounty {
-        display: inline-block;
-        position: relative;
-        height: 69px;
-        width: 69px;
-        background-size: auto 100%;
-        filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.5));
-    }
-
-    .completed::before {
-        content: "";
-        position: absolute;
-        display: block;
-        box-sizing: border-box;
-        width: 100%;
-        height: 100%;
-        border: 4px solid #ffd13b;
-    }
-
-    .disabled {
-        filter: brightness(0.6) drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.5));
-    }
-
-    svg {
-        height: inherit;
-        width: inherit;
-    }
-</style>
-
 <script lang="ts">
     import { fade } from "svelte/transition";
     import type { IBounty } from "api/destiny2";
@@ -108,3 +74,37 @@
         </Tooltip>
     </ContextMenu>
 </div>
+
+<style>
+    .bounty-wrapper {
+        position: relative;
+    }
+
+    .bounty {
+        display: inline-block;
+        position: relative;
+        height: 69px;
+        width: 69px;
+        background-size: auto 100%;
+        filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.5));
+    }
+
+    .completed::before {
+        content: "";
+        position: absolute;
+        display: block;
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        border: 4px solid #ffd13b;
+    }
+
+    .disabled {
+        filter: brightness(0.6) drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.5));
+    }
+
+    svg {
+        height: inherit;
+        width: inherit;
+    }
+</style>
