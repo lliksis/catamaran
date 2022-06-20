@@ -1,15 +1,21 @@
 import { writable } from "svelte/store";
-import type { IBountyWithPriority } from "api/destiny2";
+import type { IBounty, IBountyWithPriority } from "api/destiny2";
 
 const createRelatedStore = () => {
+    const selectedBountyStore = writable<IBounty>();
     const store = writable<IBountyWithPriority[]>([]);
-    const { set, update } = store;
+    const { set } = store;
 
-    const addRelated = (bounties: IBountyWithPriority[]) => {
-        update(() => bounties);
+    const addRelated = (
+        selectedBounty: IBounty,
+        bounties: IBountyWithPriority[]
+    ) => {
+        selectedBountyStore.set(selectedBounty);
+        set(bounties.sort((a, b) => a.priority - b.priority));
     };
 
     return {
+        selectedBounty: selectedBountyStore,
         store,
         addRelated,
         clearRelated: () => set([]),

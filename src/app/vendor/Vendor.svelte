@@ -65,7 +65,7 @@
                         }
                     }
                 }
-                related.addRelated(bounties);
+                related.addRelated(bounty, bounties);
             },
         },
     ];
