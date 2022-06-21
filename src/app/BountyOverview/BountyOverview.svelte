@@ -1,7 +1,9 @@
 <script lang="ts">
     import { getContext } from "svelte";
     import type { IBountyStore } from "api/utils";
-    import type { IBounty } from "api/destiny2";
+    import type { IBounty, IBountyWithPriority } from "api/destiny2";
+    import bountyCache, { bountyHashesByTag } from "api/destiny2/bounties";
+    import related from "api/utils/relatedStore";
     import type { ICharacterContext } from "api/utils/types";
     import Bounty from "../vendor/Bounty.svelte";
 
@@ -17,7 +19,35 @@
 
     const { store, removeBounty } = getContext<IBountyStore>("bounty");
 
-    const createActions = (bounty: IBounty) => [
+    const createInventoryActions = (bounty: IBounty) => [
+        {
+            text: "Show related",
+            action: () => {
+                console.log(bounty);
+                const bounties: IBountyWithPriority[] = [];
+                for (const tag of bounty.tags) {
+                    const hashesByTag = bountyHashesByTag.getBounties(tag);
+                    if (hashesByTag) {
+                        for (const hash of hashesByTag) {
+                            if (hash !== bounty.hash) {
+                                const bounty = {
+                                    priority: 1,
+                                    ...bountyCache.findBountyByHash(hash),
+                                };
+                                if (bounties.some((b) => b.hash === hash)) {
+                                    bounty.priority++;
+                                }
+                                bounties.push(bounty);
+                            }
+                        }
+                    }
+                }
+                related.addRelated(bounty, bounties);
+            },
+        },
+    ];
+
+    const createTrackedActions = (bounty: IBounty) => [
         {
             text: "Untrack Bounty",
             action: () => removeBounty(bounty),
@@ -31,7 +61,7 @@
         {#if items.length > 0}
             <div class="bounties">
                 {#each items as bounty}
-                    <Bounty {bounty} />
+                    <Bounty {bounty} actions={createInventoryActions(bounty)} />
                 {/each}
             </div>
         {:else}
@@ -42,7 +72,7 @@
         {#if $store.length > 0}
             <div class="bounties">
                 {#each $store as bounty}
-                    <Bounty {bounty} actions={createActions(bounty)} />
+                    <Bounty {bounty} actions={createTrackedActions(bounty)} />
                 {/each}
             </div>
         {:else}

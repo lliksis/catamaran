@@ -9,7 +9,7 @@ import type {
     IBounty,
     IVendorProgression,
 } from "./vendor.types";
-import tags from "../../../tags.en";
+import tags, { duplicateTags } from "../../../tags.en";
 import bounties, { bountyHashesByTag } from "api/destiny2/bounties";
 
 /**
@@ -122,17 +122,40 @@ export const resolveVendors = (
 const createTags = (bounty: IBounty) => {
     const bountyTags: string[] = [];
     for (const tag of tags) {
-        if (bounty.displayProperties.description.includes(tag)) {
-            bountyTags.push(tag);
-            bountyHashesByTag.addBounty(tag, bounty.hash);
+        const tagName = checkForTag(
+            bounty.hash,
+            bounty.displayProperties.description,
+            tag
+        );
+        if (tagName) {
+            bountyTags.push(tagName);
         } else {
             bounty.objectiveProgress.forEach((progress) => {
-                if (progress.objectiveProgressDescription.includes(tag)) {
-                    bountyTags.push(tag);
-                    bountyHashesByTag.addBounty(tag, bounty.hash);
+                const tagName = checkForTag(
+                    bounty.hash,
+                    progress.objectiveProgressDescription,
+                    tag
+                );
+                if (tagName) {
+                    bountyTags.push(tagName);
                 }
             });
         }
     }
     return bountyTags;
+};
+const checkForTag = (bountyHash: number, text: string, tag: string) => {
+    const lowerText = text.toLowerCase();
+    const index = lowerText.toLowerCase().indexOf(tag);
+    if (index >= 0) {
+        if (duplicateTags[tag]) {
+            if (lowerText.includes(duplicateTags[tag], index)) {
+                bountyHashesByTag.addBounty(duplicateTags[tag], bountyHash);
+                return duplicateTags[tag];
+            }
+        }
+        bountyHashesByTag.addBounty(tag, bountyHash);
+        return tag;
+    }
+    return undefined;
 };

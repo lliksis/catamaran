@@ -1,58 +1,89 @@
-const locations = [
-    "EDZ",
-    "Cosmodrome",
-    "Nessus",
-    "Dreaming City",
-    "Throne World",
-    "Europa",
-    "Derelict Leviathan",
+const crucible = [
+    "crucible",
+    //Game Modes
+    "breakthrough",
+    "clash",
+    "control",
+    "countdown",
+    "elimination",
+    "lockdown",
+    "mayhem",
+    "momentum Control",
+    "rumble",
+    "scorched",
+    "survival",
+    "trials of Osiris",
 ];
-
+const destinations = [
+    "edz",
+    "cosmodrome",
+    "nessus",
+    "dreaming city",
+    "throne world",
+    "europa",
+    "derelict leviathan",
+];
 const playlists = [
-    "Crucible",
-    "Mayham",
-    "Control",
-    "Elimination",
-    "Vanguard",
-    "Dares of Eternity",
-    "Empire Hunt",
-    "Lost Sector",
-    "Gambit",
+    "vanguard",
+    "dares of eternity",
+    "empire hunt",
+    "lost sector",
+    "gambit",
 ];
-
-const damageTypes = [
-    "Arc",
-    "Solar",
-    "Void",
-    "Stasis",
-    "Grenade",
-    "Meele",
-    "Kinetic",
-    "Handcannon",
-    "Sidearm",
-    "Auto Rifle",
-    "Submachine Gun",
-    "Pulse Rifle",
-    "Scout Rifle",
-    "Elemental",
-    "Shotgun",
-    "Sniper Rifle",
-    "Fusion Rifle",
-    "Power",
-    "Linear Fusion Rifle",
-    "Rocket Launcher",
-    "Sword",
-    "Machine Gun",
-];
-
 const enemies = [
-    "Guardians",
+    "guardians",
     "opponents",
-    "Fallen",
-    "Cabal",
-    "Scorn",
-    "Hive",
-    "Taken",
+    "targets",
+    "fallen",
+    "cabal",
+    "scorn",
+    "hive",
+    "taken",
+];
+const damageTypes = [
+    "arc",
+    "solar",
+    "void",
+    "stasis",
+    "grenade",
+    "meele",
+    "super",
+    "finisher",
+    "precision",
+];
+const weapons = [
+    //Primary
+    "auto rifle",
+    "bow",
+    "handcannon",
+    "pulse rifle",
+    "scout rifle",
+    "sidearm",
+    "submachine gun",
+    //Special
+    "fusion rifle",
+    "shotgun",
+    "sniper rifle",
+    "trace rifle",
+    "glaive",
+    //Heavy
+    "grenade launcher",
+    "linear fusion rifle",
+    "machine gun",
+    "rocket launcher",
+    "sword",
 ];
 
-export default [...locations, ...playlists, ...damageTypes, ...enemies];
+export default [
+    ...destinations,
+    ...playlists,
+    ...damageTypes,
+    ...enemies,
+    ...crucible,
+    ...weapons,
+];
+
+export const duplicateTags = {
+    grenade: "grenade launcher",
+    sniper: "sniper rifle", //in some cases only sniper is used
+};
