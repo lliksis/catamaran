@@ -23,8 +23,10 @@ const hashesByTag = () => {
     const addBounty = (tag: string, bountyHash: number) => {
         if (bountyHashesByTagMap.has(tag)) {
             const cached = bountyHashesByTagMap.get(tag);
-            cached.push(bountyHash);
-            bountyHashesByTagMap.set(tag, cached);
+            if (!cached.includes(bountyHash)) {
+                cached.push(bountyHash);
+                bountyHashesByTagMap.set(tag, cached);
+            }
         } else {
             bountyHashesByTagMap.set(tag, [bountyHash]);
         }

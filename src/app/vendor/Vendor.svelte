@@ -53,14 +53,18 @@
                     if (hashesByTag) {
                         for (const hash of hashesByTag) {
                             if (hash !== bounty.hash) {
-                                const bounty = {
+                                const relatedBounty = {
                                     priority: 1,
                                     ...bountyCache.findBountyByHash(hash),
                                 };
-                                if (bounties.some((b) => b.hash === hash)) {
-                                    bounty.priority++;
+                                const index = bounties.findIndex(
+                                    (b) => b.hash === relatedBounty.hash
+                                );
+                                if (index > -1) {
+                                    bounties[index].priority++;
+                                } else {
+                                    bounties.push(relatedBounty);
                                 }
-                                bounties.push(bounty);
                             }
                         }
                     }

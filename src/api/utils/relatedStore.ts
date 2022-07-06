@@ -11,7 +11,7 @@ const createRelatedStore = () => {
         bounties: IBountyWithPriority[]
     ) => {
         selectedBountyStore.set(selectedBounty);
-        set(bounties.sort((a, b) => a.priority - b.priority));
+        set(bounties.sort((a, b) => b.priority - a.priority));
     };
 
     return {

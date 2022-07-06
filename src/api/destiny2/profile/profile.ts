@@ -5,12 +5,15 @@ import {
     DestinyInventoryComponent,
     DestinyItemType,
     DestinyItemObjectivesComponent,
+    DestinyInventoryItemDefinition,
+    DestinyObjectiveProgress,
 } from "bungie-api-ts/destiny2";
 import { writable } from "svelte/store";
 import type { IDestinyCharacterComponentOverride } from "./profile.types";
 import { bngBaseUrl } from "api/utils/types";
 import type { IBounty, IBountyObjective } from "../vendor";
 import bounties from "../bounties";
+import { createTags } from "src/tags.helper";
 
 /**
  * Converts the characters from getProfile into IDestinyCharacterComponentOverride[].
@@ -52,27 +55,17 @@ export const resolveInventory = (
         resolvedItems.data[characterId] = [];
         const items = inventoryItems.data[characterId].items;
         for (const item of items) {
-            let bounty = bounties.findBountyByHash(item.itemHash);
-            if (!bounty) {
-                const itemDefinition = inventoryItemDefinition[item.itemHash];
-                if (itemDefinition.itemType === DestinyItemType.Bounty) {
-                    const instancedObjectives =
-                        itemObjectiveProgress.data[item.itemInstanceId]
-                            .objectives;
+            const itemDefinition = inventoryItemDefinition[item.itemHash];
+            if (itemDefinition.itemType === DestinyItemType.Bounty) {
+                const instancedObjectives =
+                    itemObjectiveProgress.data[item.itemInstanceId].objectives;
+                let bounty = bounties.findBountyByHash(item.itemHash);
+                if (!bounty) {
                     const bountyObjectives: IBountyObjective[] =
-                        itemDefinition.objectives.objectiveHashes.map(
-                            (objectiveHash) => {
-                                const objective = instancedObjectives.find(
-                                    (o) => o.objectiveHash === objectiveHash
-                                );
-                                return {
-                                    progress: objective.progress,
-                                    completionValue: objective.completionValue,
-                                    objectiveProgressDescription:
-                                        objectiveDefinition[objectiveHash]
-                                            .progressDescription,
-                                };
-                            }
+                        resolveObjectives(
+                            itemDefinition,
+                            instancedObjectives,
+                            objectiveDefinition
                         );
                     bounty = {
                         ...itemDefinition,
@@ -84,16 +77,38 @@ export const resolveInventory = (
                         },
                         objectiveProgress: bountyObjectives,
                     };
+                    bounty.tags = createTags(bounty);
+                    resolvedItems.data[characterId].push(bounty);
+                } else {
+                    bounty.objectiveProgress = resolveObjectives(
+                        itemDefinition,
+                        instancedObjectives,
+                        objectiveDefinition
+                    );
                     resolvedItems.data[characterId].push(bounty);
                 }
-            } else {
-                resolvedItems.data[characterId].push(bounty);
             }
         }
     }
 
     return resolvedItems.data;
 };
+const resolveObjectives = (
+    itemDefinition: DestinyInventoryItemDefinition,
+    instancedObjectives: DestinyObjectiveProgress[],
+    objectiveDefinition: AllDestinyManifestComponents["DestinyObjectiveDefinition"]
+) =>
+    itemDefinition.objectives.objectiveHashes.map((objectiveHash) => {
+        const objective = instancedObjectives.find(
+            (o) => o.objectiveHash === objectiveHash
+        );
+        return {
+            progress: objective.progress,
+            completionValue: objective.completionValue,
+            objectiveProgressDescription:
+                objectiveDefinition[objectiveHash].progressDescription,
+        };
+    });
 
 /**
  * The store to set/get the current selected character.
