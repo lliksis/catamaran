@@ -20,7 +20,7 @@
 
 {#if relatedBounties.length > 0}
     <div in:slide out:slide class="container">
-        <button on:click={clearRelated}>X</button>
+        <button on:click={clearRelated}>&times;</button>
         <div class="header">
             <img
                 src={$selectedBounty.displayProperties.icon}
@@ -63,7 +63,9 @@
         all: unset;
         cursor: inherit;
         position: absolute;
+        font-size: x-large;
         right: 3px;
+        top: 3px;
         padding-right: 7px;
         color: rgba(255, 255, 255, 0.86);
     }

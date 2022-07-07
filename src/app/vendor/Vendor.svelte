@@ -9,6 +9,7 @@
     import Icon from "./Icon.svelte";
     import * as vendorConf from "../../vendorConf.json";
     import bountyCache, { bountyHashesByTag } from "api/destiny2/bounties";
+    import { showRelated, trackBounty } from "app/bountyActions";
 
     export let index = 0;
     export let vendor: IVendor;
@@ -38,41 +39,6 @@
         : areIconsFlipped
         ? vendor.icon
         : vendor.progression?.icon;
-
-    const createActions = (bounty: IBounty) => [
-        {
-            text: "Track Bounty",
-            action: () => addBounty(bounty),
-        },
-        {
-            text: "Show related",
-            action: () => {
-                const bounties: IBountyWithPriority[] = [];
-                for (const tag of bounty.tags) {
-                    const hashesByTag = bountyHashesByTag.getBounties(tag);
-                    if (hashesByTag) {
-                        for (const hash of hashesByTag) {
-                            if (hash !== bounty.hash) {
-                                const relatedBounty = {
-                                    priority: 1,
-                                    ...bountyCache.findBountyByHash(hash),
-                                };
-                                const index = bounties.findIndex(
-                                    (b) => b.hash === relatedBounty.hash
-                                );
-                                if (index > -1) {
-                                    bounties[index].priority++;
-                                } else {
-                                    bounties.push(relatedBounty);
-                                }
-                            }
-                        }
-                    }
-                }
-                related.addRelated(bounty, bounties);
-            },
-        },
-    ];
 
     $: isDisabled = (bounty: IBounty) => {
         return (
@@ -111,7 +77,10 @@
             {#each vendor.bounties as bounty}
                 <Bounty
                     {bounty}
-                    actions={createActions(bounty)}
+                    actions={[
+                        trackBounty(bounty, addBounty),
+                        showRelated(bounty),
+                    ]}
                     disabled={isDisabled(bounty)}
                 />
             {/each}

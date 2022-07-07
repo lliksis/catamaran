@@ -6,6 +6,7 @@
     import related from "api/utils/relatedStore";
     import type { ICharacterContext } from "api/utils/types";
     import Bounty from "../vendor/Bounty.svelte";
+    import { showRelated, untrackBounty } from "app/bountyActions";
 
     export let params: {
         membershipId: string;
@@ -18,40 +19,6 @@
     $: items = $inventories[params.characterId];
 
     const { store, removeBounty } = getContext<IBountyStore>("bounty");
-
-    const createInventoryActions = (bounty: IBounty) => [
-        {
-            text: "Show related",
-            action: () => {
-                const bounties: IBountyWithPriority[] = [];
-                for (const tag of bounty.tags) {
-                    const hashesByTag = bountyHashesByTag.getBounties(tag);
-                    if (hashesByTag) {
-                        for (const hash of hashesByTag) {
-                            if (hash !== bounty.hash) {
-                                const bounty = {
-                                    priority: 1,
-                                    ...bountyCache.findBountyByHash(hash),
-                                };
-                                if (bounties.some((b) => b.hash === hash)) {
-                                    bounty.priority++;
-                                }
-                                bounties.push(bounty);
-                            }
-                        }
-                    }
-                }
-                related.addRelated(bounty, bounties);
-            },
-        },
-    ];
-
-    const createTrackedActions = (bounty: IBounty) => [
-        {
-            text: "Untrack Bounty",
-            action: () => removeBounty(bounty),
-        },
-    ];
 </script>
 
 <div class="overview_container">
@@ -60,7 +27,7 @@
         {#if items.length > 0}
             <div class="bounties">
                 {#each items as bounty}
-                    <Bounty {bounty} actions={createInventoryActions(bounty)} />
+                    <Bounty {bounty} actions={[showRelated(bounty)]} />
                 {/each}
             </div>
         {:else}
@@ -71,7 +38,13 @@
         {#if $store.length > 0}
             <div class="bounties">
                 {#each $store as bounty}
-                    <Bounty {bounty} actions={createTrackedActions(bounty)} />
+                    <Bounty
+                        {bounty}
+                        actions={[
+                            untrackBounty(bounty, removeBounty),
+                            showRelated(bounty),
+                        ]}
+                    />
                 {/each}
             </div>
         {:else}
