@@ -28,20 +28,14 @@ jobs:
             - name: "Install dependencies"
               run: npm install
 
-            - name: "Install netlify cli"
-              run: npm i -g netlify-cli
+            - name: "Build webapp"
+              run: npm run build
 
-            - name: "Link to netlify site"
-              run: NETLIFY_AUTH_TOKEN=${{ secrets.NETLIFY_AUTH_TOKEN }} netlify link --id=${{ secrets.NETLIFY_BETA_SITE_ID }}
-
-            - name: "Setup env variables - VITE_CLIENT_ID"
-              run: NETLIFY_AUTH_TOKEN=${{ secrets.NETLIFY_AUTH_TOKEN }} netlify env:set VITE_CLIENT_ID ${{ secrets.BETA_CLIENT_ID }}
-
-            - name: "Setup env variables - VITE_CLIENT_SECRET"
-              run: NETLIFY_AUTH_TOKEN=${{ secrets.NETLIFY_AUTH_TOKEN }} netlify env:set VITE_CLIENT_SECRET ${{ secrets.BETA_CLIENT_SECRET }}
-
-            - name: "Setup env variables - VITE_X_API_KEY"
-              run: NETLIFY_AUTH_TOKEN=${{ secrets.NETLIFY_AUTH_TOKEN }} netlify env:set VITE_X_API_KEY ${{ secrets.BETA_X_API_KEY }}
-
-            - name: Deploy to Netlify
-              run: NETLIFY_AUTH_TOKEN=${{ secrets.NETLIFY_AUTH_TOKEN }} netlify deploy --dir='dist' --message="Prerelease deploy v${{ github.ref }}" --build --prod
+            - name: Publish to Cloudflare Pages
+              uses: cloudflare/pages-action@1
+              with:
+                apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+                accountId: ${{ secrets.CLOUDFLARE_ACOUNT_ID }}
+                projectName: 'Catamaran Dev'
+                directory: 'dist'
+                gitHubToken: ${{ secrets.GITHUB_TOKEN }}
