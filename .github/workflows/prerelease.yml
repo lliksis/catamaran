@@ -36,6 +36,6 @@ jobs:
               with:
                 apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
                 accountId: ${{ secrets.CLOUDFLARE_ACOUNT_ID }}
-                projectName: 'Catamaran Dev'
+                projectName: 'd2bountytracker-beta'
                 directory: 'dist'
                 gitHubToken: ${{ secrets.GITHUB_TOKEN }}
