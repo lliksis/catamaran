@@ -35,7 +35,7 @@ jobs:
               uses: cloudflare/pages-action@1
               with:
                 apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-                accountId: ${{ secrets.CLOUDFLARE_ACOUNT_ID }}
+                accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
                 projectName: 'd2bountytracker'
                 directory: 'dist'
                 gitHubToken: ${{ secrets.GITHUB_TOKEN }}
