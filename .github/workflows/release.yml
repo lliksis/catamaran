@@ -27,6 +27,13 @@ jobs:
 
             - name: "Install dependencies"
               run: npm install
+              
+            - name: 'Create env file'
+              run: |
+                touch .env
+                echo VITE_X_API_KEY=${{ secrets.X_API_KEY }} >> .env
+                echo VITE_CLIENT_ID=${{ secrets.CLIENT_ID }} >> .env
+                echo VITE_CLIENT_SECRET=${{ secrets.CLIENT_SECRET }} >> .env
 
             - name: "Build webapp"
               run: npm run build
