@@ -9,6 +9,8 @@ import type {
     IBounty,
     IVendorProgression,
 } from "./vendor.types";
+import bounties from "api/destiny2/bounties";
+import { createTags } from "src/tags.helper";
 
 /**
  * Converts the vendors form getVendors into IVendor[].
@@ -69,31 +71,38 @@ export const resolveVendors = (
             const items = sales.data[vendorHash].saleItems;
             for (const saleHash in items) {
                 const saleItemHash = items[+saleHash].itemHash;
-                const item = DestinyInventoryItemDefinition[saleItemHash];
-                if (item.itemType === DestinyItemType.Bounty) {
-                    const itemObjectives =
-                        itemComponents[vendorHash].objectives.data[saleHash]
-                            .objectives;
-                    const objectiveProgress: IBountyObjective[] = itemObjectives.map(
-                        (obj) => {
-                            return {
-                                progress: 0,
-                                completionValue: obj.completionValue,
-                                objectiveProgressDescription:
-                                    DestinyObjectiveDefinition[
-                                        obj.objectiveHash
-                                    ].progressDescription,
-                            };
-                        }
-                    );
-                    resolvedItems.push({
-                        ...item,
-                        displayProperties: {
-                            ...item.displayProperties,
-                            icon: bngBaseUrl + item.displayProperties.icon,
-                        },
-                        objectiveProgress: objectiveProgress,
-                    });
+                let bounty = bounties.findBountyByHash(saleItemHash);
+                if (!bounty) {
+                    const item = DestinyInventoryItemDefinition[saleItemHash];
+                    if (item.itemType === DestinyItemType.Bounty) {
+                        const itemObjectives =
+                            itemComponents[vendorHash].objectives.data[saleHash]
+                                .objectives;
+                        const objectiveProgress: IBountyObjective[] =
+                            itemObjectives.map((obj) => {
+                                return {
+                                    progress: 0,
+                                    completionValue: obj.completionValue,
+                                    objectiveProgressDescription:
+                                        DestinyObjectiveDefinition[
+                                            obj.objectiveHash
+                                        ].progressDescription,
+                                };
+                            });
+                        bounty = {
+                            ...item,
+                            displayProperties: {
+                                ...item.displayProperties,
+                                icon: bngBaseUrl + item.displayProperties.icon,
+                            },
+                            objectiveProgress: objectiveProgress,
+                        };
+                        bounty.tags = createTags(bounty);
+                        bounties.addBounty(bounty);
+                        resolvedItems.push(bounty);
+                    }
+                } else {
+                    resolvedItems.push(bounty);
                 }
             }
 
@@ -107,6 +116,5 @@ export const resolveVendors = (
             });
         }
     }
-    console.log(resolvedVendors);
     return resolvedVendors;
 };

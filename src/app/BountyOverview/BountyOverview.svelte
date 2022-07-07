@@ -1,9 +1,12 @@
 <script lang="ts">
     import { getContext } from "svelte";
     import type { IBountyStore } from "api/utils";
-    import type { IBounty } from "api/destiny2";
+    import type { IBounty, IBountyWithPriority } from "api/destiny2";
+    import bountyCache, { bountyHashesByTag } from "api/destiny2/bounties";
+    import related from "api/utils/relatedStore";
     import type { ICharacterContext } from "api/utils/types";
     import Bounty from "../vendor/Bounty.svelte";
+    import { showRelated, untrackBounty } from "app/bountyActions";
 
     export let params: {
         membershipId: string;
@@ -16,13 +19,6 @@
     $: items = $inventories[params.characterId];
 
     const { store, removeBounty } = getContext<IBountyStore>("bounty");
-
-    const createActions = (bounty: IBounty) => [
-        {
-            text: "Untrack Bounty",
-            action: () => removeBounty(bounty),
-        },
-    ];
 </script>
 
 <div class="overview_container">
@@ -31,7 +27,7 @@
         {#if items.length > 0}
             <div class="bounties">
                 {#each items as bounty}
-                    <Bounty {bounty} />
+                    <Bounty {bounty} actions={[showRelated(bounty)]} />
                 {/each}
             </div>
         {:else}
@@ -42,7 +38,13 @@
         {#if $store.length > 0}
             <div class="bounties">
                 {#each $store as bounty}
-                    <Bounty {bounty} actions={createActions(bounty)} />
+                    <Bounty
+                        {bounty}
+                        actions={[
+                            untrackBounty(bounty, removeBounty),
+                            showRelated(bounty),
+                        ]}
+                    />
                 {/each}
             </div>
         {:else}

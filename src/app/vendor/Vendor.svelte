@@ -2,11 +2,14 @@
     import { getContext } from "svelte";
     import { fade } from "svelte/transition";
     import type { IBountyStore } from "api/utils";
-    import type { IBounty, IVendor } from "api/destiny2";
+    import related from "api/utils/relatedStore";
+    import type { IBounty, IBountyWithPriority, IVendor } from "api/destiny2";
     import type { ICharacterContext } from "api/utils/types";
     import Bounty from "./Bounty.svelte";
     import Icon from "./Icon.svelte";
     import * as vendorConf from "../../vendorConf.json";
+    import bountyCache, { bountyHashesByTag } from "api/destiny2/bounties";
+    import { showRelated, trackBounty } from "app/bountyActions";
 
     export let index = 0;
     export let vendor: IVendor;
@@ -36,13 +39,6 @@
         : areIconsFlipped
         ? vendor.icon
         : vendor.progression?.icon;
-
-    const createActions = (bounty: IBounty) => [
-        {
-            text: "Track Bounty",
-            action: () => addBounty(bounty),
-        },
-    ];
 
     $: isDisabled = (bounty: IBounty) => {
         return (
@@ -81,7 +77,10 @@
             {#each vendor.bounties as bounty}
                 <Bounty
                     {bounty}
-                    actions={createActions(bounty)}
+                    actions={[
+                        trackBounty(bounty, addBounty),
+                        showRelated(bounty),
+                    ]}
                     disabled={isDisabled(bounty)}
                 />
             {/each}

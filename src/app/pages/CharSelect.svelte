@@ -18,7 +18,6 @@
     const onClickCharacter = (
         character: IDestinyCharacterComponentOverride
     ) => {
-        console.log("select", character);
         selectedCharacterStore.update(() => character);
         navigate(
             `app/${profile.membershipId}/${profile.membershipType}/${character.characterId}`
