@@ -12,7 +12,7 @@ import { writable } from "svelte/store";
 import type { IDestinyCharacterComponentOverride } from "./profile.types";
 import { bngBaseUrl } from "api/utils/types";
 import type { IBounty, IBountyObjective } from "../vendor";
-import bounties from "../bounties";
+import bounties, { bountyProgress } from "../bounties";
 import { createTags } from "src/tags.helper";
 
 /**
@@ -63,6 +63,7 @@ export const resolveInventory = (
                 if (!bounty) {
                     const bountyObjectives: IBountyObjective[] =
                         resolveObjectives(
+                            item.itemHash,
                             itemDefinition,
                             instancedObjectives,
                             objectiveDefinition
@@ -81,6 +82,7 @@ export const resolveInventory = (
                     resolvedItems.data[characterId].push(bounty);
                 } else {
                     bounty.objectiveProgress = resolveObjectives(
+                        bounty.hash,
                         itemDefinition,
                         instancedObjectives,
                         objectiveDefinition
@@ -94,16 +96,17 @@ export const resolveInventory = (
     return resolvedItems.data;
 };
 const resolveObjectives = (
+    bountyHash: number,
     itemDefinition: DestinyInventoryItemDefinition,
     instancedObjectives: DestinyObjectiveProgress[],
     objectiveDefinition: AllDestinyManifestComponents["DestinyObjectiveDefinition"]
 ) =>
-    itemDefinition.objectives.objectiveHashes.map((objectiveHash) => {
+    itemDefinition.objectives.objectiveHashes.map((objectiveHash, index) => {
         const objective = instancedObjectives.find(
             (o) => o.objectiveHash === objectiveHash
         );
+        bountyProgress.addProgress(index, bountyHash, objective.progress);
         return {
-            progress: objective.progress,
             completionValue: objective.completionValue,
             objectiveProgressDescription:
                 objectiveDefinition[objectiveHash].progressDescription,

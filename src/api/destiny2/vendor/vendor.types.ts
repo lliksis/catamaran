@@ -25,7 +25,6 @@ export interface IBounty
     tags?: string[];
 }
 export interface IBountyObjective {
-    progress: number;
     completionValue: number;
     objectiveProgressDescription: string;
 }

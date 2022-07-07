@@ -23,7 +23,6 @@
         {
             text: "Show related",
             action: () => {
-                console.log(bounty);
                 const bounties: IBountyWithPriority[] = [];
                 for (const tag of bounty.tags) {
                     const hashesByTag = bountyHashesByTag.getBounties(tag);

@@ -18,6 +18,32 @@ const bounties = () => {
 };
 export default bounties();
 
+const bountyProgressMap = new Map<string, number>();
+const progressByBounty = () => {
+    const createKey = (index: number, bountyHash: number) =>
+        `${bountyHash}_${index}`;
+
+    const addProgress = (
+        index: number,
+        bountyHash: number,
+        progress: number
+    ) => {
+        bountyProgressMap.set(createKey(index, bountyHash), progress);
+    };
+    const getProgress = (index: number, bountyHash: number) => {
+        if (bountyProgressMap.has(createKey(index, bountyHash))) {
+            return bountyProgressMap.get(createKey(index, bountyHash));
+        }
+        return 0;
+    };
+
+    return {
+        addProgress,
+        getProgress,
+    };
+};
+export const bountyProgress = progressByBounty();
+
 const bountyHashesByTagMap = new Map<string, number[]>();
 const hashesByTag = () => {
     const addBounty = (tag: string, bountyHash: number) => {

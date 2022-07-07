@@ -4,6 +4,7 @@
     import type { ITooltip, ITooltipProgress } from "app/tooltip/Tooltip.types";
     import Tooltip from "../tooltip/Tooltip.svelte";
     import ContextMenu from "../ContextMenu/ContextMenu.svelte";
+    import { bountyProgress } from "api/destiny2/bounties";
 
     export let bounty: IBounty;
     export let actions: {
@@ -19,17 +20,22 @@
         body: {
             error: disabled ? "Can only track one at a time" : undefined,
             description: bounty.displayProperties.description,
-            progress: bounty.objectiveProgress.map<ITooltipProgress>((p) => ({
-                progressValue: p.progress,
-                completionValue: p.completionValue,
-                description: p.objectiveProgressDescription,
-            })),
+            progress: bounty.objectiveProgress.map<ITooltipProgress>(
+                (p, i) => ({
+                    progressValue: bountyProgress.getProgress(i, bounty.hash),
+                    completionValue: p.completionValue,
+                    description: p.objectiveProgressDescription,
+                })
+            ),
         },
     } as ITooltip;
 
     const completed = bounty.objectiveProgress.reduce<boolean>(
-        (_, progress) => {
-            if (progress.completionValue === progress.progress) {
+        (_, progress, index) => {
+            if (
+                progress.completionValue ===
+                bountyProgress.getProgress(index, bounty.hash)
+            ) {
                 return true;
             }
             return false;
@@ -43,7 +49,7 @@
         <Tooltip content={tooltipContent}>
             <div
                 class="bounty button unselectable"
-                style={`background-image: url(${bounty.displayProperties.icon})`}
+                style={`background-image: url(${bounty.displayProperties?.icon})`}
                 class:completed
                 class:disabled
                 {disabled}
