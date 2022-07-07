@@ -5,17 +5,12 @@
     import { getContext } from "svelte";
     import type { IBountyStore } from "api/utils";
     import type { IBounty } from "api/destiny2";
+    import { trackBounty } from "app/bountyActions";
 
     const { store, clearRelated, selectedBounty } = related;
     $: relatedBounties = $store;
 
     const { addBounty } = getContext<IBountyStore>("bounty");
-    const createActions = (bounty: IBounty) => [
-        {
-            text: "Track Bounty",
-            action: () => addBounty(bounty),
-        },
-    ];
 </script>
 
 {#if relatedBounties.length > 0}
@@ -36,7 +31,7 @@
         <hr size="0.5" />
         <div class="bounty_container">
             {#each relatedBounties as bounty}
-                <Bounty {bounty} actions={createActions(bounty)} />
+                <Bounty {bounty} actions={[trackBounty(bounty, addBounty)]} />
             {/each}
         </div>
     </div>
